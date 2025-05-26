@@ -1,0 +1,12 @@
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Model\bin\Debug\net6.0\MAG.Model.deps.json
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Model\bin\Debug\net6.0\MAG.Model.dll
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Model\bin\Debug\net6.0\MAG.Model.pdb
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Model\obj\Debug\net6.0\MAG.Model.csproj.AssemblyReference.cache
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Model\obj\Debug\net6.0\MAG.Model.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Model\obj\Debug\net6.0\MAG.Model.AssemblyInfoInputs.cache
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Model\obj\Debug\net6.0\MAG.Model.AssemblyInfo.cs
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Model\obj\Debug\net6.0\MAG.Model.csproj.CoreCompileInputs.cache
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Model\obj\Debug\net6.0\MAG.Model.dll
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Model\obj\Debug\net6.0\refint\MAG.Model.dll
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Model\obj\Debug\net6.0\MAG.Model.pdb
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Model\obj\Debug\net6.0\ref\MAG.Model.dll

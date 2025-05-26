@@ -1,0 +1,14 @@
+C:\Users\WIN10\Desktop\Bioskopina\backend\Bioskopina\obj\Debug\net6.0\Bioskopina.csproj.AssemblyReference.cache
+C:\Users\WIN10\Desktop\Bioskopina\backend\Bioskopina\obj\Debug\net6.0\Bioskopina.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\WIN10\Desktop\Bioskopina\backend\Bioskopina\obj\Debug\net6.0\Bioskopina.AssemblyInfoInputs.cache
+C:\Users\WIN10\Desktop\Bioskopina\backend\Bioskopina\obj\Debug\net6.0\Bioskopina.AssemblyInfo.cs
+C:\Users\WIN10\Desktop\Bioskopina\backend\Bioskopina\obj\Debug\net6.0\Bioskopina.csproj.CoreCompileInputs.cache
+C:\Users\WIN10\Desktop\Bioskopina\backend\Bioskopina\obj\Debug\net6.0\Bioskopina.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\WIN10\Documents\B\backend\Bioskopina\obj\Debug\net6.0\Bioskopina.csproj.AssemblyReference.cache
+C:\Users\WIN10\Documents\B\backend\Bioskopina\obj\Debug\net6.0\Bioskopina.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\WIN10\Documents\B\backend\Bioskopina\obj\Debug\net6.0\Bioskopina.AssemblyInfoInputs.cache
+C:\Users\WIN10\Documents\B\backend\Bioskopina\obj\Debug\net6.0\Bioskopina.AssemblyInfo.cs
+C:\Users\WIN10\Documents\B\backend\Bioskopina\obj\Debug\net6.0\Bioskopina.csproj.CoreCompileInputs.cache
+C:\Users\WIN10\Documents\B\backend\Bioskopina\obj\Debug\net6.0\Bioskopina.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\WIN10\Documents\B\backend\Bioskopina\obj\Debug\net6.0\Bioskopina.sourcelink.json
+C:\Users\WIN10\Documents\B\backend\Bioskopina\obj\Debug\net6.0\Bioskopina.MvcApplicationPartsAssemblyInfo.cs
