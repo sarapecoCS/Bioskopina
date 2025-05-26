@@ -1,0 +1,35 @@
+// android/build.gradle
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // Android Gradle plugin version — keep compatible with your Flutter/Android Studio version
+        classpath 'com.android.tools.build:gradle:7.3.0'
+        // Kotlin Gradle plugin (if you use Kotlin)
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+// Optional: custom build directory structure
+rootProject.buildDir = '../build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(':app')
+}
+
+// Task to clean project
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
