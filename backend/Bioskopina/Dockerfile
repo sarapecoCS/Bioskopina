@@ -7,17 +7,17 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["MAG/MAG.csproj", "MAG/"]
-RUN dotnet restore "MAG/MAG.csproj"
+COPY ["Bioskopina/Bioskopina.csproj", "Bioskopina/"]
+RUN dotnet restore "Bioskopina/Bioskopina.csproj"
 COPY . .
-WORKDIR "/src/MAG"
-RUN dotnet build "MAG.csproj" -c Release -o /app/build
+WORKDIR "/src/Bioskopina"
+RUN dotnet build "Bioskopina.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "MAG.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "Bioskopina.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-ENTRYPOINT ["dotnet", "MAG.dll"]
+ENTRYPOINT ["dotnet", "Bioskopina.dll"]

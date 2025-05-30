@@ -7,6 +7,7 @@ import '../models/user.dart';
 
 class UserProvider extends BaseProvider<User> {
   final String _endpoint = "User";
+
   UserProvider() : super("User");
 
   @override
@@ -14,6 +15,7 @@ class UserProvider extends BaseProvider<User> {
     return User.fromJson(data);
   }
 
+  /// Get user registrations aggregated by days or months
   Future<List<UserRegistrationData>> getUserRegistrations(int days,
       {bool? groupByMonths = false}) async {
     var url =
@@ -41,6 +43,7 @@ class UserProvider extends BaseProvider<User> {
     }
   }
 
+  /// Change password for a user by userId
   Future<String> changePassword(int userId, dynamic request) async {
     var url = "${BaseProvider.baseUrl}$_endpoint/ChangePassword/$userId";
     var uri = Uri.parse(url);
@@ -56,4 +59,28 @@ class UserProvider extends BaseProvider<User> {
       throw Exception("Unknown error");
     }
   }
+  Future<User?> register(Map<String, dynamic> registrationData) async {
+    var url = "${BaseProvider.baseUrl}$_endpoint/register";
+    print("Register URL: $url");
+
+    var uri = Uri.parse(url);
+
+
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+
+    var jsonRequest = jsonEncode(registrationData);
+    var response = await http!.post(uri, headers: headers, body: jsonRequest);
+
+    if (isValidResponse(response)) {
+      var data = jsonDecode(response.body);
+      return User.fromJson(data);
+    } else {
+      throw Exception("Registration failed with status: ${response.statusCode}");
+    }
+  }
+
+
+
 }

@@ -694,11 +694,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\WIN10\\Documents\\B\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj",
+      "projectUniqueName": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj",
       "projectName": "Bioskopina.Model",
-      "projectPath": "C:\\Users\\WIN10\\Documents\\B\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj",
+      "projectPath": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj",
       "packagesPath": "C:\\Users\\WIN10\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\WIN10\\Documents\\B\\backend\\Bioskopina.Model\\obj\\",
+      "outputPath": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina.Model\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\WIN10\\AppData\\Roaming\\NuGet\\NuGet.Config",

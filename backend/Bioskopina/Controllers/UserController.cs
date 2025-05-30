@@ -18,11 +18,19 @@ namespace Bioskopina.Controllers
         {
             _userService = service;
         }
+       
 
         [AllowAnonymous]
         public override async Task<Model.User> Insert([FromBody] UserInsertRequest insert)
         {
             return await base.Insert(insert);
+        }
+
+        [HttpPost("register")]
+        [AllowAnonymous]
+        public async Task<Model.User> Register([FromBody] UserInsertRequest insert)
+        {
+            return await _userService.Insert(insert);
         }
 
         [AllowAnonymous]

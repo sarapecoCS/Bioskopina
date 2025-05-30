@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "0AZoMIRXlnk=",
+  "dgSpecHash": "le7Q4Pnvcgw=",
   "success": true,
-  "projectFilePath": "C:\\Users\\WIN10\\Documents\\B\\backend\\RabbitMQConsumer\\RabbitMQConsumer.csproj",
+  "projectFilePath": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\RabbitMQConsumer\\RabbitMQConsumer.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\WIN10\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.17.2\\microsoft.visualstudio.azure.containers.tools.targets.1.17.2.nupkg.sha512",
     "C:\\Users\\WIN10\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",

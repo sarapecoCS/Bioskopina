@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\WIN10\\Documents\\B\\backend\\Bioskopina.Services\\Bioskopina.Services.csproj": {}
+    "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina.Services\\Bioskopina.Services.csproj": {}
   },
   "projects": {
-    "C:\\Users\\WIN10\\Documents\\B\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj": {
+    "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\WIN10\\Documents\\B\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj",
+        "projectUniqueName": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj",
         "projectName": "Bioskopina.Model",
-        "projectPath": "C:\\Users\\WIN10\\Documents\\B\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj",
+        "projectPath": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj",
         "packagesPath": "C:\\Users\\WIN10\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\WIN10\\Documents\\B\\backend\\Bioskopina.Model\\obj\\",
+        "outputPath": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina.Model\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\WIN10\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -74,14 +74,14 @@
         }
       }
     },
-    "C:\\Users\\WIN10\\Documents\\B\\backend\\Bioskopina.Services\\Bioskopina.Services.csproj": {
+    "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina.Services\\Bioskopina.Services.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\WIN10\\Documents\\B\\backend\\Bioskopina.Services\\Bioskopina.Services.csproj",
+        "projectUniqueName": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina.Services\\Bioskopina.Services.csproj",
         "projectName": "Bioskopina.Services",
-        "projectPath": "C:\\Users\\WIN10\\Documents\\B\\backend\\Bioskopina.Services\\Bioskopina.Services.csproj",
+        "projectPath": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina.Services\\Bioskopina.Services.csproj",
         "packagesPath": "C:\\Users\\WIN10\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\WIN10\\Documents\\B\\backend\\Bioskopina.Services\\obj\\",
+        "outputPath": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina.Services\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\WIN10\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -98,8 +98,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\WIN10\\Documents\\B\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj": {
-                "projectPath": "C:\\Users\\WIN10\\Documents\\B\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj"
+              "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj": {
+                "projectPath": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj"
               }
             }
           }

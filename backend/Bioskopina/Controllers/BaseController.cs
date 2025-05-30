@@ -35,6 +35,7 @@ namespace Bioskopina.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public virtual async Task<T> Insert([FromBody] TInsert insert)
         {
             return await _service.Insert(insert);

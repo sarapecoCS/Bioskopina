@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\WIN10\\Documents\\B\\backend\\RabbitMQConsumer\\RabbitMQConsumer.csproj": {}
+    "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\RabbitMQConsumer\\RabbitMQConsumer.csproj": {}
   },
   "projects": {
-    "C:\\Users\\WIN10\\Documents\\B\\backend\\RabbitMQConsumer\\RabbitMQConsumer.csproj": {
+    "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\RabbitMQConsumer\\RabbitMQConsumer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\WIN10\\Documents\\B\\backend\\RabbitMQConsumer\\RabbitMQConsumer.csproj",
+        "projectUniqueName": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\RabbitMQConsumer\\RabbitMQConsumer.csproj",
         "projectName": "RabbitMQConsumer",
-        "projectPath": "C:\\Users\\WIN10\\Documents\\B\\backend\\RabbitMQConsumer\\RabbitMQConsumer.csproj",
+        "projectPath": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\RabbitMQConsumer\\RabbitMQConsumer.csproj",
         "packagesPath": "C:\\Users\\WIN10\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\WIN10\\Documents\\B\\backend\\RabbitMQConsumer\\obj\\",
+        "outputPath": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\RabbitMQConsumer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\WIN10\\AppData\\Roaming\\NuGet\\NuGet.Config",

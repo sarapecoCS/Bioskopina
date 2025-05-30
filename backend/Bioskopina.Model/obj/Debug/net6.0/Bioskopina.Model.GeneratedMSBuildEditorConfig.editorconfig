@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Bioskopina.Model
-build_property.ProjectDir = C:\Users\WIN10\Documents\B\backend\Bioskopina.Model\
+build_property.ProjectDir = C:\Users\WIN10\Documents\Bioskopina\backend\Bioskopina.Model\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
