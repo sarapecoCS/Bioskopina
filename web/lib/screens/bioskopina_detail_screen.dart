@@ -10,8 +10,6 @@ import '../models/bioskopina.dart';
 import '../models/genre.dart';
 import '../models/search_result.dart';
 import '../utils/colors.dart';
-import '../widgets/circular_progress_indicator.dart';
-import '../widgets/form_builder_datetime_picker.dart';
 import '../widgets/form_builder_text_field.dart';
 import '../widgets/master_screen.dart';
 
@@ -39,7 +37,6 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
   @override
   void initState() {
     super.initState();
-
     imageUrlValue = widget.movie?.imageUrl ?? "";
     titleValue = widget.movie?.titleEn ?? "";
 
@@ -57,24 +54,60 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
     super.dispose();
   }
 
-  Widget _buildImage() {
-    return imageUrlValue.isNotEmpty
-        ? Image.network(imageUrlValue, width: 150, height: 200, fit: BoxFit.cover)
-        : Image.asset('assets/images/placeholder.png', width: 150, height: 200, fit: BoxFit.cover);
+  void _showElegantSnackbar(String message) {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    final snackBar = SnackBar(
+      content: Text(
+        message,
+        style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+      ),
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.green[600],
+      margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      duration: const Duration(seconds: 2),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   Future<void> _saveMovieData() async {
     if (_formKey.currentState?.saveAndValidate() ?? false) {
       var formData = _formKey.currentState!.value;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Saved successfully!")),
-      );
-      // TODO: Add saving logic here (e.g., API call)
+      _showElegantSnackbar("Saved successfully!");
+      // TODO: Add save logic
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Validation failed.")),
-      );
+      _showElegantSnackbar("Validation failed.");
     }
+  }
+
+  Widget _buildImageWithTitle() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
+            width: 100,
+            height: 140,
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(color: Colors.black26, blurRadius: 8, offset: Offset(2, 4)),
+              ],
+            ),
+            child: imageUrlValue.isNotEmpty
+                ? Image.network(imageUrlValue, fit: BoxFit.cover)
+                : Image.asset('assets/images/placeholder.png', fit: BoxFit.cover),
+          ),
+        ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: Text(
+            titleValue,
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ],
+    );
   }
 
   @override
@@ -84,12 +117,9 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
       showFloatingActionButton: true,
       floatingActionButtonIcon: const Icon(Icons.save, size: 48, color: Palette.lightPurple),
       showBackArrow: true,
-      titleWidget: Text(
-        titleValue,
-        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      ),
+      titleWidget: const Text(""),
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
         child: FormBuilder(
           key: _formKey,
           initialValue: {
@@ -98,75 +128,51 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
             'duration': widget.movie?.duration?.toString() ?? "",
             'imageUrl': widget.movie?.imageUrl ?? "",
             'trailerUrl': widget.movie?.trailerUrl ?? "",
-            'rating': widget.movie?.score?.toString() ?? "0.0"
-
-
+            'rating': widget.movie?.score?.toString() ?? "0.0",
           },
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: _buildImage(),
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        MyFormBuilderTextField(
-                          name: "title",
-                          labelText: "Title",
-                          focusNode: _focusNodes[0],
-                          onChanged: (val) {
-                            setState(() {
-                              titleValue = val ?? "";
-                            });
-                          },
-                          validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(),
-                            FormBuilderValidators.maxLength(200),
-                          ]),
-                        ),
-
-                        MyFormBuilderTextField(
-                          name: "description",
-                          labelText: "Description",
-                          focusNode: _focusNodes[1],
-                          validator: FormBuilderValidators.required(),
-                        ),
-
-                        MyFormBuilderTextField(
-                          name: "imageUrl",
-                          labelText: "Image URL",
-                          focusNode: _focusNodes[3],
-                          onChanged: (val) {
-                            setState(() {
-                              imageUrlValue = val ?? "";
-                            });
-                          },
-                        ),
-
-                      ],
-                    ),
-
-                  ),
-                ],
+              _buildImageWithTitle(),
+              const SizedBox(height: 24),
+              MyFormBuilderTextField(
+                name: "title",
+                labelText: "Title",
+                focusNode: _focusNodes[0],
+                onChanged: (val) => setState(() => titleValue = val ?? ""),
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(),
+                  FormBuilderValidators.maxLength(200),
+                ]),
               ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _saveMovieData,
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+              const SizedBox(height: 16),
+              MyFormBuilderTextField(
+                name: "description",
+                labelText: "Description",
+                focusNode: _focusNodes[1],
+                validator: FormBuilderValidators.required(),
+              ),
+              const SizedBox(height: 16),
+              MyFormBuilderTextField(
+                name: "imageUrl",
+                labelText: "Image URL",
+                focusNode: _focusNodes[2],
+                onChanged: (val) => setState(() => imageUrlValue = val ?? ""),
+              ),
+              const SizedBox(height: 24),
+              Center(
+                child: ElevatedButton.icon(
+                  onPressed: _saveMovieData,
+                  icon: const Icon(Icons.check_circle_outline),
+                  label: const Text("Save Movie"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Palette.lightPurple,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    elevation: 4,
+                    textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-                  backgroundColor: Palette.lightPurple,
-                ),
-                child: const Text(
-                  "Save Movie",
-                  style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
             ],
@@ -176,3 +182,4 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
     );
   }
 }
+

@@ -24,6 +24,7 @@ class _BioskopinaScreenState extends State<BioskopinaScreen> {
   late Future<SearchResult<Bioskopina>> _bioskopinaFuture;
   final TextEditingController _bioskopinaController = TextEditingController();
 
+  final ScrollController _scrollController = ScrollController();
   bool isSearching = false;
 
   @override
@@ -33,18 +34,12 @@ class _BioskopinaScreenState extends State<BioskopinaScreen> {
     _bioskopinaProvider = context.read<MovieProvider>();
     _genreBioskopinaProvider = context.read<GenreMovieProvider>();
 
-    _bioskopinaProvider.addListener(() {
-      _reloadBioskopinaList();
-    });
-    _genreBioskopinaProvider.addListener(() {
-      _reloadBioskopinaList();
-    });
+    _bioskopinaProvider.addListener(_reloadBioskopinaList);
+    _genreBioskopinaProvider.addListener(_reloadBioskopinaList);
 
-    // Load all movies without paging parameters
     _bioskopinaFuture = _bioskopinaProvider.get(filter: {
       "GenresIncluded": "true",
       "NewestFirst": "true",
-      // No Page or PageSize, load all
     });
   }
 
@@ -54,7 +49,6 @@ class _BioskopinaScreenState extends State<BioskopinaScreen> {
         _bioskopinaFuture = _bioskopinaProvider.get(filter: {
           "GenresIncluded": "true",
           "NewestFirst": "true",
-          // Load all
           if (isSearching) "FTS": _bioskopinaController.text,
         });
       });
@@ -62,21 +56,25 @@ class _BioskopinaScreenState extends State<BioskopinaScreen> {
   }
 
   void _search(String searchText) async {
+    var result = await _bioskopinaProvider.get(filter: {
+      "FTS": searchText,
+      "GenresIncluded": "true",
+      "NewestFirst": "true",
+    });
 
-      var result = await _bioskopinaProvider.get(filter: {
-        "FTS": searchText,
-        "GenresIncluded": "true",
-        "NewestFirst": "true",
-        // load all search results
+    if (mounted) {
+      setState(() {
+        _bioskopinaFuture = Future.value(result);
+        isSearching = true;
       });
-
-      if (mounted) {
-        setState(() {
-          _bioskopinaFuture = Future.value(result);
-          isSearching = true;
-        });
-
     }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _bioskopinaController.dispose();
+    super.dispose();
   }
 
   @override
@@ -86,13 +84,13 @@ class _BioskopinaScreenState extends State<BioskopinaScreen> {
         children: [
           Icon(Icons.movie, size: 28, color: Palette.lightPurple),
           const SizedBox(width: 5),
-          const Text("Bioskopina"),
+          const Text("Bioskopina", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
         ],
       ),
       showFloatingActionButton: true,
       floatingButtonOnPressed: () {
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => BioskopinaDetailScreen()))
+            .push(MaterialPageRoute(builder: (context) => const BioskopinaDetailScreen()))
             .then((_) {
           if (mounted) _reloadBioskopinaList();
         });
@@ -106,13 +104,36 @@ class _BioskopinaScreenState extends State<BioskopinaScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const MyProgressIndicator();
           } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
+            return Center(child: Text('Error: ${snapshot.error}', style: const TextStyle(color: Colors.red)));
           } else {
-            var bioskopinaList = snapshot.data!.result;
-            return SingleChildScrollView(
-              child: Center(
-                child: Wrap(
-                  children: _buildBioskopinaCards(bioskopinaList),
+            var bioskopinaList = snapshot.data?.result ?? [];
+            if (bioskopinaList.isEmpty) {
+              return const Center(
+                child: Text(
+                  'No movies found.',
+                  style: TextStyle(color: Colors.white70, fontSize: 18),
+                ),
+              );
+            }
+            return ScrollbarTheme(
+              data: ScrollbarThemeData(
+                thumbColor: MaterialStateProperty.all(Palette.lightPurple),
+                thickness: MaterialStateProperty.all(6),
+                radius: const Radius.circular(10),
+              ),
+              child: Scrollbar(
+                controller: _scrollController,
+                thumbVisibility: true,
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                  child: Center(
+                    child: Wrap(
+                      spacing: 16,
+                      runSpacing: 16,
+                      children: _buildBioskopinaCards(bioskopinaList),
+                    ),
+                  ),
                 ),
               ),
             );
@@ -136,8 +157,8 @@ class _BioskopinaScreenState extends State<BioskopinaScreen> {
         borderRadius: BorderRadius.circular(10.0),
         side: BorderSide(color: Palette.lightPurple.withOpacity(0.3)),
       ),
-      icon: const Icon(Icons.more_vert_rounded),
-      splashRadius: 1,
+      icon: const Icon(Icons.more_vert_rounded, color: Colors.white70),
+      splashRadius: 20,
       padding: EdgeInsets.zero,
       color: const Color.fromRGBO(50, 48, 90, 1),
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
@@ -148,12 +169,9 @@ class _BioskopinaScreenState extends State<BioskopinaScreen> {
             ),
             visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
             hoverColor: Palette.lightPurple.withOpacity(0.1),
-            leading: const Icon(Icons.text_snippet_rounded,
-                color: Palette.lightPurple),
-            title: const Text('See details',
-                style: TextStyle(color: Palette.lightPurple)),
-            subtitle: Text('See more information about this movie',
-                style: TextStyle(color: Palette.lightPurple.withOpacity(0.5))),
+            leading: const Icon(Icons.text_snippet_rounded, color: Palette.lightPurple),
+            title: const Text('See details', style: TextStyle(color: Palette.lightPurple)),
+            subtitle: Text('More info about this movie', style: TextStyle(color: Palette.lightPurple.withOpacity(0.5))),
             onTap: () async {
               Navigator.pop(context);
               await Navigator.of(context).push(
@@ -174,14 +192,12 @@ class _BioskopinaScreenState extends State<BioskopinaScreen> {
             hoverColor: Palette.lightRed.withOpacity(0.1),
             leading: const Icon(Icons.delete, color: Palette.lightRed),
             title: const Text('Delete', style: TextStyle(color: Palette.lightRed)),
-            subtitle: Text('Delete permanently',
-                style: TextStyle(color: Palette.lightRed.withOpacity(0.5))),
+            subtitle: Text('Delete permanently', style: TextStyle(color: Palette.lightRed.withOpacity(0.5))),
             onTap: () {
               Navigator.pop(context);
               showConfirmationDialog(
                 context,
-                const Icon(Icons.warning_rounded,
-                    color: Palette.lightRed, size: 55),
+                const Icon(Icons.warning_rounded, color: Palette.lightRed, size: 55),
                 const Text("Are you sure you want to delete this movie?"),
                     () async {
                   await _bioskopinaProvider.delete(bioskopina.id);
@@ -196,95 +212,113 @@ class _BioskopinaScreenState extends State<BioskopinaScreen> {
   }
 
   Widget _buildBioskopinaCard(Bioskopina bioskopina) {
-    return Container(
-      width: 300,
-      height: 453,
-      margin: const EdgeInsets.only(top: 20, left: 20),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15), color: Palette.darkPurple),
-      child: Column(
-        children: [
-          SizedBox(
-            width: 300,
-            height: 300,
-            child: bioskopina.imageUrl != null && bioskopina.imageUrl!.isNotEmpty
-                ? ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
-              child: Image.network(
-                bioskopina.imageUrl!,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return const Center(
-                    child: Icon(Icons.broken_image, size: 100, color: Palette.lightPurple),
-                  );
-                },
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return const Center(child: CircularProgressIndicator(color: Palette.lightPurple));
-                },
-              ),
-            )
-                : Container(
-              decoration: BoxDecoration(
-                color: Palette.darkPurple,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
-              ),
-              child: const Center(
-                child: Icon(Icons.movie, size: 100, color: Palette.lightPurple),
-              ),
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => BioskopinaDetailScreen(movie: bioskopina),
+        ));
+      },
+      borderRadius: BorderRadius.circular(15),
+      child: Container(
+        width: 300,
+        height: 480,
+        margin: const EdgeInsets.only(top: 10),
+        decoration: BoxDecoration(
+          color: Palette.darkPurple,
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.15),
+              blurRadius: 10,
+              offset: const Offset(3, 5),
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(top: 10, left: 10, bottom: 13),
-                child: Row(
-                  children: [
-                    const Icon(Icons.star, color: Palette.starYellow, size: 17),
-                    const SizedBox(width: 3),
-                    Text(bioskopina.score.toString(),
-                        style: const TextStyle(
-                            color: Palette.starYellow, fontSize: 13)),
-                  ],
+          ],
+        ),
+        child: Column(
+          children: [
+            SizedBox(
+              width: 300,
+              height: 300,
+              child: bioskopina.imageUrl != null && bioskopina.imageUrl!.isNotEmpty
+                  ? ClipRRect(
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+                child: Hero(
+                  tag: bioskopina.id.toString(),
+                  child: Image.network(
+                    bioskopina.imageUrl!,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return const Center(
+                        child: Icon(Icons.broken_image, size: 100, color: Palette.lightPurple),
+                      );
+                    },
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return const Center(child: CircularProgressIndicator(color: Palette.lightPurple));
+                    },
+                  ),
+                ),
+              )
+                  : Container(
+                decoration: BoxDecoration(
+                  color: Palette.darkPurple,
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+                ),
+                child: const Center(
+                  child: Icon(Icons.movie, size: 100, color: Palette.lightPurple),
                 ),
               ),
-              Expanded(
-                child: Container(
-                  alignment: Alignment.center,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 10, left: 5, top: 5),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 12, 8, 0),
+              child: Row(
+                children: [
+                  const Icon(Icons.star, color: Palette.starYellow, size: 18),
+                  const SizedBox(width: 5),
+                  Text(
+                    bioskopina.score.toString(),
+                    style: const TextStyle(
+                      color: Palette.starYellow,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
                     child: Text(
                       bioskopina.titleEn,
+                      textAlign: TextAlign.left,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      textAlign: TextAlign.center,
                       style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold),
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        height: 1.2,
+                      ),
+                    ),
+                  ),
+                  _buildPopupMenu(bioskopina),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                child: SingleChildScrollView(
+                  child: SelectableText(
+                    bioskopina.synopsis,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      height: 1.4,
+                      color: Colors.white70,
                     ),
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 0),
-                child: _buildPopupMenu(bioskopina),
-              ),
-            ],
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-              child: SingleChildScrollView(
-                controller: ScrollController(),
-                child: Column(
-                  children: [
-                    Text(bioskopina.synopsis),
-                  ],
-                ),
-              ),
             ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }
