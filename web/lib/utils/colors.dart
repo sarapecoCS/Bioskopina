@@ -7,7 +7,7 @@ class Palette {
   static const Color darkPurple = Color.fromRGBO(20, 23, 43, 1.0);
   static const Color plumPurple = Color.fromRGBO(57, 28, 75, 1);
   static const Color lightPurple = Color.fromRGBO(192, 185, 255, 1);
-  static const Color starYellow = Color.fromRGBO(255, 255, 141, 1);
+  static const Color starYellow = Color.fromRGBO(240, 127, 255, 1.0);
   static const Color teal = Color.fromRGBO(153, 255, 255, 1);
   static const Color white = Color.fromRGBO(255, 255, 255, 1);
   static const Color black = Color.fromRGBO(0, 0, 0, 1);
@@ -117,9 +117,9 @@ class Palette {
   static const Color movieIco_e904_e905_e906 = Color.fromRGBO(192, 185, 255, 1);
   static const Color movieIco_e907_e908_e909_e90a = white;
 
-  static const Color starIco_e918 = Color.fromRGBO(255, 255, 141, 1);
+  static const Color starIco_e918 = Color.fromRGBO(255, 141, 145, 1.0);
   static const Color starIco_e919 = white;
-  static const Color starIco_e91a = Color.fromRGBO(223, 223, 93, 1);
+  static const Color starIco_e91a = Color.fromRGBO(212, 59, 149, 1.0);
 
   static const Color pdfIco_e911 = lightPurple;
   static const Color pdfIco_e912 = Color.fromRGBO(255, 235, 238, 1);
