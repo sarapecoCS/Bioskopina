@@ -4,6 +4,9 @@ using Bioskopina.Model.SearchObjects;
 using Bioskopina.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Bioskopina.Model;
+using Bioskopina.Services.Database;
 
 namespace Bioskopina.Controllers
 {
@@ -16,7 +19,7 @@ namespace Bioskopina.Controllers
         BioskopinaUpdateRequest>
     {
         protected IBioskopinaService _bService;
-
+        private readonly BioskopinaContext _context;
         public BioskopinaController(IBioskopinaService service) : base(service)
         {
             _bService = service;
@@ -27,5 +30,14 @@ namespace Bioskopina.Controllers
         {
             return await _bService.GetMostPopularMovie();
         }
+
+
+      
+
+
+
+
+
+
     }
 }

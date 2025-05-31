@@ -5,7 +5,6 @@ import '../providers/bioskopina_provider.dart';
 import '../providers/genre_bioskopina_provider.dart';
 import '../utils/util.dart';
 import '../widgets/master_screen.dart';
-import '../widgets/pagination_buttons.dart';
 import '../models/bioskopina.dart';
 import '../models/search_result.dart';
 import '../utils/colors.dart';
@@ -22,58 +21,31 @@ class BioskopinaScreen extends StatefulWidget {
 class _BioskopinaScreenState extends State<BioskopinaScreen> {
   late MovieProvider _bioskopinaProvider;
   late GenreMovieProvider _genreBioskopinaProvider;
-  SearchResult<Bioskopina>? result;
   late Future<SearchResult<Bioskopina>> _bioskopinaFuture;
   final TextEditingController _bioskopinaController = TextEditingController();
-  final ScrollController _scrollController = ScrollController();
 
-  int page = 0;
-  int pageSize = 8;
-  int totalItems = 0;
   bool isSearching = false;
 
   @override
   void initState() {
+    super.initState();
+
     _bioskopinaProvider = context.read<MovieProvider>();
     _genreBioskopinaProvider = context.read<GenreMovieProvider>();
 
     _bioskopinaProvider.addListener(() {
       _reloadBioskopinaList();
-      setTotalItems();
     });
     _genreBioskopinaProvider.addListener(() {
       _reloadBioskopinaList();
-      setTotalItems();
     });
 
+    // Load all movies without paging parameters
     _bioskopinaFuture = _bioskopinaProvider.get(filter: {
       "GenresIncluded": "true",
       "NewestFirst": "true",
-      "Page": "$page",
-      "PageSize": "$pageSize"
+      // No Page or PageSize, load all
     });
-
-    setTotalItems();
-
-    super.initState();
-  }
-
-  void setTotalItems() async {
-    var bioskopinaResult = await _bioskopinaFuture;
-    if (mounted) {
-      setState(() {
-        totalItems = bioskopinaResult.count;
-      });
-
-      int totalPages = (totalItems / pageSize).ceil();
-
-      if (page >= totalPages && totalPages > 0) {
-        setState(() {
-          page--;
-        });
-      }
-      _reloadBioskopinaList();
-    }
   }
 
   void _reloadBioskopinaList() {
@@ -82,10 +54,28 @@ class _BioskopinaScreenState extends State<BioskopinaScreen> {
         _bioskopinaFuture = _bioskopinaProvider.get(filter: {
           "GenresIncluded": "true",
           "NewestFirst": "true",
-          "Page": "$page",
-          "PageSize": "$pageSize"
+          // Load all
+          if (isSearching) "FTS": _bioskopinaController.text,
         });
       });
+    }
+  }
+
+  void _search(String searchText) async {
+
+      var result = await _bioskopinaProvider.get(filter: {
+        "FTS": searchText,
+        "GenresIncluded": "true",
+        "NewestFirst": "true",
+        // load all search results
+      });
+
+      if (mounted) {
+        setState(() {
+          _bioskopinaFuture = Future.value(result);
+          isSearching = true;
+        });
+
     }
   }
 
@@ -120,20 +110,9 @@ class _BioskopinaScreenState extends State<BioskopinaScreen> {
           } else {
             var bioskopinaList = snapshot.data!.result;
             return SingleChildScrollView(
-              controller: _scrollController,
               child: Center(
-                child: Column(
-                  children: [
-                    Wrap(
-                      children: _buildBioskopinaCards(bioskopinaList),
-                    ),
-                    MyPaginationButtons(
-                      page: page,
-                      pageSize: pageSize,
-                      totalItems: totalItems,
-                      fetchPage: fetchPage,
-                    ),
-                  ],
+                child: Wrap(
+                  children: _buildBioskopinaCards(bioskopinaList),
                 ),
               ),
             );
@@ -141,56 +120,6 @@ class _BioskopinaScreenState extends State<BioskopinaScreen> {
         },
       ),
     );
-  }
-
-  Future<void> fetchPage(int requestedPage) async {
-    try {
-      var result = await _bioskopinaProvider.get(
-        filter: {
-          "FTS": isSearching ? _bioskopinaController.text : null,
-          "GenresIncluded": "true",
-          "NewestFirst": "true",
-          "Page": "$requestedPage",
-          "PageSize": "$pageSize",
-        },
-      );
-
-      if (mounted) {
-        setState(() {
-          _bioskopinaFuture = Future.value(result);
-          page = requestedPage;
-        });
-      }
-    } on Exception catch (e) {
-      if (mounted) {
-        showErrorDialog(context, e);
-      }
-    }
-  }
-
-  void _search(String searchText) async {
-    try {
-      var result = await _bioskopinaProvider.get(filter: {
-        "FTS": searchText,
-        "GenresIncluded": "true",
-        "NewestFirst": "true",
-        "Page": "0",
-        "PageSize": "$pageSize",
-      });
-
-      if (mounted) {
-        setState(() {
-          _bioskopinaFuture = Future.value(result);
-          isSearching = true;
-          totalItems = result.count;
-          page = 0;
-        });
-      }
-    } on Exception catch (e) {
-      if (mounted) {
-        showErrorDialog(context, e);
-      }
-    }
   }
 
   List<Widget> _buildBioskopinaCards(List<Bioskopina> bioskopinaList) {
@@ -275,10 +204,35 @@ class _BioskopinaScreenState extends State<BioskopinaScreen> {
           borderRadius: BorderRadius.circular(15), color: Palette.darkPurple),
       child: Column(
         children: [
-          const SizedBox(
+          SizedBox(
             width: 300,
             height: 300,
-            child: Icon(Icons.movie, size: 100, color: Palette.lightPurple),
+            child: bioskopina.imageUrl != null && bioskopina.imageUrl!.isNotEmpty
+                ? ClipRRect(
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+              child: Image.network(
+                bioskopina.imageUrl!,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return const Center(
+                    child: Icon(Icons.broken_image, size: 100, color: Palette.lightPurple),
+                  );
+                },
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return const Center(child: CircularProgressIndicator(color: Palette.lightPurple));
+                },
+              ),
+            )
+                : Container(
+              decoration: BoxDecoration(
+                color: Palette.darkPurple,
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+              ),
+              child: const Center(
+                child: Icon(Icons.movie, size: 100, color: Palette.lightPurple),
+              ),
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -335,3 +289,4 @@ class _BioskopinaScreenState extends State<BioskopinaScreen> {
     );
   }
 }
+

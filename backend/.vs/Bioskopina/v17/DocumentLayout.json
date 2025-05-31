@@ -3,27 +3,7 @@
   "WorkspaceRootPath": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{0A72776C-6061-4189-8DBC-07D00634F706}|Bioskopina\\BioskopinaAPI.csproj|c:\\users\\win10\\documents\\bioskopina\\backend\\bioskopina\\controllers\\basecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0A72776C-6061-4189-8DBC-07D00634F706}|Bioskopina\\BioskopinaAPI.csproj|solutionrelative:bioskopina\\controllers\\basecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\WIN10\\AppData\\Local\\SourceServer\\f4827a598f53c8c60d9f7753d5649a766ebc44b758e69a466022736b73e712ca\\backend\\Bioskopina\\Controllers\\BaseController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0A72776C-6061-4189-8DBC-07D00634F706}|Bioskopina\\BioskopinaAPI.csproj|c:\\users\\win10\\documents\\bioskopina\\backend\\bioskopina\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0A72776C-6061-4189-8DBC-07D00634F706}|Bioskopina\\BioskopinaAPI.csproj|solutionrelative:bioskopina\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0A72776C-6061-4189-8DBC-07D00634F706}|Bioskopina\\BioskopinaAPI.csproj|c:\\users\\win10\\documents\\bioskopina\\backend\\bioskopina\\controllers\\userprofilepicturecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0A72776C-6061-4189-8DBC-07D00634F706}|Bioskopina\\BioskopinaAPI.csproj|solutionrelative:bioskopina\\controllers\\userprofilepicturecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0A72776C-6061-4189-8DBC-07D00634F706}|Bioskopina\\BioskopinaAPI.csproj|c:\\users\\win10\\documents\\bioskopina\\backend\\bioskopina\\controllers\\userrolecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0A72776C-6061-4189-8DBC-07D00634F706}|Bioskopina\\BioskopinaAPI.csproj|solutionrelative:bioskopina\\controllers\\userrolecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{48B5A599-F3B6-46DD-9403-98E8B9D25399}|Bioskopina.Model\\Bioskopina.Model.csproj|c:\\users\\win10\\documents\\bioskopina\\backend\\bioskopina.model\\requests\\userinsertrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{48B5A599-F3B6-46DD-9403-98E8B9D25399}|Bioskopina.Model\\Bioskopina.Model.csproj|solutionrelative:bioskopina.model\\requests\\userinsertrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\WIN10\\AppData\\Local\\SourceServer\\7d1abffdff94629c13527e28761272967a9f04eaf7b976f7bcb303675e669ac0\\backend\\Bioskopina.Services\\BioskopinaService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,79 +18,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "BaseController.cs",
-              "DocumentMoniker": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina\\Controllers\\BaseController.cs",
-              "RelativeDocumentMoniker": "Bioskopina\\Controllers\\BaseController.cs",
-              "ToolTip": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina\\Controllers\\BaseController.cs",
-              "RelativeToolTip": "Bioskopina\\Controllers\\BaseController.cs",
-              "ViewState": "AQIAABwAAAAAAAAAAAAAACUAAAAYAAAA",
+              "Title": "BioskopinaService.cs",
+              "DocumentMoniker": "C:\\Users\\WIN10\\AppData\\Local\\SourceServer\\7d1abffdff94629c13527e28761272967a9f04eaf7b976f7bcb303675e669ac0\\backend\\Bioskopina.Services\\BioskopinaService.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\SourceServer\\7d1abffdff94629c13527e28761272967a9f04eaf7b976f7bcb303675e669ac0\\backend\\Bioskopina.Services\\BioskopinaService.cs",
+              "ToolTip": "C:\\Users\\WIN10\\AppData\\Local\\SourceServer\\7d1abffdff94629c13527e28761272967a9f04eaf7b976f7bcb303675e669ac0\\backend\\Bioskopina.Services\\BioskopinaService.cs",
+              "RelativeToolTip": "..\\..\\..\\AppData\\Local\\SourceServer\\7d1abffdff94629c13527e28761272967a9f04eaf7b976f7bcb303675e669ac0\\backend\\Bioskopina.Services\\BioskopinaService.cs",
+              "ViewState": "AQIAACsAAAAAAAAAAAAAAJsAAAAFAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-30T10:38:00.345Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "BaseController.cs",
-              "DocumentMoniker": "C:\\Users\\WIN10\\AppData\\Local\\SourceServer\\f4827a598f53c8c60d9f7753d5649a766ebc44b758e69a466022736b73e712ca\\backend\\Bioskopina\\Controllers\\BaseController.cs",
-              "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\SourceServer\\f4827a598f53c8c60d9f7753d5649a766ebc44b758e69a466022736b73e712ca\\backend\\Bioskopina\\Controllers\\BaseController.cs",
-              "ToolTip": "C:\\Users\\WIN10\\AppData\\Local\\SourceServer\\f4827a598f53c8c60d9f7753d5649a766ebc44b758e69a466022736b73e712ca\\backend\\Bioskopina\\Controllers\\BaseController.cs",
-              "RelativeToolTip": "..\\..\\..\\AppData\\Local\\SourceServer\\f4827a598f53c8c60d9f7753d5649a766ebc44b758e69a466022736b73e712ca\\backend\\Bioskopina\\Controllers\\BaseController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-30T10:37:59.355Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "UserProfilePictureController.cs",
-              "DocumentMoniker": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina\\Controllers\\UserProfilePictureController.cs",
-              "RelativeDocumentMoniker": "Bioskopina\\Controllers\\UserProfilePictureController.cs",
-              "ToolTip": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina\\Controllers\\UserProfilePictureController.cs",
-              "RelativeToolTip": "Bioskopina\\Controllers\\UserProfilePictureController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-30T09:33:17.769Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "UserRoleController.cs",
-              "DocumentMoniker": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina\\Controllers\\UserRoleController.cs",
-              "RelativeDocumentMoniker": "Bioskopina\\Controllers\\UserRoleController.cs",
-              "ToolTip": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina\\Controllers\\UserRoleController.cs",
-              "RelativeToolTip": "Bioskopina\\Controllers\\UserRoleController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-30T09:33:14.614Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "UserController.cs",
-              "DocumentMoniker": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina\\Controllers\\UserController.cs",
-              "RelativeDocumentMoniker": "Bioskopina\\Controllers\\UserController.cs",
-              "ToolTip": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina\\Controllers\\UserController.cs",
-              "RelativeToolTip": "Bioskopina\\Controllers\\UserController.cs",
-              "ViewState": "AQIAAAsAAAAAAAAAAAAswCIAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-30T09:31:39.249Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "UserInsertRequest.cs",
-              "DocumentMoniker": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina.Model\\Requests\\UserInsertRequest.cs",
-              "RelativeDocumentMoniker": "Bioskopina.Model\\Requests\\UserInsertRequest.cs",
-              "ToolTip": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina.Model\\Requests\\UserInsertRequest.cs",
-              "RelativeToolTip": "Bioskopina.Model\\Requests\\UserInsertRequest.cs",
-              "ViewState": "AQIAAAUAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-30T09:30:38.354Z",
+              "WhenOpened": "2025-05-31T11:18:59.652Z",
               "EditorCaption": ""
             }
           ]

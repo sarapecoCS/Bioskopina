@@ -10,7 +10,7 @@ namespace Bioskopina.Model.Requests
     {
         public string TitleEn { get; set; } = null!;
 
-        public string TitleJp { get; set; } = null!;
+        public string TitleYugo { get; set; } = null!;
 
         public string Synopsis { get; set; } = null!;
 
