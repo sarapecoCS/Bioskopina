@@ -13,7 +13,7 @@ import '../providers/donation_provider.dart';
 import '../providers/user_profile_picture_provider.dart';
 import '../providers/user_provider.dart';
 import '../providers/user_role_provider.dart';
-import '../screens/bioskopina_screen.dart';
+import'../screens/bioskopina_screen.dart';
 import '../screens/login_screen.dart';
 import './utils/colors.dart';
 import './utils/util.dart';

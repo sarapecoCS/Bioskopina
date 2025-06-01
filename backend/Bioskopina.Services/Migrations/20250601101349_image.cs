@@ -4,7 +4,7 @@
 
 namespace Bioskopina.Services.Migrations
 {
-    public partial class AwardsFix : Migration
+    public partial class image : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

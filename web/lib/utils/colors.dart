@@ -6,7 +6,7 @@ class Palette {
   static const Color midnightPurple = Color.fromRGBO(12, 11, 30, 1);
   static const Color darkPurple = Color.fromRGBO(20, 23, 43, 1.0);
   static const Color plumPurple = Color.fromRGBO(21, 1, 28, 1.0);
-  static const Color lightPurple = Color.fromRGBO(117, 104, 252, 1.0);
+  static const Color lightPurple = Color.fromRGBO(172, 190, 243, 1.0);
   static const Color starYellow = Color.fromRGBO(240, 127, 255, 1.0);
   static const Color teal = Color.fromRGBO(153, 255, 255, 1);
   static const Color white = Color.fromRGBO(255, 255, 255, 1);

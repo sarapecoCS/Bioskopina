@@ -5,13 +5,14 @@ namespace Bioskopina.Services.Helpers
 {
     public static class ImageHelper
     {
-        public static byte[] ConvertImageToByteArray(string imageFileName)
+        public static byte[] ConvertImageToByteArray(string relativeImagePath)
         {
-            // Explicit path to UserPicture folder
-            string userPictureFolder = @"C:\Users\WIN10\Documents\B\backend\Bioskopina\UserPicture"; // Absolute path
-            string fullImagePath = Path.Combine(userPictureFolder, imageFileName);
+            
+            string baseDir = AppContext.BaseDirectory;
 
-            // Log the generated full path
+          
+            string fullImagePath = Path.Combine(baseDir, relativeImagePath);
+
             Console.WriteLine("Generated Full Image Path: " + fullImagePath);
 
             if (File.Exists(fullImagePath))
@@ -24,5 +25,6 @@ namespace Bioskopina.Services.Helpers
                 throw new FileNotFoundException($"Image not found at: {fullImagePath}");
             }
         }
+
     }
 }

@@ -9,6 +9,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="UserPicture\picture.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="UserPicture\picture.png">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
 		<PackageReference Include="DotNetEnv" Version="3.1.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.1" />

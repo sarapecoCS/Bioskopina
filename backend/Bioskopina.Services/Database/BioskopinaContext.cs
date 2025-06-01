@@ -93,6 +93,7 @@ namespace Bioskopina.Services.Database
                 entity.Property(e => e.PasswordHash).HasMaxLength(50);
                 entity.Property(e => e.PasswordSalt).HasMaxLength(50);
                 entity.Property(e => e.ProfilePictureId).HasColumnName("ProfilePictureID");
+
                 entity.Property(e => e.Username)
                     .HasMaxLength(50)
                     .HasDefaultValueSql("('')")

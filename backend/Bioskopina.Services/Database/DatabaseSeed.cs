@@ -105,7 +105,7 @@ namespace Bioskopina.Services.Database
                    TitleEn = "When I Am Dead and Gone",
                    TitleYugo = "Kad budem mrtav i beo",
                    Synopsis = "The story about Jimmy the Dingy, a young vagabond who works as a seasonal worker. Having been sacked from the job, his dreams are to become a singer. As most of the things in the Balkans happen, he is destined to failure.",
-                   ImageUrl = "https://static.kupindoslike.com/Kad-budem-mrtav-i-beo-1967-foto-mini-poster-_slika_O_91340557.jpg",
+                   ImageUrl = "https://m.media-amazon.com/images/M/MV5BNzMxOTRhNmYtYmU1Yy00NzliLTg0ZGEtM2JhNTgzNjEzYTBhXkEyXkFqcGc@._V1_QL75_UY281_CR8,0,190,281_.jpg",
                    TrailerUrl = "https://www.youtube.com/watch?app=desktop&v=YiuMux8AR14&t=128s",
                    YearRelease = 1967,
                    Runtime = TimeSpan.Parse("01:19:00"),
@@ -187,19 +187,15 @@ namespace Bioskopina.Services.Database
                 new UserProfilePicture()
                 {
                     Id = 1,
-                    ProfilePicture = ImageHelper.ConvertImageToByteArray(@"C:\Users\WIN10\Documents\B\backend\Bioskopina\UserPicture\picture1.png")
-                },
-                  new UserProfilePicture()
-                  {
-                      Id = 2,
-                      ProfilePicture = ImageHelper.ConvertImageToByteArray(@"C:\Users\WIN10\Documents\B\backend\Bioskopina\UserPicture\picture1.png")
+                    ProfilePicture = ImageHelper.ConvertImageToByteArray("UserPicture\\picture.png")
 
-                  }
+
+    
+                }
          );
         }
 
-       
-       
+
 
         private void SeedUsers(ModelBuilder modelBuilder)
         {
@@ -227,7 +223,7 @@ namespace Bioskopina.Services.Database
                     PasswordHash = hash,
                     PasswordSalt = salt,
                     Email ="armina.cosic@edu.fit.ba",
-                    ProfilePictureId = 2,
+                    ProfilePictureId = 1,
                     DateJoined = new DateTime(2025, 3, 31),
                     Username = "arminaacosic",
                 },
@@ -239,9 +235,9 @@ namespace Bioskopina.Services.Database
                       PasswordHash = hash,
                       PasswordSalt = salt,
                       Email = "aleksandar.petrovic@edu.fit.ba",
-                      ProfilePictureId = 1,
+                       ProfilePictureId = 1,
                       DateJoined = new DateTime(2025, 3, 31),
-                      Username = "alexpetr@gmail.com",
+                      Username = "alexpetr",
                   },
                     new User()
                     {
@@ -251,7 +247,7 @@ namespace Bioskopina.Services.Database
                         PasswordHash = hash,
                         PasswordSalt = salt,
                         Email = "spiridon@outlook.com",
-                        ProfilePictureId = 2,
+                        ProfilePictureId = 1,
                         DateJoined = new DateTime(2025, 3, 31),
                         Username = "spiridon_music",
                     },
