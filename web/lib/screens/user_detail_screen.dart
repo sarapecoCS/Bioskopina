@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -46,6 +47,9 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
   Rating? rating;
   Post? post;
   Comment? comment;
+
+  final ScrollController _userInfoScrollController = ScrollController();
+  final ScrollController _userContentScrollController = ScrollController();
 
   @override
   void initState() {
@@ -117,67 +121,92 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
   }
 
   @override
+  void dispose() {
+    _userInfoScrollController.dispose();
+    _userContentScrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MasterScreenWidget(
       titleWidget: Text("User details: ${widget.user.username}"),
       showBackArrow: true,
       child: Center(
-        child: Row(
-          children: [
-            _buildUserInfo(),
-            _buildUserContent(),
-          ],
+        child: ScrollConfiguration(
+          behavior: const ScrollBehavior().copyWith(
+            dragDevices: {
+              PointerDeviceKind.touch,
+              PointerDeviceKind.mouse,
+            },
+          ),
+          child:
+              // Optional: Enable horizontal scroll if needed on smaller screens
+              // SingleChildScrollView(
+              //   scrollDirection: Axis.horizontal,
+              //   child:
+              Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildUserInfo(),
+              _buildUserContent(),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Padding _buildUserInfo() {
+  Widget _buildUserInfo() {
     return Padding(
       padding: const EdgeInsets.only(top: 10, left: 60),
-      child: Column(
-        children: [
-          Expanded(
+      child: SizedBox(
+        width: 430,
+        height: 700,
+        child: Scrollbar(
+          controller: _userInfoScrollController,
+          thumbVisibility: true,
+          interactive: true,
+          child: SingleChildScrollView(
+            controller: _userInfoScrollController,
+            physics: const AlwaysScrollableScrollPhysics(),
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
                 color: Palette.darkPurple,
               ),
-              width: 430,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 15),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: Image.memory(
-                          imageFromBase64String(widget.user.profilePicture!.profilePicture!),
-                          width: 360,
-                          height: 330,
-                          fit: BoxFit.cover,
-                        ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: Image.memory(
+                        imageFromBase64String(widget.user.profilePicture!.profilePicture!),
+                        width: 360,
+                        height: 330,
+                        fit: BoxFit.cover,
                       ),
                     ),
-                    _buildUserTile("Username", widget.user.username?? 'N/A',Icons.person_rounded),
-                    _buildUserTile("First name", widget.user.firstName??'N/A', Icons.person_rounded),
-                    _buildUserTile("Last name", widget.user.lastName ??'N/A', Icons.person_rounded),
-                    _buildUserTile(
-                      "E-mail",
-                      (widget.user.email?.trim().isEmpty ?? true) ? '-' : widget.user.email!,
-                      Icons.email_rounded,
-                    ),
-                    _buildUserTile(
-                      "Date joined",
-                      DateFormat('MMM d, y').format(widget.user.dateJoined!),
-                      Icons.calendar_today_rounded,
-                    ),
-                  ],
-                ),
+                  ),
+                  _buildUserTile("Username", widget.user.username ?? 'N/A', Icons.person_rounded),
+                  _buildUserTile("First name", widget.user.firstName ?? 'N/A', Icons.person_rounded),
+                  _buildUserTile("Last name", widget.user.lastName ?? 'N/A', Icons.person_rounded),
+                  _buildUserTile(
+                    "E-mail",
+                    (widget.user.email?.trim().isEmpty ?? true) ? '-' : widget.user.email!,
+                    Icons.email_rounded,
+                  ),
+                  _buildUserTile(
+                    "Date joined",
+                    DateFormat('MMM d, y').format(widget.user.dateJoined!),
+                    Icons.calendar_today_rounded,
+                  ),
+                ],
               ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }
@@ -200,21 +229,27 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
     );
   }
 
-  Expanded _buildUserContent() {
+  Widget _buildUserContent() {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.only(left: 150),
-        child: SingleChildScrollView(
-          controller: ScrollController(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildSection("Reviews", _ratingFutureBuilder, buildStarTrailIcon(22)),
-              MySeparator(width: 600, borderRadius: 50, opacity: 0.5, marginVertical: 10),
-              _buildSection("Posts", _postFutureBuilder, buildPostIcon(23)),
-              MySeparator(width: 600, borderRadius: 50, opacity: 0.5, marginVertical: 10),
-              _buildSection("Comments", _commentFutureBuilder, buildCommentIcon(19)),
-            ],
+        padding: const EdgeInsets.only(left: 150, top: 10),
+        child: Scrollbar(
+          controller: _userContentScrollController,
+          thumbVisibility: true,
+          interactive: true,
+          child: SingleChildScrollView(
+            controller: _userContentScrollController,
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildSection("Reviews", _ratingFutureBuilder, buildStarTrailIcon(22)),
+                MySeparator(width: 600, borderRadius: 50, opacity: 0.5, marginVertical: 10),
+                _buildSection("Posts", _postFutureBuilder, buildPostIcon(23)),
+                MySeparator(width: 600, borderRadius: 50, opacity: 0.5, marginVertical: 10),
+                _buildSection("Comments", _commentFutureBuilder, buildCommentIcon(19)),
+              ],
+            ),
           ),
         ),
       ),
@@ -314,12 +349,12 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
 
   Widget _buildCard({required dynamic object}) {
     return Card(
+      color: Palette.darkPurple.withOpacity(0.3),
       child: Padding(
         padding: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            Text(object?.toString() ?? 'No data available'),
-          ],
+        child: Text(
+          object?.toString() ?? 'No data available',
+          style: const TextStyle(fontSize: 14, color: Palette.lightPurple),
         ),
       ),
     );
@@ -337,7 +372,6 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
     );
   }
 
-  // Define the methods for buildStarTrailIcon, buildPostIcon, buildCommentIcon
   Widget buildStarTrailIcon(double size) {
     return Icon(Icons.star, size: size, color: Palette.lightPurple);
   }

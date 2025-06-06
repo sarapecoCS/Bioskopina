@@ -416,8 +416,8 @@ class _UsersScreenState extends State<UsersScreen> {
                               "userId": "${user.id}",
                               "roleId": 1,
                               "canReview": false,
-                              "canAskQuestions": false,
-                              "canParticipateInClubs": false
+                              "canAskQuestions": false
+
                             };
                             await _userRoleProvider.insert(userRole);
                           }
@@ -451,10 +451,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                   .currentState?.fields["canReview"]?.value,
                               "canAskQuestions": _userRoleFormKey.currentState
                                   ?.fields["canAskQuestions"]?.value,
-                              "canParticipateInClubs": _userRoleFormKey
-                                  .currentState
-                                  ?.fields["canParticipateInClubs"]
-                                  ?.value
+
                             };
                             await _userRoleProvider.update(
                                 userRoles.result
@@ -477,10 +474,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                   .currentState?.fields["canReview"]?.value,
                               "canAskQuestions": _userRoleFormKey.currentState
                                   ?.fields["canAskQuestions"]?.value,
-                              "canParticipateInClubs": _userRoleFormKey
-                                  .currentState
-                                  ?.fields["canParticipateInClubs"]
-                                  ?.value
+
                             };
                             await _userRoleProvider.insert(userRole);
                           }
@@ -623,34 +617,7 @@ class _UsersScreenState extends State<UsersScreen> {
                     return null;
                   },
                 ),
-                MyFormBuilderSwitch(
-                  initialValue: userRoles
-                      .where((userRole) => userRole.roleId == 2)
-                      .any((element) => element.canParticipateInClubs == true),
-                  name: "canParticipateInClubs",
-                  title: const Text(
-                    "Club participation",
-                    style: TextStyle(fontSize: 15, color: Palette.lightPurple),
-                  ),
-                  subtitle: Text(
-                    "Allows the user to create clubs, make posts and comments.",
-                    style:
-                        TextStyle(color: Palette.lightPurple.withOpacity(0.5)),
-                  ),
-                  onChanged: (val) {
-                    _userRoleFormKey.currentState?.saveAndValidate();
-                  },
-                  validator: (val) {
-                    if (val == null) {
-                      return "This field cannot be empty.";
-                    } else if (val == true &&
-                        _userRoleFormKey.currentState?.fields['user']?.value ==
-                            false) {
-                      return "Must have User role turned on.";
-                    }
-                    return null;
-                  },
-                ),
+
                 MyFormBuilderSwitch(
                   initialValue: userRoles
                       .where((userRole) => userRole.roleId == 2)
@@ -726,7 +693,7 @@ class _UsersScreenState extends State<UsersScreen> {
       splashRadius: 1,
       constraints: const BoxConstraints(minWidth: 10),
       padding: EdgeInsets.zero,
-      color: const Color.fromRGBO(50, 48, 90, 1),
+      color: const Color.fromRGBO(0, 0, 0, 1),
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
         PopupMenuItem<String>(
           child: ListTile(
