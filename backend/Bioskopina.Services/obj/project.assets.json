@@ -8699,19 +8699,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\WIN10\\.nuget\\packages\\": {}
+    "C:\\Users\\Korisnik\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina.Services\\Bioskopina.Services.csproj",
+      "projectUniqueName": "D:\\Bioskopina\\backend\\Bioskopina.Services\\Bioskopina.Services.csproj",
       "projectName": "Bioskopina.Services",
-      "projectPath": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina.Services\\Bioskopina.Services.csproj",
-      "packagesPath": "C:\\Users\\WIN10\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina.Services\\obj\\",
+      "projectPath": "D:\\Bioskopina\\backend\\Bioskopina.Services\\Bioskopina.Services.csproj",
+      "packagesPath": "C:\\Users\\Korisnik\\.nuget\\packages\\",
+      "outputPath": "D:\\Bioskopina\\backend\\Bioskopina.Services\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\WIN10\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Korisnik\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -8725,8 +8730,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj": {
-              "projectPath": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj"
+            "D:\\Bioskopina\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj": {
+              "projectPath": "D:\\Bioskopina\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj"
             }
           }
         }
@@ -8740,7 +8745,8 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      }
+      },
+      "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
       "net6.0": {
@@ -8813,7 +8819,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300\\RuntimeIdentifierGraph.json"
       }
     }
   }

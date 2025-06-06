@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\RabbitMQConsumer\\RabbitMQConsumer.csproj": {}
+    "D:\\Bioskopina\\backend\\RabbitMQConsumer\\RabbitMQConsumer.csproj": {}
   },
   "projects": {
-    "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\RabbitMQConsumer\\RabbitMQConsumer.csproj": {
+    "D:\\Bioskopina\\backend\\RabbitMQConsumer\\RabbitMQConsumer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\RabbitMQConsumer\\RabbitMQConsumer.csproj",
+        "projectUniqueName": "D:\\Bioskopina\\backend\\RabbitMQConsumer\\RabbitMQConsumer.csproj",
         "projectName": "RabbitMQConsumer",
-        "projectPath": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\RabbitMQConsumer\\RabbitMQConsumer.csproj",
-        "packagesPath": "C:\\Users\\WIN10\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\RabbitMQConsumer\\obj\\",
+        "projectPath": "D:\\Bioskopina\\backend\\RabbitMQConsumer\\RabbitMQConsumer.csproj",
+        "packagesPath": "C:\\Users\\Korisnik\\.nuget\\packages\\",
+        "outputPath": "D:\\Bioskopina\\backend\\RabbitMQConsumer\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\WIN10\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Korisnik\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -39,7 +43,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net6.0": {
@@ -74,7 +79,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300\\RuntimeIdentifierGraph.json"
         }
       }
     }

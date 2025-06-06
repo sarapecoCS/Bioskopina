@@ -564,10 +564,10 @@
           }
         }
       },
-      "Microsoft.EntityFrameworkCore.Tools/6.0.3": {
+      "Microsoft.EntityFrameworkCore.Tools/6.0.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore.Design": "6.0.3"
+          "Microsoft.EntityFrameworkCore.Design": "6.0.0"
         },
         "compile": {
           "lib/net6.0/_._": {}
@@ -3857,17 +3857,17 @@
         "microsoft.entityframeworkcore.sqlserver.nuspec"
       ]
     },
-    "Microsoft.EntityFrameworkCore.Tools/6.0.3": {
-      "sha512": "s5s19Woo8kFqI9GQrqM6ZT4qS1xLlWuccqfg3ELf8shp93f8btuK6T3iFV//wP1pkRjFB4qbPrQwMO88RKfHXw==",
+    "Microsoft.EntityFrameworkCore.Tools/6.0.0": {
+      "sha512": "m9e6nFnkyRdKcrTFO8rl3ZihCIKrYdECw+fHZVbKz6TBMwKhih/N0sjPnNt0k7sZPvI8izKPkh1d+z4OR2qgXQ==",
       "type": "package",
-      "path": "microsoft.entityframeworkcore.tools/6.0.3",
+      "path": "microsoft.entityframeworkcore.tools/6.0.0",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "lib/net6.0/_._",
-        "microsoft.entityframeworkcore.tools.6.0.3.nupkg.sha512",
+        "microsoft.entityframeworkcore.tools.6.0.0.nupkg.sha512",
         "microsoft.entityframeworkcore.tools.nuspec",
         "tools/EntityFrameworkCore.PS2.psd1",
         "tools/EntityFrameworkCore.PS2.psm1",
@@ -9258,7 +9258,7 @@
       "DotNetEnv >= 3.1.0",
       "Microsoft.EntityFrameworkCore.Design >= 6.0.3",
       "Microsoft.EntityFrameworkCore.SqlServer >= 6.0.3",
-      "Microsoft.EntityFrameworkCore.Tools >= 6.0.3",
+      "Microsoft.EntityFrameworkCore.Tools >= 6.0.0",
       "Microsoft.Identity.Client >= 4.70.0",
       "Microsoft.ML >= 4.0.2",
       "Microsoft.ML.Recommender >= 0.22.2",
@@ -9269,19 +9269,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\WIN10\\.nuget\\packages\\": {}
+    "C:\\Users\\Korisnik\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina\\BioskopinaAPI.csproj",
+      "projectUniqueName": "D:\\Bioskopina\\backend\\Bioskopina\\BioskopinaAPI.csproj",
       "projectName": "BioskopinaAPI",
-      "projectPath": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina\\BioskopinaAPI.csproj",
-      "packagesPath": "C:\\Users\\WIN10\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina\\obj\\",
+      "projectPath": "D:\\Bioskopina\\backend\\Bioskopina\\BioskopinaAPI.csproj",
+      "packagesPath": "C:\\Users\\Korisnik\\.nuget\\packages\\",
+      "outputPath": "D:\\Bioskopina\\backend\\Bioskopina\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\WIN10\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Korisnik\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -9295,11 +9300,11 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj": {
-              "projectPath": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj"
+            "D:\\Bioskopina\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj": {
+              "projectPath": "D:\\Bioskopina\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj"
             },
-            "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina.Services\\Bioskopina.Services.csproj": {
-              "projectPath": "C:\\Users\\WIN10\\Documents\\Bioskopina\\backend\\Bioskopina.Services\\Bioskopina.Services.csproj"
+            "D:\\Bioskopina\\backend\\Bioskopina.Services\\Bioskopina.Services.csproj": {
+              "projectPath": "D:\\Bioskopina\\backend\\Bioskopina.Services\\Bioskopina.Services.csproj"
             }
           }
         }
@@ -9313,7 +9318,8 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      }
+      },
+      "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
       "net6.0": {
@@ -9343,7 +9349,7 @@
             "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
             "suppressParent": "All",
             "target": "Package",
-            "version": "[6.0.3, )"
+            "version": "[6.0.0, )"
           },
           "Microsoft.Identity.Client": {
             "target": "Package",
@@ -9393,7 +9399,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300\\RuntimeIdentifierGraph.json"
       }
     }
   },

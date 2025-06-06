@@ -1713,7 +1713,10 @@
           "RabbitMQ.Client": "6.2.1"
         },
         "runtime": {
-          "Bioskopina.Model.dll": {}
+          "Bioskopina.Model.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       }
     }
