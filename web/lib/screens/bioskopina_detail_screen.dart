@@ -167,7 +167,7 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
                   label: const Text("Save Movie"),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Palette.lightPurple,
-                    foregroundColor: Colors.white,
+                    foregroundColor: Colors.black,
                     padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     elevation: 4,

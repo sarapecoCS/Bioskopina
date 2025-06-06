@@ -160,7 +160,8 @@ class _BioskopinaScreenState extends State<BioskopinaScreen> {
       icon: const Icon(Icons.more_vert_rounded, color: Colors.white70),
       splashRadius: 20,
       padding: EdgeInsets.zero,
-      color: const Color.fromRGBO(50, 48, 90, 1),
+      color:  const Color.fromRGBO(0, 0, 0, 1),
+
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
         PopupMenuItem<String>(
           child: ListTile(
@@ -261,7 +262,7 @@ class _BioskopinaScreenState extends State<BioskopinaScreen> {
               )
                   : Container(
                 decoration: BoxDecoration(
-                  color: Palette.darkPurple,
+                  color: Palette.midnightPurple,
                   borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
                 ),
                 child: const Center(
