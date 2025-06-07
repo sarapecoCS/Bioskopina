@@ -3,16 +3,8 @@
   "WorkspaceRootPath": "D:\\Bioskopina\\backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{EAFDF74C-8FDC-49A3-BF34-D0D8A7A4B518}|Bioskopina.Services\\Bioskopina.Services.csproj|d:\\bioskopina\\backend\\bioskopina.services\\bioskopina.services.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{EAFDF74C-8FDC-49A3-BF34-D0D8A7A4B518}|Bioskopina.Services\\Bioskopina.Services.csproj|solutionrelative:bioskopina.services\\bioskopina.services.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{EAFDF74C-8FDC-49A3-BF34-D0D8A7A4B518}|Bioskopina.Services\\Bioskopina.Services.csproj|d:\\bioskopina\\backend\\bioskopina.services\\database\\genrebiskopina.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EAFDF74C-8FDC-49A3-BF34-D0D8A7A4B518}|Bioskopina.Services\\Bioskopina.Services.csproj|solutionrelative:bioskopina.services\\database\\genrebiskopina.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EAFDF74C-8FDC-49A3-BF34-D0D8A7A4B518}|Bioskopina.Services\\Bioskopina.Services.csproj|d:\\bioskopina\\backend\\bioskopina.services\\database\\bioskopina.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EAFDF74C-8FDC-49A3-BF34-D0D8A7A4B518}|Bioskopina.Services\\Bioskopina.Services.csproj|solutionrelative:bioskopina.services\\database\\bioskopina.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{48B5A599-F3B6-46DD-9403-98E8B9D25399}|Bioskopina.Model\\Bioskopina.Model.csproj|d:\\bioskopina\\backend\\bioskopina.model\\bioskopina.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -35,19 +27,6 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Bioskopina.Services",
-              "DocumentMoniker": "D:\\Bioskopina\\backend\\Bioskopina.Services\\Bioskopina.Services.csproj",
-              "RelativeDocumentMoniker": "Bioskopina.Services\\Bioskopina.Services.csproj",
-              "ToolTip": "D:\\Bioskopina\\backend\\Bioskopina.Services\\Bioskopina.Services.csproj",
-              "RelativeToolTip": "Bioskopina.Services\\Bioskopina.Services.csproj",
-              "ViewState": "AgIAACMAAAAAAAAAAAAuwC4AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-06-07T19:05:50.141Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
               "Title": "GenreBiskopina.cs",
               "DocumentMoniker": "D:\\Bioskopina\\backend\\Bioskopina.Services\\Database\\GenreBiskopina.cs",
               "RelativeDocumentMoniker": "Bioskopina.Services\\Database\\GenreBiskopina.cs",
@@ -60,19 +39,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Bioskopina.cs",
-              "DocumentMoniker": "D:\\Bioskopina\\backend\\Bioskopina.Services\\Database\\Bioskopina.cs",
-              "RelativeDocumentMoniker": "Bioskopina.Services\\Database\\Bioskopina.cs",
-              "ToolTip": "D:\\Bioskopina\\backend\\Bioskopina.Services\\Database\\Bioskopina.cs",
-              "RelativeToolTip": "Bioskopina.Services\\Database\\Bioskopina.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-07T13:20:09.885Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "Bioskopina.cs",
               "DocumentMoniker": "D:\\Bioskopina\\backend\\Bioskopina.Model\\Bioskopina.cs",
               "RelativeDocumentMoniker": "Bioskopina.Model\\Bioskopina.cs",
@@ -84,7 +51,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 2,
               "Title": "BioskopinaController.cs",
               "DocumentMoniker": "D:\\Bioskopina\\backend\\Bioskopina\\Controllers\\BioskopinaController.cs",
               "RelativeDocumentMoniker": "Bioskopina\\Controllers\\BioskopinaController.cs",
