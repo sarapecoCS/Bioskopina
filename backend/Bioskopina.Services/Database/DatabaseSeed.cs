@@ -67,7 +67,7 @@ namespace Bioskopina.Services.Database
                 new Bioskopina()
                 {
                     Id = 3,
-                    TitleEn = "WR: Mysteries of the Organism",
+                    TitleEn = "Mysteries of the Organism",
                     TitleYugo = "W. R. – Misterije organizma",
                     Synopsis = "An homage to the work of psychologist Wilhelm Reich, matched with a story about a Yugoslavian girl's affair with a Russian skater. Sexual repression, social systems and the orgone theory are explored.",
                     ImageUrl = "https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Wr_mysteries_of_the_organism_dvd.jpg/220px-Wr_mysteries_of_the_organism_dvd.jpg",

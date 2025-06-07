@@ -32,10 +32,6 @@ class _ReportsScreenState extends State<ReportsScreen> {
   bool includeTopBioskopinaInPdf = true;
   final ScreenshotController _screenshotController = ScreenshotController();
 
-  final pw.Document pdf = pw.Document();
-
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   @override
   void initState() {
     super.initState();
@@ -45,7 +41,21 @@ class _ReportsScreenState extends State<ReportsScreen> {
 
   Future<void> _loadPopularMovies() async {
     setState(() => isLoading = true);
+
     popularBioskopinaData = await _movieProvider.getMostPopularMovies();
+
+    // Sort the movies by score from highest to lowest (descending)
+    popularBioskopinaData.sort((a, b) {
+      final scoreA = a.score ?? 0.0;
+      final scoreB = b.score ?? 0.0;
+
+      if (scoreA == 0.0 && scoreB == 0.0) return 0;
+      if (scoreA == 0.0) return 1;
+      if (scoreB == 0.0) return -1;
+
+      return scoreB.compareTo(scoreA);
+    });
+
     setState(() => isLoading = false);
   }
 
@@ -62,6 +72,8 @@ class _ReportsScreenState extends State<ReportsScreen> {
 
     final ByteData logoData = await rootBundle.load("assets/images/logoFilled.png");
     final Uint8List logoBytes = logoData.buffer.asUint8List();
+
+    final pdf = pw.Document();
 
     pdf.addPage(
       pw.Page(
@@ -109,8 +121,25 @@ class _ReportsScreenState extends State<ReportsScreen> {
         await file.writeAsBytes(await pdf.save());
       }
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('PDF saved successfully')),
+
+      showDialog(
+        context: context,
+        builder: (ctx) {
+          return AlertDialog(
+            backgroundColor: Colors.black,
+            title: const Text('Success'),
+            content: const Text('PDF saved successfully!'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+                child: const Text('Ok', style: TextStyle(color: Colors.white),),
+
+              ),
+            ],
+          );
+        },
       );
     }
   }
@@ -137,7 +166,6 @@ class _ReportsScreenState extends State<ReportsScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: Form(
-                  key: _formKey,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -166,10 +194,8 @@ class _ReportsScreenState extends State<ReportsScreen> {
                         borderRadius: 30,
                         gradient: Palette.buttonGradient,
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            Navigator.of(ctx).pop();
-                            _exportPdf();
-                          }
+                          Navigator.of(ctx).pop();
+                          _exportPdf();
                         },
                         child: const Text(
                           'Export PDF',
@@ -189,21 +215,22 @@ class _ReportsScreenState extends State<ReportsScreen> {
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+              child: Row(
                 children: [
-                  const Text(
-                    'Top 5 Black Wave Movies',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
+                  // Left Section: The chart
+                  Expanded(
+                    child: Screenshot(
+                      controller: _screenshotController,
+                      child: _buildPopularMoviesChart(),
+                    ),
                   ),
-                  const SizedBox(height: 20),
-                  Screenshot(
-                    controller: _screenshotController,
-                    child: _buildPopularMoviesChart(),
+                  const SizedBox(width: 20),
+                  // Right Section: The movie list
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: _buildMovieList(),
+                    ),
                   ),
-                  const SizedBox(height: 30),
-                  _buildMovieList(),
                 ],
               ),
             ),
@@ -216,8 +243,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
     }
 
     final maxScore = popularBioskopinaData
-        .map((e) => e.score ?? 0)
-        .fold<double>(0, (previousValue, element) => element > previousValue ? element.toDouble() : previousValue) + 1;
+            .map((e) => e.score ?? 0)
+            .fold<double>(0, (previousValue, element) => element > previousValue ? element.toDouble() : previousValue) +
+        1;
 
     return SizedBox(
       height: 300,
@@ -236,7 +264,11 @@ class _ReportsScreenState extends State<ReportsScreen> {
                   final title = popularBioskopinaData[index].bioskopinaTitleEN ?? '';
                   return SideTitleWidget(
                     axisSide: meta.axisSide,
-                    child: Text(title, style: const TextStyle(fontSize: 10)),
+                    child: Text(
+                      title,
+                      style: const TextStyle(fontSize: 10, color: Color(0xFFF07FFF
+                    ), overflow: TextOverflow.ellipsis),
+                    ),
                   );
                 },
                 interval: 1,
@@ -271,10 +303,15 @@ class _ReportsScreenState extends State<ReportsScreen> {
   }
 
   Widget _buildMovieList() {
-    return Column(
-      children: popularBioskopinaData.map((movie) {
+    return ListView.separated(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: popularBioskopinaData.length,
+      separatorBuilder: (_, __) => const SizedBox(height: 10),
+      itemBuilder: (context, index) {
+        final movie = popularBioskopinaData[index];
         return Card(
-          margin: const EdgeInsets.symmetric(vertical: 8),
+          margin: const EdgeInsets.symmetric(vertical: 4),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           color: Palette.darkPurple,
           child: ListTile(
@@ -295,20 +332,28 @@ class _ReportsScreenState extends State<ReportsScreen> {
               style: const TextStyle(color: Palette.white, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
-              movie.director ?? 'Unknown Director',
-              style: const TextStyle(color: Palette.lightPurple),
+              'Director: ${movie.director ?? 'Unknown'}',
+              style: const TextStyle(color: Colors.grey),
             ),
-            trailing: Text(
-              movie.score?.toStringAsFixed(1) ?? 'N/A',
-              style: const TextStyle(
-                color: Palette.teal,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
+            trailing: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Colors.grey[900], // dark gray background
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: Text(
+                movie.score?.toStringAsFixed(1) ?? 'N/A',
+                style: const TextStyle(
+                  color: Palette.teal,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
               ),
             ),
           ),
         );
-      }).toList(),
+      },
     );
   }
 }
+
