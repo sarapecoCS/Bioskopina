@@ -108,30 +108,63 @@ namespace Bioskopina.Services
 
         public async Task<Model.Bioskopina> Update(int id, BioskopinaUpdateRequest request)
         {
-            var entity = await _context.Bioskopina.FindAsync(id);
+            var entity = await _context.Bioskopina
+                .Include(m => m.GenreMovies) // include existing genres
+                .FirstOrDefaultAsync(m => m.Id == id);
+
             if (entity == null) throw new Exception("Entity not found");
 
-            // Manually update properties OR use AutoMapper:
+            // Map non-genre properties from request to entity
             _mapper.Map(request, entity);
+
+            // Fetch Genre entities for the requested genre IDs
+            var genres = await _context.Genres
+                .Where(g => request.GenreIds.Contains(g.Id))
+                .ToListAsync();
+
+            // Clear current genre associations
+            entity.GenreMovies.Clear();
+
+            // Add updated genre associations
+            foreach (var genre in genres)
+            {
+                entity.GenreMovies.Add(new GenreBiskopina
+                {
+                    GenreId = genre.Id,
+                    Genre = genre,
+                    Movies = entity
+                });
+            }
 
             await _context.SaveChangesAsync();
 
-            // Map back to your API model
             return _mapper.Map<Model.Bioskopina>(entity);
         }
 
+
         public async Task<Model.Bioskopina> Insert(BioskopinaInsertRequest request)
         {
-            // Map the insert request to the database entity
             var entity = _mapper.Map<Database.Bioskopina>(request);
 
-            // Add the new entity to the context
-            _context.Bioskopina.Add(entity);
+            // Load the Genre entities from the database based on the IDs in request
+            var genres = await _context.Genres
+                .Where(g => request.GenreIds.Contains(g.Id))
+                .ToListAsync();
 
-            // Save changes asynchronously
+            // Map genres to the join entity and add to movie's GenreMovies collection
+            foreach (var genre in genres)
+            {
+                entity.GenreMovies.Add(new GenreBiskopina
+                {
+                    GenreId = genre.Id,
+                    Genre = genre,
+                    Movies = entity
+                });
+            }
+
+            _context.Bioskopina.Add(entity);
             await _context.SaveChangesAsync();
 
-            // Map the saved entity back to the API model and return
             return _mapper.Map<Model.Bioskopina>(entity);
         }
 

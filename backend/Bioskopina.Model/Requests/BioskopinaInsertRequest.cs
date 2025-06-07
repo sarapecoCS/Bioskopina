@@ -31,7 +31,7 @@ namespace Bioskopina.Model.Requests
         public string? Awards { get; set; }
 
         public double? Score { get; set; }
-
+        public List<int> GenreIds { get; set; } = new List<int>();
 
     }
 }
