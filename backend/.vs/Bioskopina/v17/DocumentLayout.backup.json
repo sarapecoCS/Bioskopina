@@ -1,12 +1,71 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "D:\\Bioskopina\\backend\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{0A72776C-6061-4189-8DBC-07D00634F706}|Bioskopina\\BioskopinaAPI.csproj|d:\\bioskopina\\backend\\bioskopina\\controllers\\bioskopinacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0A72776C-6061-4189-8DBC-07D00634F706}|Bioskopina\\BioskopinaAPI.csproj|solutionrelative:bioskopina\\controllers\\bioskopinacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48B5A599-F3B6-46DD-9403-98E8B9D25399}|Bioskopina.Model\\Bioskopina.Model.csproj|d:\\bioskopina\\backend\\bioskopina.model\\bioskopina.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{48B5A599-F3B6-46DD-9403-98E8B9D25399}|Bioskopina.Model\\Bioskopina.Model.csproj|solutionrelative:bioskopina.model\\bioskopina.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EAFDF74C-8FDC-49A3-BF34-D0D8A7A4B518}|Bioskopina.Services\\Bioskopina.Services.csproj|d:\\bioskopina\\backend\\bioskopina.services\\database\\bioskopina.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EAFDF74C-8FDC-49A3-BF34-D0D8A7A4B518}|Bioskopina.Services\\Bioskopina.Services.csproj|solutionrelative:bioskopina.services\\database\\bioskopina.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Bioskopina.cs",
+              "DocumentMoniker": "D:\\Bioskopina\\backend\\Bioskopina.Services\\Database\\Bioskopina.cs",
+              "RelativeDocumentMoniker": "Bioskopina.Services\\Database\\Bioskopina.cs",
+              "ToolTip": "D:\\Bioskopina\\backend\\Bioskopina.Services\\Database\\Bioskopina.cs",
+              "RelativeToolTip": "Bioskopina.Services\\Database\\Bioskopina.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-07T13:20:09.885Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Bioskopina.cs",
+              "DocumentMoniker": "D:\\Bioskopina\\backend\\Bioskopina.Model\\Bioskopina.cs",
+              "RelativeDocumentMoniker": "Bioskopina.Model\\Bioskopina.cs",
+              "ToolTip": "D:\\Bioskopina\\backend\\Bioskopina.Model\\Bioskopina.cs",
+              "RelativeToolTip": "Bioskopina.Model\\Bioskopina.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-07T13:07:55.81Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "BioskopinaController.cs",
+              "DocumentMoniker": "D:\\Bioskopina\\backend\\Bioskopina\\Controllers\\BioskopinaController.cs",
+              "RelativeDocumentMoniker": "Bioskopina\\Controllers\\BioskopinaController.cs",
+              "ToolTip": "D:\\Bioskopina\\backend\\Bioskopina\\Controllers\\BioskopinaController.cs",
+              "RelativeToolTip": "Bioskopina\\Controllers\\BioskopinaController.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAABYAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-07T12:44:35.392Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }

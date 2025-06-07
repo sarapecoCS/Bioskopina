@@ -15,6 +15,23 @@ namespace Bioskopina.Model.Requests
         public string Synopsis { get; set; } = null!;
 
         public string? ImageUrl { get; set; }
+       
+
+        public string? TrailerUrl { get; set; }
+     
+
+        public string? Director { get; set; }
+
+        public int? YearRelease { get; set; }
+
+        public int? Runtime { get; set; }
+
+        public string? Cast { get; set; }
+        public string? IMDbRatings { get; set; }
+        public string? Awards { get; set; }
+
+        public double? Score { get; set; }
+
 
     }
 }

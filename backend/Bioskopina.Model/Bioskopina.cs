@@ -18,13 +18,13 @@ namespace Bioskopina.Model
 
         public int? YearRelease { get; set; }
 
-        public TimeSpan? Runtime { get; set; }
+        public int? Runtime { get; set; }
 
         public string? Cast { get; set; }
         public string? IMDbRatings { get; set; }
         public string? Awards { get; set; }
 
-        public decimal? Score { get; set; }
+        public double? Score { get; set; }
 
         public virtual ICollection<GenreBioskopina> GenreMovies { get; set; } = new List<GenreBioskopina>();
     }

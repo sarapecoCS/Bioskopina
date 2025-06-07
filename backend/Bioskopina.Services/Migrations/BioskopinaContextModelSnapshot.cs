@@ -54,8 +54,8 @@ namespace Bioskopina.Services.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("ImageURL");
 
-                    b.Property<TimeSpan>("Runtime")
-                        .HasColumnType("time")
+                    b.Property<int>("Runtime")
+                        .HasColumnType("int")
                         .HasColumnName("Runtime");
 
                     b.Property<decimal>("Score")
@@ -97,7 +97,7 @@ namespace Bioskopina.Services.Migrations
                             Director = "Aleksandar Petrović",
                             IMDbRatings = "7.7/10",
                             ImageUrl = "https://m.media-amazon.com/images/M/MV5BOTZiNGFmM2EtOGVhMS00YjEyLThjNzAtY2M1MGUzYTljY2JiXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
-                            Runtime = new TimeSpan(0, 1, 16, 20, 0),
+                            Runtime = 76,
                             Score = 0m,
                             Synopsis = "Three stories are set at the beginning, middle and the end of WW2. In all three of them the hero of the movie must witness the death of people he likes.",
                             TitleEn = "Three",
@@ -113,7 +113,7 @@ namespace Bioskopina.Services.Migrations
                             Director = "Živojin Pavlović",
                             IMDbRatings = "7.6/10",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/ru/b/bd/Budjenje_pacova.jpg",
-                            Runtime = new TimeSpan(0, 1, 19, 20, 0),
+                            Runtime = 79,
                             Score = 0m,
                             Synopsis = "A lonely man struggles to find the money for his ill sister's treatment while at the same time trying to escape his past and to make sense of the present.",
                             TitleEn = "The Rats Woke up",
@@ -129,7 +129,7 @@ namespace Bioskopina.Services.Migrations
                             Director = "Dušan Makavejev",
                             IMDbRatings = "6.7/10",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Wr_mysteries_of_the_organism_dvd.jpg/220px-Wr_mysteries_of_the_organism_dvd.jpg",
-                            Runtime = new TimeSpan(0, 1, 25, 0, 0),
+                            Runtime = 85,
                             Score = 0m,
                             Synopsis = "An homage to the work of psychologist Wilhelm Reich, matched with a story about a Yugoslavian girl's affair with a Russian skater. Sexual repression, social systems and the orgone theory are explored.",
                             TitleEn = "WR: Mysteries of the Organism",
@@ -145,7 +145,7 @@ namespace Bioskopina.Services.Migrations
                             Director = "Aleksandar Petrović",
                             IMDbRatings = "7.2/10",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/sh/thumb/8/84/Bice_skoro_propast_sveta.jpg/220px-Bice_skoro_propast_sveta.jpg",
-                            Runtime = new TimeSpan(0, 1, 24, 0, 0),
+                            Runtime = 84,
                             Score = 2m,
                             Synopsis = "A bizarre and tragic love story involving swineherd, village fool, teacher and an agricultural pilot. The story unfolds in a remote village in the communist ruled Yugoslavia at the down of Soviet occupation of Czechoslovakia in 1968.",
                             TitleEn = "It Rains in My Village",
@@ -161,7 +161,7 @@ namespace Bioskopina.Services.Migrations
                             Director = "Živojin Pavlović",
                             IMDbRatings = "7.9/10",
                             ImageUrl = "https://m.media-amazon.com/images/M/MV5BNzMxOTRhNmYtYmU1Yy00NzliLTg0ZGEtM2JhNTgzNjEzYTBhXkEyXkFqcGc@._V1_QL75_UY281_CR8,0,190,281_.jpg",
-                            Runtime = new TimeSpan(0, 1, 19, 0, 0),
+                            Runtime = 79,
                             Score = 0m,
                             Synopsis = "The story about Jimmy the Dingy, a young vagabond who works as a seasonal worker. Having been sacked from the job, his dreams are to become a singer. As most of the things in the Balkans happen, he is destined to failure.",
                             TitleEn = "When I Am Dead and Gone",
@@ -177,7 +177,7 @@ namespace Bioskopina.Services.Migrations
                             Director = "Jovan Zivanovic",
                             IMDbRatings = "7.0/10",
                             ImageUrl = "https://m.media-amazon.com/images/M/MV5BZDk2OGY4MWUtODE2My00ZjJiLThiNjYtNjg0NGQzNDFkZDRiXkEyXkFqcGc@._V1_.jpg",
-                            Runtime = new TimeSpan(0, 1, 32, 0, 0),
+                            Runtime = 92,
                             Score = 0m,
                             Synopsis = "In an atmosphere of WWII, a village dyer wants to help his folks in their sorrow and distress by supplying them with the black paint, but there is not enough black paint for all of them, because death works faster than the dyer. His wife was raped, but the naive dyer believes in straight intentions of his godfather - black marketeer, and he gives away free canvas to the people. But in all their pain, people are unable to distinguish good intentions from the evil ones.",
                             TitleEn = "Do Not Mention the Cause of Death",
@@ -193,7 +193,7 @@ namespace Bioskopina.Services.Migrations
                             Director = "Aleksandar Petrovic",
                             IMDbRatings = "7.6/10--",
                             ImageUrl = "https://m.media-amazon.com/images/M/MV5BZDUwNmJlNDQtYWRhOC00NzFhLTk3NWUtM2UyNzdmNzMzYmIwXkEyXkFqcGc@._V1_.jpg",
-                            Runtime = new TimeSpan(0, 1, 34, 0, 0),
+                            Runtime = 94,
                             Score = 0m,
                             Synopsis = "Tensions arise in a Gypsy community when a local feather seller falls in love with a much younger girl.",
                             TitleEn = "I Even Met Happy Gypsies",
@@ -209,7 +209,7 @@ namespace Bioskopina.Services.Migrations
                             Director = "Zelimir Zilnik",
                             IMDbRatings = "7.6/10",
                             ImageUrl = "https://www.cinemaclock.com/images/posters/1000x1500/52/rani-radovi-1969-orig-poster.jpg",
-                            Runtime = new TimeSpan(0, 1, 27, 0, 0),
+                            Runtime = 87,
                             Score = 3m,
                             Synopsis = "A group of young persons are going to make a revolution, but in real life everything is not the same as in smart books.",
                             TitleEn = "Early Works",
@@ -225,7 +225,7 @@ namespace Bioskopina.Services.Migrations
                             Director = "Zelimir Zilnik",
                             IMDbRatings = "7.6/10",
                             ImageUrl = "https://m.media-amazon.com/images/M/MV5BNmE0OTE1NTgtODFhYy00ZTVhLWE0MDktMDRjNjllNzVmMTFhXkEyXkFqcGc@._V1_.jpg",
-                            Runtime = new TimeSpan(0, 1, 27, 0, 0),
+                            Runtime = 87,
                             Score = 4m,
                             Synopsis = "Idealistic young man supports the party and the new Yugoslavia's communist regime, but soon gets involved in various political and criminal machinations becoming more and more confused about what's right and what's wrong.",
                             TitleEn = "The Ambush",

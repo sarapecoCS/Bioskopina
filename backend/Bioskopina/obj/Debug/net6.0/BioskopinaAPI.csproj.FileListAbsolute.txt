@@ -430,3 +430,4 @@ D:\Bioskopina\backend\Bioskopina\obj\Debug\net6.0\refint\BioskopinaAPI.dll
 D:\Bioskopina\backend\Bioskopina\obj\Debug\net6.0\BioskopinaAPI.pdb
 D:\Bioskopina\backend\Bioskopina\obj\Debug\net6.0\BioskopinaAPI.genruntimeconfig.cache
 D:\Bioskopina\backend\Bioskopina\obj\Debug\net6.0\ref\BioskopinaAPI.dll
+D:\Bioskopina\backend\Bioskopina\obj\Debug\net6.0\staticwebassets.upToDateCheck.txt

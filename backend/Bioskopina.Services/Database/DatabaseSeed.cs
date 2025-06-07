@@ -33,103 +33,94 @@ namespace Bioskopina.Services.Database
             SeedUserPostActions(modelBuilder);
             SeedUserCommentActions(modelBuilder);
         }
-
         private void SeedBioskopina(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Bioskopina>().HasData(
-                 new Bioskopina()
-                 {
-                     Id = 1,
-                     TitleEn = "Three",
-                     TitleYugo = "Tri",
-                     Synopsis = "Three stories are set at the beginning, middle and the end of WW2. In all three of them the hero of the movie must witness the death of people he likes.",
-                     ImageUrl = "https://m.media-amazon.com/images/M/MV5BOTZiNGFmM2EtOGVhMS00YjEyLThjNzAtY2M1MGUzYTljY2JiXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
-                     TrailerUrl = "https://www.youtube.com/watch?v=i4pAWKQvORM",
-                     Runtime = TimeSpan.Parse("1:16:20"),
-                     Director="Aleksandar Petrović",
-                     YearRelease = 1965,
-                     Awards = "Nominated for 1 Oscar - 2 wins & 2 nominations total",
-                     IMDbRatings = "7.7/10"
-
-                 },
-                   new Bioskopina()
-                   {
-                       Id = 2,
-                       TitleEn = "The Rats Woke up",
-                       TitleYugo = "Buđenje pacova",
-                       Synopsis = "A lonely man struggles to find the money for his ill sister's treatment while at the same time trying to escape his past and to make sense of the present.",
-                       ImageUrl = "https://upload.wikimedia.org/wikipedia/ru/b/bd/Budjenje_pacova.jpg",
-                       TrailerUrl = "https://www.youtube.com/watch?v=9RXs4tnExXM",
-                       YearRelease=1967,
-                       Runtime = TimeSpan.Parse("1:19:20"),
-                       Director = "Živojin Pavlović",
-                       Awards = "4 wins & 1 nomination",
-                       IMDbRatings="7.6/10"
-
-
-                   },
-                      new Bioskopina()
-                      {
-                          Id = 3,
-                          TitleEn = "WR: Mysteries of the Organism",
-                          TitleYugo = "W. R. – Misterije organizma",
-                          Synopsis = "An homage to the work of psychologist Wilhelm Reich, matched with a story about a Yugoslavian girl's affair with a Russian skater. Sexual repression, social systems and the orgone theory are explored.",
-                          ImageUrl = "https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Wr_mysteries_of_the_organism_dvd.jpg/220px-Wr_mysteries_of_the_organism_dvd.jpg",
-                          TrailerUrl = "https://www.youtube.com/watch?v=-NORCsCIBak",
-                          YearRelease = 1971,
-                          Runtime = TimeSpan.Parse("01:25:00"),
-                          Director = "Dušan Makavejev",
-                          Awards= "4 wins & 1 nomination total",
-                          IMDbRatings="6.7/10"
-
-                      },
-                     new Bioskopina()
-                          {
-                              Id = 4,
-                              TitleEn = "It Rains in My Village",
-                              TitleYugo = "Biće skoro propast sveta",
-                              Synopsis = "A bizarre and tragic love story involving swineherd, village fool, teacher and an agricultural pilot. The story unfolds in a remote village in the communist ruled Yugoslavia at the down of Soviet occupation of Czechoslovakia in 1968.",
-                              ImageUrl = "https://upload.wikimedia.org/wikipedia/sh/thumb/8/84/Bice_skoro_propast_sveta.jpg/220px-Bice_skoro_propast_sveta.jpg",
-                              TrailerUrl = "https://www.youtube.com/watch?v=pQ16Puo9A2Q",
-                              YearRelease = 1968,
-                              Runtime = TimeSpan.Parse("01:24:00"),
-                              Director = "Aleksandar Petrović",
-                              Awards = "1 wins & 1 nomination total",
-                              IMDbRatings="7.2/10",
-                              Score = 2
-
-                          },
-               new Bioskopina()
-               {
-                   Id = 5,
-                   TitleEn = "When I Am Dead and Gone",
-                   TitleYugo = "Kad budem mrtav i beo",
-                   Synopsis = "The story about Jimmy the Dingy, a young vagabond who works as a seasonal worker. Having been sacked from the job, his dreams are to become a singer. As most of the things in the Balkans happen, he is destined to failure.",
-                   ImageUrl = "https://m.media-amazon.com/images/M/MV5BNzMxOTRhNmYtYmU1Yy00NzliLTg0ZGEtM2JhNTgzNjEzYTBhXkEyXkFqcGc@._V1_QL75_UY281_CR8,0,190,281_.jpg",
-                   TrailerUrl = "https://www.youtube.com/watch?app=desktop&v=YiuMux8AR14&t=128s",
-                   YearRelease = 1967,
-                   Runtime = TimeSpan.Parse("01:19:00"),
-                   Director = "Živojin Pavlović",
-                   Awards = "4 wins & 2 nomination total",
-                   IMDbRatings="7.9/10"
-                   
-
-               },
-              new Bioskopina()
-                   {
-                       Id = 6,
-                       TitleEn = "Do Not Mention the Cause of Death",
-                       TitleYugo = "Uzrok smrti ne pominjati",
-                       Synopsis = "In an atmosphere of WWII, a village dyer wants to help his folks in their sorrow and distress by supplying them with the black paint, but there is not enough black paint for all of them, because death works faster than the dyer. His wife was raped, but the naive dyer believes in straight intentions of his godfather - black marketeer, and he gives away free canvas to the people. But in all their pain, people are unable to distinguish good intentions from the evil ones.",
-                       ImageUrl = "https://m.media-amazon.com/images/M/MV5BZDk2OGY4MWUtODE2My00ZjJiLThiNjYtNjg0NGQzNDFkZDRiXkEyXkFqcGc@._V1_.jpg",
-                       TrailerUrl = "https://www.youtube.com/watch?v=S5hR5h1q0gA",
-                       YearRelease = 1968,
-                       Runtime = TimeSpan.Parse("01:32:00"),
-                       Director = "Jovan Zivanovic",
-                       Awards = " 0 nomination total",
-                       IMDbRatings="7.0/10"
-
-              },
+                new Bioskopina()
+                {
+                    Id = 1,
+                    TitleEn = "Three",
+                    TitleYugo = "Tri",
+                    Synopsis = "Three stories are set at the beginning, middle and the end of WW2. In all three of them the hero of the movie must witness the death of people he likes.",
+                    ImageUrl = "https://m.media-amazon.com/images/M/MV5BOTZiNGFmM2EtOGVhMS00YjEyLThjNzAtY2M1MGUzYTljY2JiXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
+                    TrailerUrl = "https://www.youtube.com/watch?v=i4pAWKQvORM",
+                    Runtime = 76,
+                    Director = "Aleksandar Petrović",
+                    YearRelease = 1965,
+                    Awards = "Nominated for 1 Oscar - 2 wins & 2 nominations total",
+                    IMDbRatings = "7.7/10"
+                },
+                new Bioskopina()
+                {
+                    Id = 2,
+                    TitleEn = "The Rats Woke up",
+                    TitleYugo = "Buđenje pacova",
+                    Synopsis = "A lonely man struggles to find the money for his ill sister's treatment while at the same time trying to escape his past and to make sense of the present.",
+                    ImageUrl = "https://upload.wikimedia.org/wikipedia/ru/b/bd/Budjenje_pacova.jpg",
+                    TrailerUrl = "https://www.youtube.com/watch?v=9RXs4tnExXM",
+                    YearRelease = 1967,
+                    Runtime = 79,
+                    Director = "Živojin Pavlović",
+                    Awards = "4 wins & 1 nomination",
+                    IMDbRatings = "7.6/10"
+                },
+                new Bioskopina()
+                {
+                    Id = 3,
+                    TitleEn = "WR: Mysteries of the Organism",
+                    TitleYugo = "W. R. – Misterije organizma",
+                    Synopsis = "An homage to the work of psychologist Wilhelm Reich, matched with a story about a Yugoslavian girl's affair with a Russian skater. Sexual repression, social systems and the orgone theory are explored.",
+                    ImageUrl = "https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Wr_mysteries_of_the_organism_dvd.jpg/220px-Wr_mysteries_of_the_organism_dvd.jpg",
+                    TrailerUrl = "https://www.youtube.com/watch?v=-NORCsCIBak",
+                    YearRelease = 1971,
+                    Runtime = 85,
+                    Director = "Dušan Makavejev",
+                    Awards = "4 wins & 1 nomination total",
+                    IMDbRatings = "6.7/10"
+                },
+                new Bioskopina()
+                {
+                    Id = 4,
+                    TitleEn = "It Rains in My Village",
+                    TitleYugo = "Biće skoro propast sveta",
+                    Synopsis = "A bizarre and tragic love story involving swineherd, village fool, teacher and an agricultural pilot. The story unfolds in a remote village in the communist ruled Yugoslavia at the down of Soviet occupation of Czechoslovakia in 1968.",
+                    ImageUrl = "https://upload.wikimedia.org/wikipedia/sh/thumb/8/84/Bice_skoro_propast_sveta.jpg/220px-Bice_skoro_propast_sveta.jpg",
+                    TrailerUrl = "https://www.youtube.com/watch?v=pQ16Puo9A2Q",
+                    YearRelease = 1968,
+                    Runtime = 84,
+                    Director = "Aleksandar Petrović",
+                    Awards = "1 wins & 1 nomination total",
+                    IMDbRatings = "7.2/10",
+                    Score = 2
+                },
+                new Bioskopina()
+                {
+                    Id = 5,
+                    TitleEn = "When I Am Dead and Gone",
+                    TitleYugo = "Kad budem mrtav i beo",
+                    Synopsis = "The story about Jimmy the Dingy, a young vagabond who works as a seasonal worker. Having been sacked from the job, his dreams are to become a singer. As most of the things in the Balkans happen, he is destined to failure.",
+                    ImageUrl = "https://m.media-amazon.com/images/M/MV5BNzMxOTRhNmYtYmU1Yy00NzliLTg0ZGEtM2JhNTgzNjEzYTBhXkEyXkFqcGc@._V1_QL75_UY281_CR8,0,190,281_.jpg",
+                    TrailerUrl = "https://www.youtube.com/watch?app=desktop&v=YiuMux8AR14&t=128s",
+                    YearRelease = 1967,
+                    Runtime = 79,
+                    Director = "Živojin Pavlović",
+                    Awards = "4 wins & 2 nomination total",
+                    IMDbRatings = "7.9/10"
+                },
+                new Bioskopina()
+                {
+                    Id = 6,
+                    TitleEn = "Do Not Mention the Cause of Death",
+                    TitleYugo = "Uzrok smrti ne pominjati",
+                    Synopsis = "In an atmosphere of WWII, a village dyer wants to help his folks in their sorrow and distress by supplying them with the black paint, but there is not enough black paint for all of them, because death works faster than the dyer. His wife was raped, but the naive dyer believes in straight intentions of his godfather - black marketeer, and he gives away free canvas to the people. But in all their pain, people are unable to distinguish good intentions from the evil ones.",
+                    ImageUrl = "https://m.media-amazon.com/images/M/MV5BZDk2OGY4MWUtODE2My00ZjJiLThiNjYtNjg0NGQzNDFkZDRiXkEyXkFqcGc@._V1_.jpg",
+                    TrailerUrl = "https://www.youtube.com/watch?v=S5hR5h1q0gA",
+                    YearRelease = 1968,
+                    Runtime = 92,
+                    Director = "Jovan Zivanovic",
+                    Awards = " 0 nomination total",
+                    IMDbRatings = "7.0/10"
+                },
                 new Bioskopina()
                 {
                     Id = 7,
@@ -139,47 +130,44 @@ namespace Bioskopina.Services.Database
                     ImageUrl = "https://m.media-amazon.com/images/M/MV5BZDUwNmJlNDQtYWRhOC00NzFhLTk3NWUtM2UyNzdmNzMzYmIwXkEyXkFqcGc@._V1_.jpg",
                     TrailerUrl = "https://www.youtube.com/watch?v=Op0wuHguS4c",
                     YearRelease = 1967,
-                    Runtime = TimeSpan.Parse("01:34:00"),
+                    Runtime = 94,
                     Director = "Aleksandar Petrovic",
                     Awards = "Nominated for 1 Oscar - 7 wins & 6 nominations total",
-                    IMDbRatings="7.6/10--"
-
+                    IMDbRatings = "7.6/10--"
                 },
-                   new Bioskopina()
-                   {
-                       Id = 8,
-                       TitleEn = "Early Works",
-                       TitleYugo = "Rani radovi",
-                       Synopsis = "A group of young persons are going to make a revolution, but in real life everything is not the same as in smart books.",
-                       ImageUrl = "https://www.cinemaclock.com/images/posters/1000x1500/52/rani-radovi-1969-orig-poster.jpg",
-                       TrailerUrl = "https://www.youtube.com/watch?v=H6Djqv0fwn4",
-                       YearRelease = 1969,
-                       Runtime = TimeSpan.Parse("01:27:00"),
-                       Director = "Zelimir Zilnik",
-                       Awards = "2 wins in total",
-                       Score = 3,
-                       IMDbRatings = "7.6/10"
-
-                   },
-                      new Bioskopina()
-                      {
-                          Id = 9,
-                          TitleEn = "The Ambush",
-                          TitleYugo = "Zaseda",
-                          Synopsis = "Idealistic young man supports the party and the new Yugoslavia's communist regime, but soon gets involved in various political and criminal machinations becoming more and more confused about what's right and what's wrong.",
-                          ImageUrl = "https://m.media-amazon.com/images/M/MV5BNmE0OTE1NTgtODFhYy00ZTVhLWE0MDktMDRjNjllNzVmMTFhXkEyXkFqcGc@._V1_.jpg",
-                          TrailerUrl = "https://www.youtube.com/watch?v=H6Djqv0fwn4",
-                          YearRelease = 1969,
-                          Runtime = TimeSpan.Parse("01:27:00"),
-                          Director = "Zelimir Zilnik",
-                          Awards = "2 wins in total",
-                          Score = 4,
-                          IMDbRatings ="7.6/10"
-
-                      }
-
+                new Bioskopina()
+                {
+                    Id = 8,
+                    TitleEn = "Early Works",
+                    TitleYugo = "Rani radovi",
+                    Synopsis = "A group of young persons are going to make a revolution, but in real life everything is not the same as in smart books.",
+                    ImageUrl = "https://www.cinemaclock.com/images/posters/1000x1500/52/rani-radovi-1969-orig-poster.jpg",
+                    TrailerUrl = "https://www.youtube.com/watch?v=H6Djqv0fwn4",
+                    YearRelease = 1969,
+                    Runtime = 87,
+                    Director = "Zelimir Zilnik",
+                    Awards = "2 wins in total",
+                    Score = 3,
+                    IMDbRatings = "7.6/10"
+                },
+                new Bioskopina()
+                {
+                    Id = 9,
+                    TitleEn = "The Ambush",
+                    TitleYugo = "Zaseda",
+                    Synopsis = "Idealistic young man supports the party and the new Yugoslavia's communist regime, but soon gets involved in various political and criminal machinations becoming more and more confused about what's right and what's wrong.",
+                    ImageUrl = "https://m.media-amazon.com/images/M/MV5BNmE0OTE1NTgtODFhYy00ZTVhLWE0MDktMDRjNjllNzVmMTFhXkEyXkFqcGc@._V1_.jpg",
+                    TrailerUrl = "https://www.youtube.com/watch?v=H6Djqv0fwn4",
+                    YearRelease = 1969,
+                    Runtime = 87,
+                    Director = "Zelimir Zilnik",
+                    Awards = "2 wins in total",
+                    Score = 4,
+                    IMDbRatings = "7.6/10"
+                }
             );
         }
+
 
         private void SeedUserProfilePictures(ModelBuilder modelBuilder)
         {

@@ -21,7 +21,7 @@ public partial class Bioskopina
 
     public int YearRelease { get; set; }
 
-    public TimeSpan Runtime { get; set; }  // e.g., 2h 15m
+    public int Runtime { get; set; }  
     public string Cast { get; set; } = string.Empty;   
     public string IMDbRatings { get; set; } = string.Empty;
     public string Awards { get; set; }

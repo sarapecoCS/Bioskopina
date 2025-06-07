@@ -106,30 +106,32 @@ namespace Bioskopina.Services
             return popularM;
         }
 
-        // Update (Edit) method
-        public async Task<Model.Bioskopina> UpdateBioskopinaAsync(int id, BioskopinaUpdateRequest request)
+        public async Task<Model.Bioskopina> Update(int id, BioskopinaUpdateRequest request)
         {
             var entity = await _context.Bioskopina.FindAsync(id);
+            if (entity == null) throw new Exception("Entity not found");
 
-            if (entity == null)
-            {
-                throw new KeyNotFoundException($"Movie with ID {id} not found.");
-            }
+            // Manually update properties OR use AutoMapper:
+            _mapper.Map(request, entity);
 
-            // Update fields
-            entity.TitleEn = request.TitleEn;
-            entity.TitleYugo = request.TitleYugo;
-            entity.Synopsis = request.Synopsis;
-         
-           
-       
-            entity.ImageUrl = request.ImageUrl;
-          
-
-            // Save changes
             await _context.SaveChangesAsync();
 
-            // Return the updated movie
+            // Map back to your API model
+            return _mapper.Map<Model.Bioskopina>(entity);
+        }
+
+        public async Task<Model.Bioskopina> Insert(BioskopinaInsertRequest request)
+        {
+            // Map the insert request to the database entity
+            var entity = _mapper.Map<Database.Bioskopina>(request);
+
+            // Add the new entity to the context
+            _context.Bioskopina.Add(entity);
+
+            // Save changes asynchronously
+            await _context.SaveChangesAsync();
+
+            // Map the saved entity back to the API model and return
             return _mapper.Map<Model.Bioskopina>(entity);
         }
 
@@ -137,14 +139,18 @@ namespace Bioskopina.Services
         public async Task DeleteBioskopinaAsync(int id)
         {
             var entity = await _context.Bioskopina.FindAsync(id);
-
             if (entity == null)
-            {
                 throw new KeyNotFoundException($"Movie with ID {id} not found.");
-            }
 
+            // Remove all related watchlist entries referencing this movie
+            var relatedWatchlists = _context.BioskopinaWatchlists.Where(w => w.MovieId== id);
+            _context.BioskopinaWatchlists.RemoveRange(relatedWatchlists);
+
+            // Now remove the movie itself
             _context.Bioskopina.Remove(entity);
+
             await _context.SaveChangesAsync();
         }
+
     }
 }

@@ -5873,7 +5873,9 @@
             "nullable": true
           },
           "runtime": {
-            "$ref": "#/components/schemas/TimeSpan"
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           },
           "cast": {
             "type": "string",
@@ -5923,6 +5925,37 @@
           },
           "trailerUrl": {
             "type": "string",
+            "nullable": true
+          },
+          "director": {
+            "type": "string",
+            "nullable": true
+          },
+          "yearRelease": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "runtime": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "cast": {
+            "type": "string",
+            "nullable": true
+          },
+          "imDbRatings": {
+            "type": "string",
+            "nullable": true
+          },
+          "awards": {
+            "type": "string",
+            "nullable": true
+          },
+          "score": {
+            "type": "number",
+            "format": "double",
             "nullable": true
           }
         },
@@ -6023,6 +6056,41 @@
           },
           "imageUrl": {
             "type": "string",
+            "nullable": true
+          },
+          "trailerUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "director": {
+            "type": "string",
+            "nullable": true
+          },
+          "yearRelease": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "runtime": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "cast": {
+            "type": "string",
+            "nullable": true
+          },
+          "imDbRatings": {
+            "type": "string",
+            "nullable": true
+          },
+          "awards": {
+            "type": "string",
+            "nullable": true
+          },
+          "score": {
+            "type": "number",
+            "format": "double",
             "nullable": true
           }
         },
@@ -7089,61 +7157,6 @@
           "name": {
             "type": "string",
             "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "TimeSpan": {
-        "type": "object",
-        "properties": {
-          "ticks": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "days": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "hours": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "milliseconds": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "minutes": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "seconds": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalDays": {
-            "type": "number",
-            "format": "double",
-            "readOnly": true
-          },
-          "totalHours": {
-            "type": "number",
-            "format": "double",
-            "readOnly": true
-          },
-          "totalMilliseconds": {
-            "type": "number",
-            "format": "double",
-            "readOnly": true
-          },
-          "totalMinutes": {
-            "type": "number",
-            "format": "double",
-            "readOnly": true
-          },
-          "totalSeconds": {
-            "type": "number",
-            "format": "double",
-            "readOnly": true
           }
         },
         "additionalProperties": false
