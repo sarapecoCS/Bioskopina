@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import '../models/popular_bioskopina_data.dart';
 import '../providers/base_provider.dart';
 import '../models/bioskopina.dart';
@@ -27,12 +26,11 @@ class MovieProvider extends BaseProvider<Bioskopina> {
 
       for (var item in data) {
         result.add(PopularBioskopinaData(
-
-            bioskopinaTitleEN: item["bioskopinaTitleEN"],
-            bioskopinaTitleYugo: item["bioskopinaTitleYugo"],
-            imageUrl: item["imageUrl"],
-            score: item["score"],
-            numberOfRatings: item["numberOfRatings"]
+          bioskopinaTitleEN: item["bioskopinaTitleEN"],
+          bioskopinaTitleYugo: item["bioskopinaTitleYugo"],
+          imageUrl: item["imageUrl"],
+          score: item["score"],
+          numberOfRatings: item["numberOfRatings"],
         ));
       }
 
@@ -41,4 +39,46 @@ class MovieProvider extends BaseProvider<Bioskopina> {
       throw Exception("Unknown error");
     }
   }
+
+  Future<Bioskopina> fetchById(int id) async {
+    var url = "${BaseProvider.baseUrl}$_endpoint/$id";
+    var uri = Uri.parse(url);
+    var headers = createHeaders();
+    var response = await http!.get(uri, headers: headers);
+
+    if (isValidResponse(response)) {
+      var data = jsonDecode(response.body);
+      return fromJson(data);
+    } else {
+      throw Exception("Movie not found");
+    }
+  }
+
+  Future<void> addMovie(Bioskopina movie) async {
+    var url = "${BaseProvider.baseUrl}$_endpoint";
+    var uri = Uri.parse(url);
+    var headers = createHeaders();
+    var body = jsonEncode(movie.toJson());
+
+    var response = await http!.post(uri, headers: headers, body: body);
+
+    if (!isValidResponse(response)) {
+      throw Exception('Failed to add movie');
+    }
+  }
+
+  Future<void> updateMovie(Bioskopina movie) async {
+    var url = "${BaseProvider.baseUrl}$_endpoint/${movie.id}";
+    var uri = Uri.parse(url);
+    var headers = createHeaders();
+    var body = jsonEncode(movie.toJson());
+
+    var response = await http!.put(uri, headers: headers, body: body);
+
+    if (!isValidResponse(response)) {
+      throw Exception('Failed to update movie');
+    }
+  }
 }
+
+
