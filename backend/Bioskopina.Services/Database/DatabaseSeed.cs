@@ -74,6 +74,7 @@ namespace Bioskopina.Services.Database
                     TrailerUrl = "https://www.youtube.com/watch?v=-NORCsCIBak",
                     YearRelease = 1971,
                     Runtime = 85,
+                  
                     Director = "Dušan Makavejev",
                     Awards = "4 wins & 1 nomination total",
                     IMDbRatings = "6.7/10"
@@ -103,6 +104,7 @@ namespace Bioskopina.Services.Database
                     TrailerUrl = "https://www.youtube.com/watch?app=desktop&v=YiuMux8AR14&t=128s",
                     YearRelease = 1967,
                     Runtime = 79,
+                    Score= 2.3,
                     Director = "Živojin Pavlović",
                     Awards = "4 wins & 2 nomination total",
                     IMDbRatings = "7.9/10"
@@ -119,7 +121,8 @@ namespace Bioskopina.Services.Database
                     Runtime = 92,
                     Director = "Jovan Zivanovic",
                     Awards = " 0 nomination total",
-                    IMDbRatings = "7.0/10"
+                    IMDbRatings = "7.0/10",
+                    Score = 3.3,
                 },
                 new Bioskopina()
                 {
@@ -131,6 +134,7 @@ namespace Bioskopina.Services.Database
                     TrailerUrl = "https://www.youtube.com/watch?v=Op0wuHguS4c",
                     YearRelease = 1967,
                     Runtime = 94,
+                    Score = 1.3,
                     Director = "Aleksandar Petrovic",
                     Awards = "Nominated for 1 Oscar - 7 wins & 6 nominations total",
                     IMDbRatings = "7.6/10--"
