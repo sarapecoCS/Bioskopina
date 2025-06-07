@@ -55,3 +55,6 @@ D:\Bioskopina\backend\Bioskopina.Services\obj\Debug\net6.0\Bioskopina.Services.d
 D:\Bioskopina\backend\Bioskopina.Services\obj\Debug\net6.0\refint\Bioskopina.Services.dll
 D:\Bioskopina\backend\Bioskopina.Services\obj\Debug\net6.0\Bioskopina.Services.pdb
 D:\Bioskopina\backend\Bioskopina.Services\obj\Debug\net6.0\ref\Bioskopina.Services.dll
+D:\Bioskopina\backend\Bioskopina.Services\bin\Debug\net6.0\RabbitMQConsumer.deps.json
+D:\Bioskopina\backend\Bioskopina.Services\bin\Debug\net6.0\RabbitMQConsumer.runtimeconfig.json
+D:\Bioskopina\backend\Bioskopina.Services\bin\Debug\net6.0\RabbitMQConsumer.exe
