@@ -99,6 +99,7 @@ namespace Bioskopina.Services
                     imageUrl = m.ImageUrl,
                     Score = (decimal)m.Score,
                     Director = m.Director,
+                    
                     NumberOfRatings = _context.Ratings.Count(r => r.MovieId == m.Id)
                 });
             }

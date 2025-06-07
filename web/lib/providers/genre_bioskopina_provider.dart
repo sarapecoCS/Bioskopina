@@ -27,4 +27,33 @@ class GenreMovieProvider extends BaseProvider<GenreBioskopina> {
       throw Exception("Unknown error");
     }
   }
+
+  Future<List<GenreBioskopina>> fetchGenresForMovie(int movieId) async {
+    var url = "${BaseProvider.baseUrl}$_endpoint/GetGenresForMovie/$movieId";
+    var uri = Uri.parse(url);
+    var headers = createHeaders();
+    var response = await http!.get(uri, headers: headers);
+
+    if (isValidResponse(response)) {
+      var data = jsonDecode(response.body);
+      return (data as List).map((e) => fromJson(e)).toList();
+    } else {
+      throw Exception("Genres for movie not found");
+    }
+  }
+
+  /// Add this method to fetch **all genres** from the API (adjust endpoint as needed)
+  Future<List<GenreBioskopina>> fetchAllGenres() async {
+    var url = "${BaseProvider.baseUrl}$_endpoint/GetAllGenres"; // <-- Make sure this endpoint exists on your backend
+    var uri = Uri.parse(url);
+    var headers = createHeaders();
+    var response = await http!.get(uri, headers: headers);
+
+    if (isValidResponse(response)) {
+      var data = jsonDecode(response.body);
+      return (data as List).map((e) => fromJson(e)).toList();
+    } else {
+      throw Exception("Failed to fetch all genres");
+    }
+  }
 }

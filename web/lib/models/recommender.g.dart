@@ -7,12 +7,12 @@ part of 'recommender.dart';
 // **************************************************************************
 
 Recommender _$RecommenderFromJson(Map<String, dynamic> json) => Recommender(
-  (json['id'] as num?)?.toInt(),
-  (json['movieId'] as num?)?.toInt(),
-  (json['coMovieId1'] as num?)?.toInt(),
-  (json['coMovieId2'] as num?)?.toInt(),
-  (json['coMovieId3'] as num?)?.toInt(),
-);
+      (json['id'] as num?)?.toInt(),
+      (json['movieId'] as num?)?.toInt(),
+      (json['coMovieId1'] as num?)?.toInt(),
+      (json['coMovieId2'] as num?)?.toInt(),
+      (json['coMovieId3'] as num?)?.toInt(),
+    );
 
 Map<String, dynamic> _$RecommenderToJson(Recommender instance) =>
     <String, dynamic>{
