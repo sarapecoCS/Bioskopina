@@ -175,11 +175,14 @@ namespace Bioskopina.Services.Database
                 entity.Property(e => e.WatchStatus).HasMaxLength(30);
                 entity.Property(e => e.WatchlistId).HasColumnName("WatchlistID");
 
-                entity.HasOne(d => d.Movie).WithMany(p => p.BioskopinaWatchlists)
+                entity.HasOne(d => d.Movie)
+                    .WithMany(p => p.BioskopinaWatchlists)
                     .HasForeignKey(d => d.MovieId)
+                    .OnDelete(DeleteBehavior.Cascade)  // <-- set cascade here
                     .HasConstraintName("FK_Bioskopina_Watchlist_Bioskopina");
 
-                entity.HasOne(d => d.Watchlist).WithMany(p => p.BioWatchlists)
+                entity.HasOne(d => d.Watchlist)
+                    .WithMany(p => p.BioWatchlists)
                     .HasForeignKey(d => d.WatchlistId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Bioskopina_Watchlist_Watchlist");
@@ -240,12 +243,14 @@ namespace Bioskopina.Services.Database
 
                 entity.HasOne(d => d.Movies).WithMany(p => p.GenreMovies)
                     .HasForeignKey(d => d.MovieId)
+                    .OnDelete(DeleteBehavior.Cascade)  // Add this line
                     .HasConstraintName("FK_Genre_Bioskopina_Movies");
 
                 entity.HasOne(d => d.Genre).WithMany(p => p.GenreMovies)
                     .HasForeignKey(d => d.GenreId)
                     .HasConstraintName("FK_Genre_Movie_Genre");
             });
+
 
             modelBuilder.Entity<List>(entity =>
             {
@@ -328,7 +333,7 @@ namespace Bioskopina.Services.Database
                     .HasConstraintName("FK_Q&A_User");
             });
 
-          
+
             modelBuilder.Entity<Rating>(entity =>
             {
                 entity.ToTable("Rating");
@@ -340,6 +345,7 @@ namespace Bioskopina.Services.Database
 
                 entity.HasOne(d => d.Movie).WithMany(p => p.Ratings)
                     .HasForeignKey(d => d.MovieId)
+                    .OnDelete(DeleteBehavior.Cascade) 
                     .HasConstraintName("FK_Rating_Bioskopina");
 
                 entity.HasOne(d => d.User).WithMany(p => p.Ratings)
@@ -347,6 +353,7 @@ namespace Bioskopina.Services.Database
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Rating_User");
             });
+
 
             modelBuilder.Entity<Recommender>(entity =>
             {

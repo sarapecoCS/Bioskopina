@@ -136,21 +136,24 @@ namespace Bioskopina.Services
         }
 
         // Delete method
-        public async Task DeleteBioskopinaAsync(int id)
+        public async Task DeleteMovieAsync(int movieId)
         {
-            var entity = await _context.Bioskopina.FindAsync(id);
-            if (entity == null)
-                throw new KeyNotFoundException($"Movie with ID {id} not found.");
+            var movie = await _context.Bioskopina
+                .Include(m => m.BioskopinaWatchlists)
+                .FirstOrDefaultAsync(m => m.Id == movieId);
 
-            // Remove all related watchlist entries referencing this movie
-            var relatedWatchlists = _context.BioskopinaWatchlists.Where(w => w.MovieId== id);
-            _context.BioskopinaWatchlists.RemoveRange(relatedWatchlists);
+            if (movie == null)
+                throw new KeyNotFoundException("Movie not found.");
 
-            // Now remove the movie itself
-            _context.Bioskopina.Remove(entity);
+            if (movie.BioskopinaWatchlists.Any())
+            {
+                _context.BioskopinaWatchlists.RemoveRange(movie.BioskopinaWatchlists);
+            }
 
+            _context.Bioskopina.Remove(movie);
             await _context.SaveChangesAsync();
         }
+
 
     }
 }

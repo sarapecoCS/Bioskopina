@@ -4,6 +4,7 @@ using Bioskopina.Services.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bioskopina.Services.Migrations
 {
     [DbContext(typeof(BioskopinaContext))]
-    partial class BioskopinaContextModelSnapshot : ModelSnapshot
+    [Migration("20250607145728_AddCascadeDeleteToBioskopinaWatchlist")]
+    partial class AddCascadeDeleteToBioskopinaWatchlist
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1622,7 +1624,7 @@ namespace Bioskopina.Services.Migrations
                     b.HasOne("Bioskopina.Services.Database.Bioskopina", "Movies")
                         .WithMany("GenreMovies")
                         .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("FK_Genre_Bioskopina_Movies");
 
@@ -1699,7 +1701,7 @@ namespace Bioskopina.Services.Migrations
                     b.HasOne("Bioskopina.Services.Database.Bioskopina", "Movie")
                         .WithMany("Ratings")
                         .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("FK_Rating_Bioskopina");
 
