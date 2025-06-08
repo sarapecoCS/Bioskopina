@@ -82,15 +82,21 @@ namespace Bioskopina.Services
 
         public async Task<List<PopularBioskopinaData>> GetMostPopularMovie()
         {
+           
             var movieList = await _context.Bioskopina
-                                          .OrderByDescending(b => b.Ratings.Count)
-                                          .ThenByDescending(b => b.Score)
-                                          .Take(5)
-                                          .ToListAsync();
+                .Include(m => m.Ratings)  
+                .ToListAsync();
+
+           
+            var sortedMovies = movieList
+                .OrderByDescending(m => m.Score)           
+                
+                .Take(5)                                
+                .ToList();
 
             var popularM = new List<PopularBioskopinaData>();
 
-            foreach (var m in movieList)
+            foreach (var m in sortedMovies)
             {
                 popularM.Add(new PopularBioskopinaData()
                 {
@@ -99,8 +105,7 @@ namespace Bioskopina.Services
                     imageUrl = m.ImageUrl,
                     Score = (decimal)m.Score,
                     Director = m.Director,
-                    
-                    NumberOfRatings = _context.Ratings.Count(r => r.MovieId == m.Id)
+                    NumberOfRatings = m.Ratings.Count 
                 });
             }
 
