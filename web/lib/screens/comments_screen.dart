@@ -92,15 +92,15 @@ class _CommentsScreenState extends State<CommentsScreen> {
         children: [
           widget.user.profilePicture!.profilePicture != null
               ? ClipRRect(
-            borderRadius: BorderRadius.circular(100),
-            child: Image.memory(
-              imageFromBase64String(
-                  widget.user.profilePicture!.profilePicture!),
-              width: 25,
-              height: 25,
-              fit: BoxFit.cover,
-            ),
-          )
+                  borderRadius: BorderRadius.circular(100),
+                  child: Image.memory(
+                    imageFromBase64String(
+                        widget.user.profilePicture!.profilePicture!),
+                    width: 25,
+                    height: 25,
+                    fit: BoxFit.cover,
+                  ),
+                )
               : const Text(""),
           const SizedBox(width: 5),
           Text("${widget.user.username}: "),
@@ -169,7 +169,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
   List<Widget> _buildCommentCards(List<Comment> commentList) {
     return List.generate(
       commentList.length,
-          (index) => _buildCommentCard(commentList[index]),
+      (index) => _buildCommentCard(commentList[index]),
     );
   }
 
@@ -248,9 +248,16 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                           ),
                                         );
                                       },
-                                      child: const MouseRegion(
-                                        cursor: SystemMouseCursors.click,
-                                        child: Text("Post"),
+                                      child: Row(
+                                        children: [
+                                          const Icon(
+                                            Icons.link,
+                                            color: Colors.blue,
+                                            size: 18,
+                                          ),
+                                          const SizedBox(width: 5),
+                                          const Text("Post")
+                                        ],
                                       ),
                                     );
                                   } else {
@@ -336,55 +343,196 @@ class _CommentsScreenState extends State<CommentsScreen> {
 
   ConstrainedBox _buildPopupMenu(Comment comment) {
     return ConstrainedBox(
-      constraints: const BoxConstraints(maxHeight: 23),
-      child: Container(
-        padding: EdgeInsets.zero,
-        child: Row(
-          children: [
-            PopupMenuButton<String>(
-              tooltip: "More actions",
-              offset: const Offset(195, 0),
+      constraints: const BoxConstraints(maxWidth: 100),
+      child: PopupMenuButton<String>(
+         color: const Color.fromRGBO(10, 10, 10, 1),
+        itemBuilder: (BuildContext context) => [
+          PopupMenuItem<String>(
+
+            padding: EdgeInsets.zero,
+            child: ListTile(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
-                side: BorderSide(color: Palette.lightPurple.withOpacity(0.3)),
+                side: BorderSide.none,
               ),
-              icon: const Icon(Icons.more_vert_rounded),
-              splashRadius: 1,
-              padding: EdgeInsets.zero,
-              color: const Color.fromRGBO(50, 48, 90, 1),
-              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                PopupMenuItem<String>(
-                  child: ListTile(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    hoverColor: Palette.lightRed.withOpacity(0.1),
-                    leading: Icon(Icons.delete, size: 24),
 
-                    title: const Text('Delete',
-                        style: TextStyle(color: Palette.lightRed)),
-                    subtitle: Text('Delete permanently',
-                        style: TextStyle(
-                            color: Palette.lightRed.withOpacity(0.5))),
-                    onTap: () async {
-                      Navigator.pop(context);
-                      showConfirmationDialog(
-                          context,
-                          const Icon(Icons.warning_rounded,
-                              color: Palette.lightRed, size: 55),
-                          const Text(
-                              "Are you sure you want to delete this comment?"),
-                              () async {
-                            await _commentProvider.delete(comment.id!);
-                          });
-                    },
+              leading: Icon(Icons.delete, size: 24, color: Colors.white),
+              title: const Text(
+                'Delete',
+                style: TextStyle(color: Colors.white),
+              ),
+              subtitle: Text(
+                'Delete permanently',
+                style: TextStyle(color: Colors.white.withOpacity(0.5)),
+              ),
+              onTap: () async {
+                Navigator.pop(context);
+                showConfirmationDialog(
+                  context,
+                  const Icon(
+                    Icons.warning_rounded,
+                    color: Palette.lightRed,
+                    size: 55,
                   ),
-                ),
-              ],
+                  const Text(
+                    "Are you sure you want to delete comment?",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  () async {
+                    await _commentProvider.delete(comment.id!);
+                    if (mounted) {
+                      setState(() {
+                        _commentFuture = _commentProvider.get(
+                          filter: {
+                            "UserId": "${widget.user.id}",
+                            "NewestFirst": "true",
+                            "Page": "$page",
+                            "PageSize": "$pageSize",
+                          },
+                        );
+                      });
+                    }
+
+                    showSuccessPopup(context);
+                  },
+                );
+              },
+              tileColor: const Color.fromRGBO(18, 18, 18, 1),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
+
+  void showSuccessPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: const Color.fromRGBO(18, 18, 18, 1),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          title: const Text(
+            'Deleted Successfully!',
+            style: TextStyle(color: Colors.white),
+          ),
+          content: const Text(
+            'The comment has been deleted permanently.',
+            style: TextStyle(color: Colors.white),
+          ),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                backgroundColor: const Color.fromRGBO(18, 18, 18, 1),
+                 foregroundColor: Colors.white,
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text("OK", style: TextStyle(color: Colors.white)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+void showConfirmationDialog(
+  BuildContext context,
+  Widget icon,
+  Widget text,
+  VoidCallback onConfirm,
+) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return Dialog(
+        backgroundColor: Colors.black, // Set background to black
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10), // Rounded corners for subtle look
+        ),
+        elevation: 8, // Slight shadow to give depth
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: 320), // Match the width to the success dialog
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0), // Reduced padding
+            child: Column(
+              mainAxisSize: MainAxisSize.min, // Makes the dialog fit content
+              crossAxisAlignment: CrossAxisAlignment.center, // Center the content
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10.0), // Space for the icon
+                  child: icon,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0), // Space for text
+                  child: text,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Cancel button (White)
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        backgroundColor: Color(0xFF15543F),
+                        foregroundColor: Colors.white, // White text color
+                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                        minimumSize: Size.zero, // No extra space around button
+                        side: BorderSide.none, // No border for buttons
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.0),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context); // Close dialog on cancel
+                      },
+                      child: const Text(
+                        "No",
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    const SizedBox(width: 16), // Increased space between buttons
+
+                    // Delete button (Red)
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: Palette.buttonGradient, // Apply gradient here
+                        borderRadius: BorderRadius.circular(6.0), // Rounded corners
+                      ),
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.white, // White text color (for better contrast)
+                          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                          minimumSize: Size.zero, // No extra space around button
+                          side: BorderSide.none, // No border for buttons
+                        ),
+                        onPressed: () {
+                          onConfirm(); // Perform delete action
+                          Navigator.pop(context); // Close dialog
+                        },
+                        child: const Text(
+                          "Yes",
+                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
+
+
 }

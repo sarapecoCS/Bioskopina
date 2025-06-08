@@ -370,7 +370,7 @@ namespace Bioskopina.Services.Database
                     .HasConstraintName("FK_Recommender_Movies");
             });
 
-          
+
             modelBuilder.Entity<UserCommentAction>(entity =>
             {
                 entity.ToTable("UserCommentAction");
@@ -380,12 +380,14 @@ namespace Bioskopina.Services.Database
                 entity.Property(e => e.CommentId).HasColumnName("CommentID");
                 entity.Property(e => e.UserId).HasColumnName("UserID");
 
-                entity.HasOne(d => d.Comment).WithMany(p => p.UserCommentActions)
+                entity.HasOne(d => d.Comment)
+                    .WithMany(p => p.UserCommentActions)
                     .HasForeignKey(d => d.CommentId)
-                      .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade) 
                     .HasConstraintName("FK_UserCommentAction_Comment");
 
-                entity.HasOne(d => d.User).WithMany(p => p.UserCommentActions)
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserCommentActions)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_UserCommentAction_User");
