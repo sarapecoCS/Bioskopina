@@ -45,6 +45,7 @@ namespace Bioskopina.Services.Database
                     ImageUrl = "https://m.media-amazon.com/images/M/MV5BOTZiNGFmM2EtOGVhMS00YjEyLThjNzAtY2M1MGUzYTljY2JiXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
                     TrailerUrl = "https://www.youtube.com/watch?v=i4pAWKQvORM",
                     Runtime = 76,
+                    Score = 2.1,
                     Director = "Aleksandar Petrović",
                     YearRelease = 1965,
                     Awards = "Nominated for 1 Oscar - 2 wins & 2 nominations total",
@@ -60,6 +61,7 @@ namespace Bioskopina.Services.Database
                     TrailerUrl = "https://www.youtube.com/watch?v=9RXs4tnExXM",
                     YearRelease = 1967,
                     Runtime = 79,
+                    Score = 5,
                     Director = "Živojin Pavlović",
                     Awards = "4 wins & 1 nomination",
                     IMDbRatings = "7.6/10"
@@ -74,7 +76,7 @@ namespace Bioskopina.Services.Database
                     TrailerUrl = "https://www.youtube.com/watch?v=-NORCsCIBak",
                     YearRelease = 1971,
                     Runtime = 85,
-                  
+                    Score = 3.1,
                     Director = "Dušan Makavejev",
                     Awards = "4 wins & 1 nomination total",
                     IMDbRatings = "6.7/10"
