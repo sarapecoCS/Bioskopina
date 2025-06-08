@@ -406,17 +406,20 @@ namespace Bioskopina.Services.Database
                 entity.Property(e => e.PostId).HasColumnName("PostID");
                 entity.Property(e => e.UserId).HasColumnName("UserID");
 
-                entity.HasOne(d => d.Post).WithMany(p => p.UserPostActions)
+                entity.HasOne(d => d.Post)
+                    .WithMany(p => p.UserPostActions)  
                     .HasForeignKey(d => d.PostId)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_UserPostAction_Post");
 
-                entity.HasOne(d => d.User).WithMany(p => p.UserPostActions)
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserPostActions)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_UserPostAction_User");
             });
 
-     
+
 
 
             OnModelCreatingPartial(modelBuilder);
