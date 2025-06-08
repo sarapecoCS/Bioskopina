@@ -777,107 +777,97 @@ namespace Bioskopina.Services.Database
         }
 
 
-
         private void SeedPosts(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Post>().HasData(
                 new Post()
                 {
                     Id = 1,
-                    UserId = 1, // Admin UserId
-                    Content = "Three",
+                    UserId = 1, 
+                    Content = "Ever seen a movie that challenges everything you thought you knew? Three is one of those films. What do you think about movies that make you think deeply, even if they're a bit hard to grasp at first?",
                     LikesCount = 5,
                     DislikesCount = 0,
                     DatePosted = new DateTime(2024, 7, 11),
-                   
-                    VideoUrl = "https://www.youtube.com/watch?v=i4pAWKQvORM" // Example video URL
+                    VideoUrl = "https://www.youtube.com/watch?v=i4pAWKQvORM" 
                 },
                 new Post()
                 {
                     Id = 2,
-                    UserId = 1, // Admin UserId
-                    Content = "The Rats Woke Up",
+                    UserId = 1, 
+                    Content = "A raw, unsettling journey. The Rats Woke Up dives deep into the complexities of human nature. Have you ever watched a movie that just leaves you thinking for days after? This is one of those.",
                     LikesCount = 3,
                     DislikesCount = 1,
                     DatePosted = new DateTime(2024, 7, 11),
-                    
                     VideoUrl = "https://www.youtube.com/watch?v=9RXs4tnExXM" // Video URL
                 },
                 new Post()
                 {
                     Id = 3,
-                    UserId = 1, // Admin UserId
-                    Content = "WR: Mysteries of the Organism",
+                    UserId = 1, 
+                    Content = "This one’s a wild ride—part psychological, part political, and entirely bizarre. WR: Mysteries of the Organism is one for those who love films that are as confusing as they are compelling. Thoughts?",
                     LikesCount = 7,
                     DislikesCount = 0,
                     DatePosted = new DateTime(2024, 7, 11),
-                    
                     VideoUrl = "https://www.youtube.com/watch?v=-NORCsCIBak" // Video URL
                 },
                 new Post()
                 {
                     Id = 4,
-                    UserId = 1, // Admin UserId
-                    Content = "It Rains in My Village",
+                    UserId = 1, 
+                    Content = "Sometimes the most powerful stories are the simplest ones. It Rains in My Village captures life in its purest form. How do you feel about films that focus on the quiet moments?",
                     LikesCount = 4,
                     DislikesCount = 0,
                     DatePosted = new DateTime(2024, 7, 11),
-                 
                     VideoUrl = "https://www.youtube.com/watch?v=pQ16Puo9A2Q" // Video URL
                 },
                 new Post()
                 {
                     Id = 5,
-                    UserId = 1, // Admin UserId
-                    Content = "When I Am Dead and Gone",
+                    UserId = 1, 
+                    Content = "A haunting meditation on life and death. When I Am Dead and Gone explores what happens when everything we know is gone. What’s your take on films that ask big questions about our existence?",
                     LikesCount = 8,
                     DislikesCount = 2,
                     DatePosted = new DateTime(2024, 7, 11),
-                   
                     VideoUrl = "https://www.youtube.com/watch?app=desktop&v=YiuMux8AR14&t=128s" // Video URL
                 },
                 new Post()
                 {
                     Id = 6,
-                    UserId = 1, // Admin UserId
-                    Content = "Uzrok smrti ne pominjati",
+                    UserId = 1,
+                    Content = "If you’re into thought-provoking cinema with a dark edge, Uzrok smrti ne pominjati might just be your thing. It’s an exploration of history and humanity’s darker sides. What do you think about movies that confront uncomfortable truths?",
                     LikesCount = 2,
                     DislikesCount = 0,
                     DatePosted = new DateTime(2024, 7, 11),
-                  
                     VideoUrl = "https://www.youtube.com/watch?v=S5hR5h1q0gA" // Video URL
                 },
                 new Post()
                 {
                     Id = 7,
-                    UserId = 1, // Admin UserId
-                    Content = "I Even Met Happy Gypsies",
+                    UserId = 1, 
+                    Content = "A classic! I Even Met Happy Gypsies is a poignant look at the lives of those who live on the margins of society. Have you ever seen a film that makes you rethink your perspective on the world?",
                     LikesCount = 9,
                     DislikesCount = 0,
                     DatePosted = new DateTime(2024, 7, 11),
-                    
                     VideoUrl = "https://www.youtube.com/watch?v=Op0wuHguS4c" // Video URL
                 },
                 new Post()
                 {
                     Id = 8,
-                    UserId = 1, // Admin UserId
-                    Content = "Early Works",
+                    UserId = 1, 
+                    Content = "Early Works is one of those films that packs a punch with its rawness. It's a perfect example of how art can push boundaries. What’s the most daring film you’ve ever seen?",
                     LikesCount = 4,
                     DislikesCount = 1,
                     DatePosted = new DateTime(2024, 7, 11),
-                    
                     VideoUrl = "https://www.youtube.com/watch?v=H6Djqv0fwn4" // Video URL
                 },
                 new Post()
                 {
                     Id = 9,
-                    UserId = 1, // Admin UserId
-                    Content = "The Ambush",
+                    UserId = 1, 
+                    Content = "A gripping story of survival and loyalty. The Ambush takes you on a journey you won’t forget. What do you think about war films that focus on the human cost over the action?",
                     LikesCount = 3,
                     DislikesCount = 2,
                     DatePosted = new DateTime(2024, 7, 11),
-                   
                     VideoUrl = "https://www.youtube.com/watch?v=H6Djqv0fwn4" // Video URL
                 }
             );
