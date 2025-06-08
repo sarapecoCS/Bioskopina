@@ -3,20 +3,12 @@
   "WorkspaceRootPath": "D:\\Bioskopina\\backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Bioskopina\\backend\\Bioskopina.Services\\Migrations\\20250608123940_postedit.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Bioskopina.Services\\Migrations\\20250608123940_postedit.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{EAFDF74C-8FDC-49A3-BF34-D0D8A7A4B518}|Bioskopina.Services\\Bioskopina.Services.csproj|d:\\bioskopina\\backend\\bioskopina.services\\database\\databaseseed.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EAFDF74C-8FDC-49A3-BF34-D0D8A7A4B518}|Bioskopina.Services\\Bioskopina.Services.csproj|solutionrelative:bioskopina.services\\database\\databaseseed.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EAFDF74C-8FDC-49A3-BF34-D0D8A7A4B518}|Bioskopina.Services\\Bioskopina.Services.csproj|d:\\bioskopina\\backend\\bioskopina.services\\migrations\\20250608114518_cascadeuserpost.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EAFDF74C-8FDC-49A3-BF34-D0D8A7A4B518}|Bioskopina.Services\\Bioskopina.Services.csproj|solutionrelative:bioskopina.services\\migrations\\20250608114518_cascadeuserpost.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EAFDF74C-8FDC-49A3-BF34-D0D8A7A4B518}|Bioskopina.Services\\Bioskopina.Services.csproj|d:\\bioskopina\\backend\\bioskopina.services\\database\\bioskopinacontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EAFDF74C-8FDC-49A3-BF34-D0D8A7A4B518}|Bioskopina.Services\\Bioskopina.Services.csproj|solutionrelative:bioskopina.services\\database\\bioskopinacontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EAFDF74C-8FDC-49A3-BF34-D0D8A7A4B518}|Bioskopina.Services\\Bioskopina.Services.csproj|d:\\bioskopina\\backend\\bioskopina.services\\migrations\\20250608123940_postedit.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EAFDF74C-8FDC-49A3-BF34-D0D8A7A4B518}|Bioskopina.Services\\Bioskopina.Services.csproj|solutionrelative:bioskopina.services\\migrations\\20250608123940_postedit.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -31,53 +23,28 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "20250608123940_postedit.cs",
-              "DocumentMoniker": "D:\\Bioskopina\\backend\\Bioskopina.Services\\Migrations\\20250608123940_postedit.cs",
-              "RelativeDocumentMoniker": "Bioskopina.Services\\Migrations\\20250608123940_postedit.cs",
-              "ToolTip": "D:\\Bioskopina\\backend\\Bioskopina.Services\\Migrations\\20250608123940_postedit.cs",
-              "RelativeToolTip": "Bioskopina.Services\\Migrations\\20250608123940_postedit.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-08T12:39:41.035Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
               "Title": "DatabaseSeed.cs",
               "DocumentMoniker": "D:\\Bioskopina\\backend\\Bioskopina.Services\\Database\\DatabaseSeed.cs",
               "RelativeDocumentMoniker": "Bioskopina.Services\\Database\\DatabaseSeed.cs",
               "ToolTip": "D:\\Bioskopina\\backend\\Bioskopina.Services\\Database\\DatabaseSeed.cs",
               "RelativeToolTip": "Bioskopina.Services\\Database\\DatabaseSeed.cs",
-              "ViewState": "AgIAAB0DAAAAAAAAAAAswBYDAABNAAAAAAAAAA==",
+              "ViewState": "AgIAAFcDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-08T12:36:16.025Z",
+              "WhenOpened": "2025-06-08T12:48:31.683Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "20250608114518_cascadeuserpost.cs",
-              "DocumentMoniker": "D:\\Bioskopina\\backend\\Bioskopina.Services\\Migrations\\20250608114518_cascadeuserpost.cs",
-              "RelativeDocumentMoniker": "Bioskopina.Services\\Migrations\\20250608114518_cascadeuserpost.cs",
-              "ToolTip": "D:\\Bioskopina\\backend\\Bioskopina.Services\\Migrations\\20250608114518_cascadeuserpost.cs",
-              "RelativeToolTip": "Bioskopina.Services\\Migrations\\20250608114518_cascadeuserpost.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "20250608123940_postedit.cs",
+              "DocumentMoniker": "D:\\Bioskopina\\backend\\Bioskopina.Services\\Migrations\\20250608123940_postedit.cs",
+              "RelativeDocumentMoniker": "Bioskopina.Services\\Migrations\\20250608123940_postedit.cs",
+              "ToolTip": "D:\\Bioskopina\\backend\\Bioskopina.Services\\Migrations\\20250608123940_postedit.cs",
+              "RelativeToolTip": "Bioskopina.Services\\Migrations\\20250608123940_postedit.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-08T11:45:19.282Z",
+              "WhenOpened": "2025-06-08T12:39:41.035Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "BioskopinaContext.cs",
-              "DocumentMoniker": "D:\\Bioskopina\\backend\\Bioskopina.Services\\Database\\BioskopinaContext.cs",
-              "RelativeDocumentMoniker": "Bioskopina.Services\\Database\\BioskopinaContext.cs",
-              "ToolTip": "D:\\Bioskopina\\backend\\Bioskopina.Services\\Database\\BioskopinaContext.cs",
-              "RelativeToolTip": "Bioskopina.Services\\Database\\BioskopinaContext.cs",
-              "ViewState": "AgIAAI4BAAAAAAAAAAAAAJoBAAAjAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-08T11:41:58.673Z"
             }
           ]
         }

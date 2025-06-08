@@ -18,13 +18,10 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 class PostDetailScreen extends StatefulWidget {
-  Post post;
-  int ownerId;
-  PostDetailScreen({
-    super.key,
-    required this.post,
-    required this.ownerId,
-  });
+  final Post post;
+  final int ownerId;
+
+  PostDetailScreen({super.key, required this.post, required this.ownerId});
 
   @override
   State<PostDetailScreen> createState() => _PostDetailScreenState();
@@ -47,25 +44,25 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
 
   @override
   void initState() {
+    super.initState();
     _userProvider = context.read<UserProvider>();
     _commentProvider = context.read<CommentProvider>();
+    _postProvider = context.read<PostProvider>();
+
     _commentFuture = _commentProvider.get(filter: {
       "PostId": "${widget.post.id}",
       "NewestFirst": "true",
       "Page": "$page",
       "PageSize": "$pageSize",
     });
-    _postProvider = context.read<PostProvider>();
 
     _commentProvider.addListener(() {
       _reloadComments();
       setTotalItems();
     });
 
-    replies = widget.post.comments!.length;
+    replies = widget.post.comments?.length;
     setTotalItems();
-
-    super.initState();
   }
 
   void _reloadComments() async {
@@ -147,17 +144,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                post.content ?? "No Title",
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  letterSpacing: 1.2,
-                ),
-              ),
-              const SizedBox(height: 20),
-              // Large, full-width image to create a cinematic look
+              // Title is removed here per your request
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
                 child: Image.asset(
@@ -168,7 +155,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              // Movie content description
+              // Movie content description only
               Text(
                 post.content ?? "No Content",
                 style: TextStyle(
@@ -209,11 +196,12 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
       ),
       showBackArrow: true,
       child: Center(
-        child: Column(
-          children: [
-            _buildPost(widget.post),
-            // Removed separator line below
-          ],
+        child: SingleChildScrollView( // Wrapping the content with SingleChildScrollView
+          child: Column(
+            children: [
+              _buildPost(widget.post),
+            ],
+          ),
         ),
       ),
     );

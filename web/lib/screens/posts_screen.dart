@@ -3,11 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/post_provider.dart';
-
 import '../screens/post_detail_screen.dart';
-
 import '../widgets/master_screen.dart';
-
 import '../models/post.dart';
 import '../models/search_result.dart';
 import '../models/user.dart';
@@ -290,7 +287,7 @@ class _PostsScreenState extends State<PostsScreen> {
                                 },
                                 child: MouseRegion(
                                     cursor: SystemMouseCursors.click,
-                                    child: Text("${post.comments?.length} replies")))
+                                    child: Text("${post.comments?.length} replies"))),
                           ],
                         ),
                       ),
@@ -317,35 +314,42 @@ class _PostsScreenState extends State<PostsScreen> {
                 borderRadius: BorderRadius.circular(10.0),
                 side: BorderSide(color: Palette.lightPurple.withOpacity(0.3)),
               ),
-              icon: const Icon(Icons.more_vert_rounded),
+              icon: const Icon(Icons.more_vert_rounded, color: Colors.white), // Icon color white
               splashRadius: 1,
               padding: EdgeInsets.zero,
-              color: const Color.fromRGBO(50, 48, 90, 1),
+              color: Colors.black, // Set the background color to black
               itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                 PopupMenuItem<String>(
+                  value: 'delete',
                   child: ListTile(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
+                    tileColor: Colors.black, // Set the item background color to black
                     hoverColor: Palette.lightRed.withOpacity(0.1),
-                    leading: Icon(Icons.delete, size: 24),
-
-                    title: const Text('Delete',
-                        style: TextStyle(color: Palette.lightRed)),
-                    subtitle: Text('Delete permanently',
-                        style: TextStyle(
-                            color: Palette.lightRed.withOpacity(0.5))),
+                    leading: const Icon(Icons.delete, size: 24, color: Colors.red), // Icon color white
+                    title: const Text(
+                      'Delete',
+                      style: TextStyle(color: Palette.lightRed), // Title text color
+                    ),
+                    subtitle: Text(
+                      'Delete permanently',
+                      style: TextStyle(
+                        color: Palette.lightRed.withOpacity(0.5), // Subtitle text color
+                      ),
+                    ),
                     onTap: () async {
                       Navigator.pop(context);
                       showConfirmationDialog(
-                          context,
-                          const Icon(Icons.warning_rounded,
-                              color: Palette.lightRed, size: 55),
-                          const Text(
-                              "Are you sure you want to delete this post?"),
-                              () async {
-                            await _postProvider.delete(post.id!);
-                          });
+                        context,
+                        const Icon(Icons.warning_rounded, color: Palette.lightRed, size: 55),
+                        const Text("Are you sure you want to delete this post?"),
+                        () async {
+                          await _postProvider.delete(post.id!);
+                          // Show success dialog after delete
+                          showDeleteSuccessDialog(context);
+                        },
+                      );
                     },
                   ),
                 ),
@@ -356,4 +360,88 @@ class _PostsScreenState extends State<PostsScreen> {
       ),
     );
   }
+
+void showConfirmationDialog(BuildContext context, Icon icon, Text text, VoidCallback onConfirm) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        backgroundColor: Colors.black,
+        title: icon,
+        content: text,
+        actions: [
+          // Centered Row with space between buttons
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // "No" button - Green
+              Container(
+                decoration: BoxDecoration(
+
+                    color: const Color(0xFF15543F),
+
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("No", style: TextStyle(color: Colors.white)),
+                ),
+              ),
+              const SizedBox(width: 20), // Adds space between the buttons
+              // "Yes" button - Blue Gradient
+              Container(
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                                     colors: [
+                                       Color.fromRGBO(163, 212, 255, 1.0),  // Light Blue
+                                       Color.fromRGBO(7, 44, 109, 1.0),    // Muted Dark Blue
+                                     ],
+                                     begin: Alignment.topLeft,
+                                     end: Alignment.bottomRight,
+                                   ),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    onConfirm();
+                  },
+                  child: const Text("Yes", style: TextStyle(color: Colors.white)),
+                ),
+              ),
+            ],
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void showDeleteSuccessDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        backgroundColor: Colors.black,
+
+        content: const Text("Post deleted successfully", style: TextStyle(color: Colors.white)),
+        actions: [
+          // "OK" button with normal white text and no background
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text("OK", style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      );
+    },
+  );
+
+
+}
+
+
 }
