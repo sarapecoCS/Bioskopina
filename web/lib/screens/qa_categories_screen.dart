@@ -266,68 +266,78 @@ class _QACategoriesScreenState extends State<QACategoriesScreen> {
     }
   }
 
-  Widget _buildPopupMenu(QAcategory category) {
-    return PopupMenuButton<String>(
-      tooltip: "Actions",
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-        side: BorderSide(color: Palette.lightPurple.withOpacity(0.3)),
-      ),
-      icon: const Icon(Icons.more_vert_rounded),
-      splashRadius: 1,
-      padding: EdgeInsets.zero,
-      color: const Color.fromRGBO(50, 48, 90, 1),
-      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-        PopupMenuItem<String>(
-          child: ListTile(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
-            hoverColor: Palette.lightPurple.withOpacity(0.1),
-            leading: Icon(Icons.edit, size: 24, color: Palette.lightPurple),
-            title: const Text('Edit',
-                style: TextStyle(color: Palette.lightPurple)),
-            onTap: () {
-              if (mounted) {
-                setState(() {
-                  categoryId = category.id;
-                  _qaCategoryFormKey.currentState?.fields["name"]
-                      ?.didChange(category.name);
-                });
-              }
-            },
-          ),
-        ),
-        PopupMenuItem<String>(
-          child: ListTile(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
-            hoverColor: Palette.lightRed.withOpacity(0.1),
-            leading: Icon(Icons.delete, size: 24, color: Palette.lightRed),
-            title:
-                const Text('Delete', style: TextStyle(color: Palette.lightRed)),
-            onTap: () {
-              Navigator.pop(context);
-              showConfirmationDialog(
-                  context,
-                  const Icon(Icons.warning_rounded,
-                      color: Palette.lightRed, size: 55),
-                  const SizedBox(
-                    width: 300,
-                    child: Text(
-                      "Are you sure you want to delete this category? This will delete any questions associated with it.",
-                      textAlign: TextAlign.center,
-                    ),
-                  ), () async {
-                _qaCategoryProvider.delete(category.id!);
-              });
-            },
-          ),
-        ),
-      ],
-    );
-  }
+ Widget _buildPopupMenu(QAcategory category) {
+   return PopupMenuButton<String>(
+     tooltip: "Actions",
+     shape: RoundedRectangleBorder(
+       borderRadius: BorderRadius.circular(10.0),
+       side: BorderSide(color: Palette.lightPurple.withOpacity(0.3)),
+     ),
+     icon: const Icon(Icons.more_vert_rounded, color: Palette.white), // White icon
+     splashRadius: 1,
+     padding: EdgeInsets.zero,
+     color: Colors.black, // Set the background color of the menu to black
+     itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+       PopupMenuItem<String>(
+         value: 'edit',
+         child: ListTile(
+           shape: RoundedRectangleBorder(
+             borderRadius: BorderRadius.circular(10.0),
+           ),
+           visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
+           hoverColor: Palette.lightPurple.withOpacity(0.1),
+           leading: Icon(Icons.edit, size: 24, color: Palette.white), // White icon
+           title: const Text(
+             'Edit',
+             style: TextStyle(color: Palette.white), // White text
+           ),
+           onTap: () {
+             if (mounted) {
+               setState(() {
+                 categoryId = category.id;
+                 _qaCategoryFormKey.currentState?.fields["name"]
+                     ?.didChange(category.name);
+               });
+             }
+           },
+         ),
+       ),
+       PopupMenuItem<String>(
+         value: 'delete',
+         child: ListTile(
+           shape: RoundedRectangleBorder(
+             borderRadius: BorderRadius.circular(10.0),
+           ),
+           visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
+           hoverColor: Palette.lightRed.withOpacity(0.1),
+           leading: Icon(Icons.delete, size: 24, color: Palette.white), // White icon
+           title: const Text(
+             'Delete',
+             style: TextStyle(color: Palette.white), // White text
+           ),
+           onTap: () {
+             Navigator.pop(context);
+             showConfirmationDialog(
+               context,
+               const Icon(Icons.warning_rounded,
+                   color: Palette.lightRed, size: 55),
+               const SizedBox(
+                 width: 300,
+                 child: Text(
+                   "Are you sure you want to delete this category? This will delete any questions associated with it.",
+                   textAlign: TextAlign.center,
+                   style: TextStyle(color: Palette.white), // White text
+                 ),
+               ),
+                   () async {
+                 _qaCategoryProvider.delete(category.id!);
+               },
+             );
+           },
+         ),
+       ),
+     ],
+   );
+ }
+
 }

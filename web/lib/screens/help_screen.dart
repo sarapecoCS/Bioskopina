@@ -502,12 +502,12 @@ class _HelpScreenState extends State<HelpScreen> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             side: BorderSide(
-                                color: Palette.lightPurple.withOpacity(0.3)),
+                                color: Colors.black.withOpacity(0.3)),
                           ),
                           icon: const Icon(Icons.more_vert_rounded),
                           splashRadius: 1,
                           padding: EdgeInsets.zero,
-                          color: const Color.fromRGBO(50, 48, 90, 1),
+                          color:  Colors.black,
                           itemBuilder: (BuildContext context) =>
                           <PopupMenuEntry<String>>[
                             PopupMenuItem<String>(
@@ -529,7 +529,9 @@ class _HelpScreenState extends State<HelpScreen> {
                               ),
                             ),
                             PopupMenuItem<String>(
+
                               child: ListTile(
+
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
@@ -557,6 +559,7 @@ class _HelpScreenState extends State<HelpScreen> {
                                         await _deleteQA(qa, context);
                                       });
                                 },
+
                               ),
                             ),
                           ],

@@ -314,7 +314,7 @@ namespace Bioskopina.Services.Database
 
                 entity.Property(e => e.Id).HasColumnName("ID");
                 entity.Property(e => e.Name).HasMaxLength(50);
-            }); 
+            });
             modelBuilder.Entity<QA>(entity =>
             {
                 entity.ToTable("Q&A");
@@ -323,15 +323,19 @@ namespace Bioskopina.Services.Database
                 entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
                 entity.Property(e => e.UserId).HasColumnName("UserID");
 
-                entity.HasOne(d => d.Category).WithMany(p => p.QAs)
+                entity.HasOne(d => d.Category)
+                    .WithMany(p => p.QAs)
                     .HasForeignKey(d => d.CategoryId)
+                    .OnDelete(DeleteBehavior.Cascade)  
                     .HasConstraintName("FK_Q&A_Q&ACategory");
 
-                entity.HasOne(d => d.User).WithMany(p => p.QAs)
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.QAs)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Q&A_User");
             });
+
 
 
             modelBuilder.Entity<Rating>(entity =>
