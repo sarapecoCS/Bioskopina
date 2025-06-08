@@ -42,9 +42,9 @@ class GenreMovieProvider extends BaseProvider<GenreBioskopina> {
     }
   }
 
-  /// Add this method to fetch **all genres** from the API (adjust endpoint as needed)
+
   Future<List<GenreBioskopina>> fetchAllGenres() async {
-    var url = "${BaseProvider.baseUrl}$_endpoint/GetAllGenres"; // <-- Make sure this endpoint exists on your backend
+    var url = "${BaseProvider.baseUrl}$_endpoint/Genre"; //
     var uri = Uri.parse(url);
     var headers = createHeaders();
     var response = await http!.get(uri, headers: headers);

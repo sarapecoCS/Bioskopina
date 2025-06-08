@@ -3,7 +3,9 @@ using Bioskopina.Model;
 using Bioskopina.Model.Requests;
 using Bioskopina.Model.SearchObjects;
 using Bioskopina.Services.Database;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -45,6 +47,19 @@ namespace Bioskopina.Services
             await _context.SaveChangesAsync();
 
             return true;
+        }
+
+
+        public override async Task<Model.GenreBioskopina> GetById(int id)
+        {
+            var entity = await _context.GenreMovies
+                .Include(x => x.Genre) 
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (entity == null)
+                return default;
+
+            return _mapper.Map<Model.GenreBioskopina>(entity);
         }
 
         public override IQueryable<Database.GenreBiskopina> AddFilter(IQueryable<Database.GenreBiskopina> query, GenreBioskopinaSearchObject? search = null)

@@ -10,8 +10,7 @@ namespace Bioskopina.Model.Requests
     {
         public string TitleEn { get; set; } = null!;
 
-        public string TitleYugo { get; set; } = null!;
-
+   
         public string Synopsis { get; set; } = null!;
 
         public string? ImageUrl { get; set; }
@@ -26,10 +25,7 @@ namespace Bioskopina.Model.Requests
 
         public int? Runtime { get; set; }
 
-        public string? Cast { get; set; }
-        public string? IMDbRatings { get; set; }
-        public string? Awards { get; set; }
-
+        
         public double? Score { get; set; }
 
         public List<int> GenreIds { get; set; } = new List<int>();

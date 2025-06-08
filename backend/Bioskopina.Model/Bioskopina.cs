@@ -8,7 +8,7 @@ namespace Bioskopina.Model
 
    
         public string? TitleEn { get; set; }
-        public string? TitleYugo { get; set; }
+       
         public string? Synopsis { get; set; }
 
         public string? TrailerUrl { get; set; }
@@ -20,10 +20,7 @@ namespace Bioskopina.Model
 
         public int? Runtime { get; set; }
 
-        public string? Cast { get; set; }
-        public string? IMDbRatings { get; set; }
-        public string? Awards { get; set; }
-
+      
         public double? Score { get; set; }
 
         public virtual ICollection<GenreBioskopina> GenreMovies { get; set; } = new List<GenreBioskopina>();

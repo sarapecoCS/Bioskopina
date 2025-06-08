@@ -29,7 +29,7 @@ class MovieProvider extends BaseProvider<Bioskopina> {
       for (var item in data) {
         result.add(PopularBioskopinaData(
           bioskopinaTitleEN: item["bioskopinaTitleEN"] ?? '',
-          bioskopinaTitleYugo: item["bioskopinaTitleYugo"] ?? '',
+
           imageUrl: item["imageUrl"] ?? '',
           // Convert score safely to double:
           score: (item["score"] is int)

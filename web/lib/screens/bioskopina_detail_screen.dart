@@ -9,7 +9,7 @@ import '../models/genre.dart';
 
 import '../providers/bioskopina_provider.dart';
 import '../providers/genre_provider.dart';
-
+import '../providers/genre_bioskopina_provider.dart';
 import '../utils/colors.dart';
 import '../widgets/master_screen.dart';
 import '../widgets/form_builder_text_field.dart';
@@ -61,7 +61,6 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
       }
     } catch (e) {
       print("Error loading genres: $e");
-
     } finally {
       if (mounted) {
         setState(() {
@@ -79,7 +78,7 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
         style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
       ),
       behavior: SnackBarBehavior.floating,
-      backgroundColor: error ? Colors.red[600] : Colors.green[600],
+      backgroundColor: error ? Colors.black : Colors.green[600],  // Black background for success
       margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       duration: const Duration(seconds: 2),
@@ -110,16 +109,14 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
       final newMovie = Bioskopina(
         id: widget.movie?.id ?? 0,
         titleEn: formData['title'] ?? "",
-        titleYugo: widget.movie?.titleYugo ?? "",
+
         synopsis: formData['description'] ?? "",
         director: formData['director'] ?? "",
         score: double.tryParse(formData['score'] ?? "0") ?? 0,
         genreMovies: genreBioskopinaList,
         runtime: int.tryParse(formData['duration'] ?? "0") ?? 0,
         yearRelease: int.tryParse(formData['yearRelease'] ?? "0") ?? 0,
-        cast: formData['cast'] ?? "",
-        imDbRatings: widget.movie?.imDbRatings ?? "N/A",
-        awards: widget.movie?.awards,
+
         imageUrl: formData['imageUrl'] ?? "",
         trailerUrl: formData['trailerUrl'] ?? "",
       );
@@ -130,7 +127,7 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
         } else {
           await _bioskopinaProvider.updateMovie(newMovie);
         }
-        _showSnackbar("Saved successfully!");
+        _showSnackbar(widget.movie == null ? "Movie added successfully!" : "Movie edited successfully!");
         Navigator.of(context).pop();
       } catch (e) {
         _showSnackbar("Failed to save: $e", error: true);
@@ -210,126 +207,78 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
       floatingButtonOnPressed: _saveMovieData,
       showFloatingActionButton: true,
       floatingActionButtonIcon: const Icon(Icons.save, size: 32, color: Palette.lightPurple),
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-        child: FormBuilder(
-          key: _formKey,
-          initialValue: {
-            'title': widget.movie?.titleEn ?? "",
-            'description': widget.movie?.synopsis ?? "",
-            'director': widget.movie?.director ?? "",
-            'duration': widget.movie?.runtime.toString() ?? "",
-            'yearRelease': widget.movie?.yearRelease.toString() ?? "",
-            'cast': widget.movie?.cast ?? "",
-            'score': widget.movie?.score.toString() ?? "0",
-            'imageUrl': widget.movie?.imageUrl ?? "",
-            'trailerUrl': widget.movie?.trailerUrl ?? "",
-          },
+      child: Scrollbar(
+        thumbVisibility: true, // Always show the scrollbar
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildImageWithTitle(),
               const SizedBox(height: 24),
-              MyFormBuilderTextField(
-                name: 'title',
-                labelText: 'Title',
-                onChanged: (val) => setState(() => titleValue = val ?? ""),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                  FormBuilderValidators.maxLength(200),
-                ]),
-              ),
-              const SizedBox(height: 16),
-              MyFormBuilderTextField(
-                name: 'description',
-                labelText: 'Description',
-                maxLines: 4,
-                validator: FormBuilderValidators.required(),
-              ),
-              const SizedBox(height: 16),
-              MyFormBuilderTextField(
-                name: 'director',
-                labelText: 'Director',
-                validator: FormBuilderValidators.required(),
-              ),
-              const SizedBox(height: 16),
-              MyFormBuilderTextField(
-                name: 'duration',
-                labelText: 'Duration (minutes)',
-                keyboardType: TextInputType.number,
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                  FormBuilderValidators.integer(),
-                  FormBuilderValidators.min(1),
-                ]),
-              ),
-              const SizedBox(height: 16),
-              MyFormBuilderTextField(
-                name: 'yearRelease',
-                labelText: 'Year Released',
-                keyboardType: TextInputType.number,
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                  FormBuilderValidators.integer(),
-                  FormBuilderValidators.min(1900),
-                  FormBuilderValidators.max(DateTime.now().year),
-                ]),
-              ),
-              const SizedBox(height: 16),
-              MyFormBuilderTextField(
-                name: 'cast',
-                labelText: 'Cast',
-                validator: FormBuilderValidators.required(),
-              ),
-              const SizedBox(height: 16),
-              MyFormBuilderTextField(
-                name: 'score',
-                labelText: 'Score',
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                  FormBuilderValidators.numeric(),
-                  FormBuilderValidators.min(0),
-                  FormBuilderValidators.max(10),
-                ]),
-              ),
-              const SizedBox(height: 16),
-              MyFormBuilderTextField(
-                name: 'imageUrl',
-                labelText: 'Image URL',
-                onChanged: (val) => setState(() => imageUrlValue = val ?? ""),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                  FormBuilderValidators.url(),
-                ]),
-              ),
-              const SizedBox(height: 16),
-              MyFormBuilderTextField(
-                name: 'trailerUrl',
-                labelText: 'Trailer URL',
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(),
-                  FormBuilderValidators.url(),
-                ]),
-              ),
-              const SizedBox(height: 24),
-              Text("Genres", style: Theme.of(context).textTheme.subtitle1),
-              const SizedBox(height: 8),
-              _buildGenreSelector(),
-              const SizedBox(height: 40),
-              Center(
-                child: ElevatedButton.icon(
-                  onPressed: _saveMovieData,
-                  icon: const Icon(Icons.check_circle_outline),
-                  label: const Text("Save Movie"),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Palette.lightPurple,
-                    foregroundColor: Colors.black,
-                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    elevation: 4,
-                    textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
+              FormBuilder(
+                key: _formKey,
+                initialValue: {
+                  'title': widget.movie?.titleEn ?? "",
+                  'description': widget.movie?.synopsis ?? "",
+                  'director': widget.movie?.director ?? "",
+                  'duration': widget.movie?.runtime.toString() ?? "",
+                  'yearRelease': widget.movie?.yearRelease.toString() ?? "",
+
+                  'score': widget.movie?.score.toString() ?? "0",
+                  'imageUrl': widget.movie?.imageUrl ?? "",
+                  'trailerUrl': widget.movie?.trailerUrl ?? "",
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    MyFormBuilderTextField(
+                      name: 'title',
+                      labelText: 'Title',
+                      onChanged: (val) => setState(() => titleValue = val ?? ""),
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(),
+                        FormBuilderValidators.maxLength(200),
+                      ]),
+                    ),
+                    const SizedBox(height: 16),
+                    MyFormBuilderTextField(
+                      name: 'description',
+                      labelText: 'Description',
+                      maxLines: 4,
+                      validator: FormBuilderValidators.required(),
+                    ),
+                    const SizedBox(height: 16),
+                    MyFormBuilderTextField(
+                      name: 'director',
+                      labelText: 'Director',
+                      validator: FormBuilderValidators.required(),
+                    ),
+                    const SizedBox(height: 16),
+                    MyFormBuilderTextField(
+                      name: 'duration',
+                      labelText: 'Duration (min)',
+                      keyboardType: TextInputType.number,
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(),
+                        FormBuilderValidators.integer(),
+                        FormBuilderValidators.min(1),
+                      ]),
+                    ),
+                    const SizedBox(height: 16),
+                    MyFormBuilderTextField(
+                      name: 'yearRelease',
+                      labelText: 'Year of Release',
+                      keyboardType: TextInputType.number,
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(),
+                        FormBuilderValidators.integer(),
+                        FormBuilderValidators.min(1900),
+                      ]),
+                    ),
+                    const SizedBox(height: 16),
+                    _buildGenreSelector(),
+                  ],
                 ),
               ),
             ],

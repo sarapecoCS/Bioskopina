@@ -64,13 +64,9 @@ namespace Bioskopina.Services.Database
                 entity.Property(e => e.TitleEn)
                     .HasMaxLength(200)
                     .HasColumnName("TitleEN");
-                entity.Property(e => e.TitleYugo)
-                    .HasMaxLength(200)
-                    .HasColumnName("TitleYugo");
+            
                 entity.Property(e => e.TrailerUrl).HasColumnName("TrailerURL");
-                entity.Property(e => e.Cast).HasColumnName("Cast");
-                entity.Property(e => e.IMDbRatings).HasColumnName("IMDbRatings");
-                entity.Property(e => e.Awards).HasColumnName("Awards");
+               
                 entity.Property(e => e.Runtime).HasColumnName("Runtime");
             });
             modelBuilder.Entity<Role>(entity =>

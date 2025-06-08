@@ -9,7 +9,7 @@ public partial class Bioskopina
 
     public string TitleEn { get; set; } = null!;
 
-    public string TitleYugo { get; set; } = null!;
+   
 
     public string Synopsis { get; set; } = null!;
 
@@ -22,9 +22,7 @@ public partial class Bioskopina
     public int YearRelease { get; set; }
 
     public int Runtime { get; set; }  
-    public string Cast { get; set; } = string.Empty;   
-    public string IMDbRatings { get; set; } = string.Empty;
-    public string Awards { get; set; }
+
 
 
     public virtual ICollection<BioskopinaList> BioskopinaLists { get; set; } = new List<BioskopinaList>();

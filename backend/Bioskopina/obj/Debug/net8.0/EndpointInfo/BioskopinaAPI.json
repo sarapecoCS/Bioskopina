@@ -5847,10 +5847,6 @@
             "type": "string",
             "nullable": true
           },
-          "titleYugo": {
-            "type": "string",
-            "nullable": true
-          },
           "synopsis": {
             "type": "string",
             "nullable": true
@@ -5875,18 +5871,6 @@
           "runtime": {
             "type": "integer",
             "format": "int32",
-            "nullable": true
-          },
-          "cast": {
-            "type": "string",
-            "nullable": true
-          },
-          "imDbRatings": {
-            "type": "string",
-            "nullable": true
-          },
-          "awards": {
-            "type": "string",
             "nullable": true
           },
           "score": {
@@ -5911,10 +5895,6 @@
             "type": "string",
             "nullable": true
           },
-          "titleYugo": {
-            "type": "string",
-            "nullable": true
-          },
           "synopsis": {
             "type": "string",
             "nullable": true
@@ -5939,18 +5919,6 @@
           "runtime": {
             "type": "integer",
             "format": "int32",
-            "nullable": true
-          },
-          "cast": {
-            "type": "string",
-            "nullable": true
-          },
-          "imDbRatings": {
-            "type": "string",
-            "nullable": true
-          },
-          "awards": {
-            "type": "string",
             "nullable": true
           },
           "score": {
@@ -6054,10 +6022,6 @@
             "type": "string",
             "nullable": true
           },
-          "titleYugo": {
-            "type": "string",
-            "nullable": true
-          },
           "synopsis": {
             "type": "string",
             "nullable": true
@@ -6082,18 +6046,6 @@
           "runtime": {
             "type": "integer",
             "format": "int32",
-            "nullable": true
-          },
-          "cast": {
-            "type": "string",
-            "nullable": true
-          },
-          "imDbRatings": {
-            "type": "string",
-            "nullable": true
-          },
-          "awards": {
-            "type": "string",
             "nullable": true
           },
           "score": {

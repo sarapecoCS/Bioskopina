@@ -214,7 +214,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
       child: isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(10),
               child: Row(
                 children: [
                   // Left Section: The chart
@@ -319,6 +319,7 @@ Widget _buildPopularMoviesChart() {
     ),
   );
 }
+
 
 
 

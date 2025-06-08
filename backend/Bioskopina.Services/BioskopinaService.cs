@@ -25,12 +25,12 @@ namespace Bioskopina.Services
         {
             if (!string.IsNullOrWhiteSpace(search?.Title))
             {
-                query = query.Where(x => x.TitleEn.StartsWith(search.Title) || x.TitleYugo.StartsWith(search.Title));
+                query = query.Where(x => x.TitleEn.StartsWith(search.Title));
             }
 
             if (!string.IsNullOrWhiteSpace(search?.FTS))
             {
-                query = query.Where(x => x.TitleEn.Contains(search.FTS) || x.TitleYugo.Contains(search.FTS));
+                query = query.Where(x => x.TitleEn.Contains(search.FTS) );
             }
 
             if (search?.NewestFirst == true)
@@ -103,7 +103,7 @@ namespace Bioskopina.Services
                 popularM.Add(new PopularBioskopinaData()
                 {
                     BioskopinaTitleEN = m.TitleEn,
-                    BioskopinaTitleYugo = m.TitleYugo,
+                
                     imageUrl = m.ImageUrl,
                     Score = (decimal)m.Score,
                     Director = m.Director,
