@@ -9,5 +9,7 @@ namespace Bioskopina.Services
     {
         Task<bool> DeleteByMovieId(int movieId);
         Task<bool> UpdateGenresForMovie(int movieId, List<GenreBioskopinaInsertRequest> newGenres);
+        Task<List<Model.GenreBioskopina>> GetGenresByMovie(int movieId);
+
     }
 }

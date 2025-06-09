@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace Bioskopina.Services
 {
+
     public class GenreBioskopinaService : BaseCRUDService<Model.GenreBioskopina, Database.GenreBioskopina, GenreBioskopinaSearchObject, GenreBioskopinaInsertRequest, GenreBioskopinaUpdateRequest>, IGenreBioskopinaService
     {
         protected BioskopinaContext _context;
@@ -69,5 +70,31 @@ namespace Bioskopina.Services
 
             return base.AddFilter(query, search);
         }
+        public async Task<List<Model.GenreBioskopina>> GetGenresByMovie(int movieId)
+        {
+            var entities = await _context.GenreBioskopina
+                .Include(g => g.Genre)
+                .Where(g => g.MovieId == movieId)
+                .ToListAsync();
+
+            
+            var models = entities.Select(e => new Model.GenreBioskopina
+            {
+                Id = e.Id,
+                MovieId = e.MovieId,
+                GenreId = e.GenreId,
+                Genre = new Model.Genre
+                {
+                    Id = e.Genre.Id,
+                    Name = e.Genre.Name
+                }
+                
+            }).ToList();
+
+            return models;
+        }
+
+
+
     }
 }

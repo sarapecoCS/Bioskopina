@@ -56,7 +56,7 @@ namespace Bioskopina.Services
 
             CreateMap<Database.GenreBioskopina, Model.GenreBioskopina>();
             CreateMap<GenreBioskopinaInsertRequest, Database.GenreBioskopina>();
-            // CreateMap<GenreBioskopinaUpdateRequest, Database.GenreBiskopina>();
+            CreateMap<GenreBioskopinaUpdateRequest, Database.GenreBioskopina>();
 
             CreateMap<Database.PreferredGenre, Model.PreferredGenre>();
             CreateMap<PreferredGenreInsertRequest, Database.PreferredGenre>();

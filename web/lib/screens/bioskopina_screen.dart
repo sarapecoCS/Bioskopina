@@ -10,6 +10,7 @@ import '../models/search_result.dart';
 import '../utils/colors.dart';
 import '../widgets/circular_progress_indicator.dart';
 import 'bioskopina_detail_screen.dart';
+import 'bioskopina_add_screen.dart';
 
 class BioskopinaScreen extends StatefulWidget {
   const BioskopinaScreen({super.key});
@@ -289,7 +290,7 @@ class _BioskopinaScreenState extends State<BioskopinaScreen> {
         onTap: () async {
           await Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => BioskopinaDetailScreen(movie: bioskopina),
+              builder: (context) => BioskopinaDetailScreen(),
             ),
           );
           if (mounted) _reloadBioskopinaList();

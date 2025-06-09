@@ -12,21 +12,29 @@ class GenreProvider extends BaseProvider<Genre> {
   Genre fromJson(data) {
     return Genre.fromJson(data);
   }
-Future<List<Genre>> fetchAllGenres() async {
-  var url = "${BaseProvider.baseUrl}$_endpoint/Genre";
-  var uri = Uri.parse(url);
-  var headers = createHeaders();
-  var response = await http!.get(uri, headers: headers);
+ Future<List<Genre>> fetchAll() async {
+   var url = "${BaseProvider.baseUrl}$_endpoint";
+   var uri = Uri.parse(url);
+   var headers = createHeaders();
 
-  if (isValidResponse(response)) {
-    var data = jsonDecode(response.body);
-    // Access the genres under the 'result' key
-    var genresData = data['result'] as List;
-    return genresData.map((e) => fromJson(e)).toList();
-  } else {
-    throw Exception("Failed to fetch all genres");
-  }
-}
+   var response = await http!.get(uri, headers: headers);
+
+   if (isValidResponse(response)) {
+     var data = jsonDecode(response.body);
+
+     List<dynamic> genresList = data['result'];  // Access the list under 'result'
+
+     List<Genre> result = [];
+
+     for (var item in genresList) {
+       result.add(Genre.fromJson(item));
+     }
+
+     return result;
+   } else {
+     throw Exception("Failed to load genres");
+   }
+ }
 
   Future<List<PopularGenresData>> getMostPopularGenres() async {
     var url = "${BaseProvider.baseUrl}$_endpoint/Genre";

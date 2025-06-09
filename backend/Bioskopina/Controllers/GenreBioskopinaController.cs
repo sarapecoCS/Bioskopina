@@ -4,6 +4,9 @@ using Bioskopina.Model.SearchObjects;
 using Bioskopina.Services;
 using Bioskopina.Services.Database;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+
 
 namespace Bioskopina.Controllers
 {
@@ -30,7 +33,17 @@ namespace Bioskopina.Controllers
             return await _service.UpdateGenresForMovie(movieId, newGenres);
         }
 
-       
+
+        [HttpGet("ByMovie/{movieId}")]
+        public async Task<ActionResult<List<Model.GenreBioskopina>>> GetGenresByMovie(int movieId)
+        {
+            var genres = await _service.GetGenresByMovie(movieId);
+
+            if (genres == null || genres.Count == 0)
+                return NotFound();
+
+            return Ok(genres);
+        }
 
 
 

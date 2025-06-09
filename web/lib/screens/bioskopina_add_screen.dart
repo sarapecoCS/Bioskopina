@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import '../models/bioskopina.dart';
 import '../models/genre_bioskopina.dart';
 import '../models/genre.dart';
-
+import '../utils/colors.dart';
 import '../providers/bioskopina_provider.dart';
 import '../providers/genre_bioskopina_provider.dart';
 import '../providers/genre_provider.dart';
@@ -14,16 +14,14 @@ import '../utils/colors.dart';
 import '../widgets/master_screen.dart';
 import '../widgets/form_builder_text_field.dart';
 
-class BioskopinaDetailScreen extends StatefulWidget {
-  final Bioskopina? movie;
-
-  const BioskopinaDetailScreen({Key? key, this.movie}) : super(key: key);
+class BioskopinaAddScreen extends StatefulWidget {
+  const BioskopinaAddScreen({Key? key}) : super(key: key);
 
   @override
-  _BioskopinaDetailScreenState createState() => _BioskopinaDetailScreenState();
+  _BioskopinaAddScreenState createState() => _BioskopinaAddScreenState();
 }
 
-class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
+class _BioskopinaAddScreenState extends State<BioskopinaAddScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
 
   late MovieProvider _bioskopinaProvider;
@@ -37,8 +35,6 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
   String imageUrlValue = "";
   String titleValue = "";
 
-  bool get isEditing => widget.movie != null;
-
   @override
   void initState() {
     super.initState();
@@ -47,22 +43,12 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
     _genreBioskopinaProvider = context.read<GenreMovieProvider>();
     _genreProviderAll = context.read<GenreProvider>();
 
-    imageUrlValue = widget.movie?.imageUrl ?? "";
-    titleValue = widget.movie?.titleEn ?? "";
-
     _loadGenres();
   }
 
   Future<void> _loadGenres() async {
     try {
       _allGenres = await _genreProviderAll.fetchAll();
-
-      if (widget.movie != null) {
-        _selectedGenres = widget.movie!.genreMovies
-            .map((gb) => gb.genre)
-            .whereType<Genre>()
-            .toList();
-      }
     } catch (e) {
       print("Error loading genres: $e");
     } finally {
@@ -90,57 +76,31 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
- Future<void> _showSuccessDialog(String message) async {
-   await showDialog<void>(
-     context: context,
-     builder: (ctx) => AlertDialog(
-       backgroundColor: Palette.darkPurple, // Set dialog background color
-       content: Text(
-         message,
-         style: const TextStyle(
-           fontWeight: FontWeight.w600,
-           fontSize: 18,
-           color: Colors.white, // Make text white for contrast
-         ),
-       ),
-       actions: [
-         TextButton(
-           onPressed: () => Navigator.of(ctx).pop(),
-           child: const Text(
-             "OK",
-             style: TextStyle(color: Colors.white), // OK button text white
-           ),
-           style: TextButton.styleFrom(
-             // Optionally, you can add a splash color or background on press
-             // backgroundColor: Palette.darkPurple, // if needed
-           ),
-         ),
-       ],
-     ),
-   );
- }
+
 
   Future<void> _saveMovieData() async {
-    if (_formKey.currentState?.saveAndValidate() ?? false) {
-      final formData = _formKey.currentState!.value;
+    final formValid = _formKey.currentState?.saveAndValidate() ?? false;
+    final genresValid = _selectedGenres.isNotEmpty;
 
-      if (!isEditing && _selectedGenres.isEmpty) {
-        _showSnackbar("Please select at least one genre.", error: true);
-        return;
-      }
+    if (!genresValid) {
+      _showSnackbar("Please select at least one genre.", error: true);
+    }
+
+    if (formValid && genresValid) {
+      final formData = _formKey.currentState!.value;
 
       List<GenreBioskopina> genreBioskopinaList = _selectedGenres.map((genre) {
         return GenreBioskopina(
           null,
           genre.id,
-          widget.movie?.id ?? 0,
+          0,
           null,
           genre,
         );
       }).toList();
 
       final newMovie = Bioskopina(
-        id: widget.movie?.id ?? 0,
+        id: 0,
         titleEn: formData['titleEn'] ?? "",
         synopsis: formData['synopsis'] ?? "",
         director: formData['director'] ?? "",
@@ -152,20 +112,68 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
         trailerUrl: formData['trailerUrl'] ?? "",
       );
 
-      try {
-        if (newMovie.id == 0) {
-          await _bioskopinaProvider.addMovie(newMovie);
-          await _showSuccessDialog("Movie added successfully!");
-        } else {
-          await _bioskopinaProvider.updateMovie(newMovie);
-          await _showSuccessDialog("Movie edited successfully!");
-        }
-        Navigator.of(context).pop(true);
-      } catch (e) {
-        _showSnackbar("Failed to save: $e", error: true);
-      }
-    } else {
-      _showSnackbar("Validation failed.", error: true);
+     try {
+       await _bioskopinaProvider.addMovie(newMovie);
+
+       await showDialog<void>(
+         context: context,
+         barrierDismissible: false,
+         builder: (ctx) => Dialog(
+           backgroundColor: Palette.darkPurple,
+           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+           child: Padding(
+             padding: const EdgeInsets.all(24),
+             child: Column(
+               mainAxisSize: MainAxisSize.min,
+               crossAxisAlignment: CrossAxisAlignment.center,
+               children: [
+                 const Icon(Icons.check_circle, color: Colors.white, size: 48),
+                 const SizedBox(height: 16),
+                 const Text(
+                   "Movie added successfully!",
+                   textAlign: TextAlign.center,
+                   style: TextStyle(
+                     color: Colors.white,
+                     fontSize: 18,
+                     fontWeight: FontWeight.bold,
+                   ),
+                 ),
+                 const SizedBox(height: 24),
+                 SizedBox(
+                   width: double.infinity,
+                   child: TextButton(
+                     style: TextButton.styleFrom(
+                       backgroundColor: Palette.teal,
+                       padding: const EdgeInsets.symmetric(vertical: 12),
+                       shape: RoundedRectangleBorder(
+                         borderRadius: BorderRadius.circular(12),
+                       ),
+                     ),
+                     onPressed: () => Navigator.of(ctx).pop(),
+                     child: const Text(
+                       "OK",
+                       style: TextStyle(
+                         color: Colors.white,
+                         fontWeight: FontWeight.bold,
+                         fontSize: 16,
+                       ),
+                     ),
+                   ),
+                 ),
+               ],
+             ),
+           ),
+         ),
+       );
+
+
+       Navigator.of(context).pop(true);
+     } catch (e) {
+       _showSnackbar("Failed to save: $e", error: true);
+     }
+
+    } else if (!formValid) {
+      _showSnackbar("Please fix the errors in the form.", error: true);
     }
   }
 
@@ -186,7 +194,7 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
         return FilterChip(
           label: Text(genre.name ?? 'Unknown'),
           selected: isSelected,
-          selectedColor: Colors.purple.shade400,
+          selectedColor: Palette.teal,
           checkmarkColor: Colors.white,
           backgroundColor: Colors.grey.shade300,
           onSelected: (selected) {
@@ -213,7 +221,7 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
   Widget build(BuildContext context) {
     return MasterScreenWidget(
       showBackArrow: true,
-      titleWidget: Text(isEditing ? "Edit Bioskopina" : "Add Bioskopina"),
+      titleWidget: const Text("Add Bioskopina"),
       floatingButtonOnPressed: _saveMovieData,
       showFloatingActionButton: true,
       floatingActionButtonIcon: const Icon(
@@ -291,14 +299,14 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
     return FormBuilder(
       key: _formKey,
       initialValue: {
-        'titleEn': widget.movie?.titleEn ?? "",
-        'synopsis': widget.movie?.synopsis ?? "",
-        'director': widget.movie?.director ?? "",
-        'runtime': widget.movie?.runtime.toString() ?? "",
-        'yearRelease': widget.movie?.yearRelease.toString() ?? "",
-        'score': widget.movie?.score.toString() ?? "0",
-        'imageUrl': widget.movie?.imageUrl ?? "",
-        'trailerUrl': widget.movie?.trailerUrl ?? "",
+        'titleEn': "",
+        'synopsis': "",
+        'director': "",
+        'runtime': "",
+        'yearRelease': "",
+        'score': "0",
+        'imageUrl': "",
+        'trailerUrl': "",
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -340,8 +348,9 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
                   keyboardType: TextInputType.number,
                   validator: FormBuilderValidators.compose([
                     FormBuilderValidators.required(),
-                    FormBuilderValidators.numeric(),
+                    FormBuilderValidators.integer(),
                     FormBuilderValidators.min(1),
+                    FormBuilderValidators.max(600),
                   ]),
                 ),
               ),
@@ -353,8 +362,8 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
                   keyboardType: TextInputType.number,
                   validator: FormBuilderValidators.compose([
                     FormBuilderValidators.required(),
-                    FormBuilderValidators.numeric(),
-                    FormBuilderValidators.min(1900),
+                    FormBuilderValidators.integer(),
+                    FormBuilderValidators.min(1895),
                     FormBuilderValidators.max(DateTime.now().year),
                   ]),
                 ),
@@ -364,8 +373,8 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
           const SizedBox(height: 16),
           MyFormBuilderTextField(
             name: 'score',
-            labelText: 'Score (0 - 10)',
-            keyboardType: TextInputType.number,
+            labelText: 'Score',
+            keyboardType: TextInputType.numberWithOptions(decimal: true),
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.required(),
               FormBuilderValidators.numeric(),
@@ -377,7 +386,6 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
           MyFormBuilderTextField(
             name: 'imageUrl',
             labelText: 'Image URL',
-            keyboardType: TextInputType.url,
             onChanged: (val) => setState(() => imageUrlValue = val ?? ""),
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.required(),
@@ -388,31 +396,30 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
           MyFormBuilderTextField(
             name: 'trailerUrl',
             labelText: 'Trailer URL',
-            keyboardType: TextInputType.url,
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.required(),
               FormBuilderValidators.url(),
             ]),
           ),
           const SizedBox(height: 16),
-          if (!isEditing) ...[
-            const Text(
-              "Genres",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            const SizedBox(height: 8),
-            _buildGenreSelector(),
-            if (_selectedGenres.isEmpty)
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Text(
-                  "Please select at least one genre.",
-                  style: TextStyle(color: Colors.red.shade700, fontSize: 12),
-                ),
+          const Text(
+            "Select Genres:",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          ),
+          const SizedBox(height: 6),
+          _buildGenreSelector(),
+          if (_selectedGenres.isEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text(
+                "Please select at least one genre.",
+                style: TextStyle(color: Colors.red.shade700, fontSize: 12),
               ),
-          ],
+            ),
+          const SizedBox(height: 24),
         ],
       ),
     );
   }
 }
+

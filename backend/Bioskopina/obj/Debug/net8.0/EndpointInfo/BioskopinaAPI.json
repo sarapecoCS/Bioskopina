@@ -1833,6 +1833,55 @@
         }
       }
     },
+    "/GenreBioskopina/ByMovie/{movieId}": {
+      "get": {
+        "tags": [
+          "GenreBioskopina"
+        ],
+        "parameters": [
+          {
+            "name": "movieId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GenreBioskopina"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GenreBioskopina"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GenreBioskopina"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/GenreBioskopina": {
       "get": {
         "tags": [
