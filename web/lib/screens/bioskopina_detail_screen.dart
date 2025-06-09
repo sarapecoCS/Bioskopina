@@ -186,7 +186,7 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
         return FilterChip(
           label: Text(genre.name ?? 'Unknown'),
           selected: isSelected,
-          selectedColor: Colors.purple.shade400,
+          selectedColor:  Color.fromRGBO(102, 204, 204, 1),
           checkmarkColor: Colors.white,
           backgroundColor: Colors.grey.shade300,
           onSelected: (selected) {

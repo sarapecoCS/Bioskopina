@@ -8,7 +8,7 @@ class Palette {
   static const Color plumPurple = Color.fromRGBO(30, 30, 30, 1.0); // Slightly lighter black
   static const Color lightPurple = Color.fromRGBO(255, 255, 255, 1.0);// Light gray for readability
   static const Color starYellow = Color.fromRGBO(240, 127, 255, 1.0); // Accent remains
-  static const Color teal = Color.fromRGBO(153, 255, 255, 1); // Accent remains
+  static const Color teal = Color.fromRGBO(102, 204, 204, 1); // Accent remains
   static const Color white = Color.fromRGBO(255, 255, 255, 1);
   static const Color black = Color.fromRGBO(0, 0, 0, 1);
   static const Color lightRed = Color.fromRGBO(255, 0, 0, 1.0);

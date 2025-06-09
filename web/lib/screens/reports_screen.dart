@@ -236,90 +236,99 @@ class _ReportsScreenState extends State<ReportsScreen> {
             ),
     );
   }
-Widget _buildPopularMoviesChart() {
-  if (popularBioskopinaData.isEmpty) {
-    return const Center(child: Text("No data available"));
-  }
+ Widget _buildPopularMoviesChart() {
+   if (popularBioskopinaData.isEmpty) {
+     return const Center(child: Text("No data available"));
+   }
 
-  final maxScore = popularBioskopinaData
-          .map((e) => e.score ?? 0)
-          .fold<double>(0, (previousValue, element) => element > previousValue ? element.toDouble() : previousValue) +
-      1;
+   final maxScore = popularBioskopinaData
+           .map((e) => e.score ?? 0)
+           .fold<double>(0, (previousValue, element) =>
+               element > previousValue ? element.toDouble() : previousValue) + 1;
 
-  return SizedBox(
-    height: 300,
-    child: BarChart(
-      BarChartData(
-        alignment: BarChartAlignment.spaceAround, // Balanced space for bars
-        maxY: maxScore,
-        barTouchData: BarTouchData(enabled: true),
-        titlesData: FlTitlesData(
-          bottomTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              getTitlesWidget: (value, meta) {
-                int index = value.toInt();
-                if (index < 0 || index >= popularBioskopinaData.length) return const SizedBox();
+   return SizedBox(
+     height: 300,
+     child: BarChart(
+       BarChartData(
+         alignment: BarChartAlignment.spaceAround,
+         maxY: maxScore,
+         barTouchData: BarTouchData(enabled: true),
+         titlesData: FlTitlesData(
+           bottomTitles: AxisTitles(
+             sideTitles: SideTitles(
+               showTitles: true,
+               interval: 1,
+               reservedSize: 70,
+               getTitlesWidget: (value, meta) {
+                 int index = value.toInt();
+                 if (index < 0 || index >= popularBioskopinaData.length) return const SizedBox();
 
-                final title = popularBioskopinaData[index].bioskopinaTitleEN ?? '';
+                 String title = popularBioskopinaData[index].bioskopinaTitleEN ?? '';
 
-                // Reduce font size for long titles
-                double fontSize = title.length > 20 ? 8.0 : 10.0;
+                 // Shorten if too long
+                 if (title.length > 10) {
+                   title = '${title.substring(0, 10)}...';
+                 }
 
-                return SideTitleWidget(
-                  axisSide: meta.axisSide,
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: fontSize,
-                        color: const Color(0xFFF07FFF),
-                        fontWeight: FontWeight.normal, // Ensure normal font weight
-                        overflow: TextOverflow.ellipsis,  // Allow truncation with ellipsis
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                );
-              },
-              interval: 1,
-              reservedSize: 60,  // Adjusted space to avoid overlap
-            ),
-          ),
-          leftTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              getTitlesWidget: (value, meta) {
-                // Adjust left title position to avoid cutting off titles
-                return const SizedBox.shrink();
-              },
-            ),
-          ),
-        ),
-        gridData: FlGridData(show: true),
-        borderData: FlBorderData(show: false),
-        barGroups: List.generate(popularBioskopinaData.length, (index) {
-          final movie = popularBioskopinaData[index];
-          final score = movie.score?.toDouble() ?? 0;
-          return BarChartGroupData(
-            x: index,
-            barRods: [
-              BarChartRodData(
-                toY: score,
-                color: Palette.teal,
-                width: 18,
-                borderRadius: BorderRadius.circular(6),
-              ),
-            ],
-            showingTooltipIndicators: [0],
-          );
-        }),
-      ),
-    ),
-  );
-}
-
+                 return SideTitleWidget(
+                   axisSide: meta.axisSide,
+                   child: Transform.rotate(
+                     angle: -0.26,
+                     child: Text(
+                       title,
+                       style: const TextStyle(
+                         fontSize: 10,
+                         color: Color(0xFFF07FFF),
+                       ),
+                       overflow: TextOverflow.ellipsis,
+                       maxLines: 2,
+                       textAlign: TextAlign.center,
+                     ),
+                   ),
+                 );
+               },
+             ),
+           ),
+           leftTitles: AxisTitles(
+             sideTitles: SideTitles(
+               showTitles: true,
+               getTitlesWidget: (value, meta) {
+                 return Text(
+                   value.toInt().toString(),
+                   style: const TextStyle(
+                     color: Colors.white70,
+                     fontSize: 10,
+                   ),
+                 );
+               },
+               reservedSize: 30,
+             ),
+           ),
+           topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+           rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+         ),
+         gridData: FlGridData(show: true),
+         borderData: FlBorderData(show: false),
+         barGroups: List.generate(popularBioskopinaData.length, (index) {
+           final movie = popularBioskopinaData[index];
+           final score = movie.score?.toDouble() ?? 0;
+           return BarChartGroupData(
+             x: index,
+             barRods: [
+               BarChartRodData(
+                 toY: score,
+                 color: Palette.teal,
+                 width: 18,
+                 borderRadius: BorderRadius.circular(6),
+               ),
+             ],
+             showingTooltipIndicators: [0],
+           );
+         }),
+       ),
+     ),
+   );
+ }
 
 
 

@@ -93,15 +93,15 @@ class _PostsScreenState extends State<PostsScreen> {
         children: [
           widget.user.profilePicture!.profilePicture != null
               ? ClipRRect(
-            borderRadius: BorderRadius.circular(100),
-            child: Image.memory(
-              imageFromBase64String(
-                  widget.user.profilePicture!.profilePicture!),
-              width: 25,
-              height: 25,
-              fit: BoxFit.cover,
-            ),
-          )
+                  borderRadius: BorderRadius.circular(100),
+                  child: Image.memory(
+                    imageFromBase64String(
+                        widget.user.profilePicture!.profilePicture!),
+                    width: 25,
+                    height: 25,
+                    fit: BoxFit.cover,
+                  ),
+                )
               : const Text(""),
           const SizedBox(width: 5),
           Text("${widget.user.username}: "),
@@ -172,7 +172,7 @@ class _PostsScreenState extends State<PostsScreen> {
   List<Widget> _buildPostCards(List<Post> postList) {
     return List.generate(
       postList.length,
-          (index) => _buildPostCard(postList[index]),
+      (index) => _buildPostCard(postList[index]),
     );
   }
 
@@ -186,119 +186,121 @@ class _PostsScreenState extends State<PostsScreen> {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15), color: Palette.darkPurple),
         child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(100),
-                            child: Image.memory(
-                              imageFromBase64String(
-                                  widget.user.profilePicture!.profilePicture!),
-                              width: 43,
-                              height: 43,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              constraints: const BoxConstraints(maxWidth: 350),
-                              child: Text(
-                                  "${widget.user.firstName} ${widget.user.lastName}",
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                      fontSize: 17, fontWeight: FontWeight.bold)),
-                            ),
-                            Text(
-                              DateFormat('MMM d, y').format(post.datePosted!),
-                              style: const TextStyle(fontSize: 13),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  _buildPopupMenu(post)
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Container(
-                  alignment: Alignment.topLeft,
-                  constraints:
-                  const BoxConstraints(minHeight: 30, maxHeight: 100),
-                  child: SingleChildScrollView(
-                    controller: ScrollController(),
-                    child: Column(
-                      children: [
-                        Text(
-                          "${post.content}",
-                          style: const TextStyle(fontSize: 15),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                constraints: const BoxConstraints(maxHeight: 30),
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10),
+          padding: const EdgeInsets.all(10.0),
+          child: Column(children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
                   child: Row(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(right: 20),
-                        child: Row(
-                          children: [
-                            const Icon(Icons.thumb_up_rounded),
-                            const SizedBox(width: 5),
-                            Text("${post.likesCount}")
-                          ],
+                        padding: const EdgeInsets.only(right: 10),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: Image.memory(
+                            imageFromBase64String(
+                                widget.user.profilePicture!.profilePicture!),
+                            width: 43,
+                            height: 43,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20),
-                        child: Row(
-                          children: [
-                            const Icon(Icons.thumb_down_rounded),
-                            const SizedBox(width: 5),
-                            Text("${post.dislikesCount}")
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: Row(
-                          children: [
-                            GestureDetector(
-                                onTap: () async {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => PostDetailScreen(
-                                        post: post,
-                                        ownerId: ownerId!,
-                                      )));
-                                },
-                                child: MouseRegion(
-                                    cursor: SystemMouseCursors.click,
-                                    child: Text("${post.comments?.length} replies")))
-                          ],
-                        ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            constraints: const BoxConstraints(maxWidth: 350),
+                            child: Text(
+                              "${widget.user.firstName} ${widget.user.lastName}",
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  fontSize: 17, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Text(
+                            DateFormat('MMM d, y').format(post.datePosted!),
+                            style: const TextStyle(fontSize: 13),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
-              )
-            ])),
+                _buildPopupMenu(post)
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 15),
+              child: Container(
+                alignment: Alignment.topLeft,
+                constraints: const BoxConstraints(minHeight: 30, maxHeight: 100),
+                child: SingleChildScrollView(
+                  controller: ScrollController(),
+                  child: Column(
+                    children: [
+                      Text(
+                        "${post.content}",
+                        style: const TextStyle(fontSize: 15),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              constraints: const BoxConstraints(maxHeight: 30),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 20),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.thumb_up_rounded),
+                          const SizedBox(width: 5),
+                          Text("${post.likesCount}")
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 20),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.thumb_down_rounded),
+                          const SizedBox(width: 5),
+                          Text("${post.dislikesCount}")
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () async {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => PostDetailScreen(
+                                        post: post,
+                                        ownerId: ownerId!,
+                                      )));
+                            },
+                            child: MouseRegion(
+                                cursor: SystemMouseCursors.click,
+                                child: Text("${post.comments?.length} replies")),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ]),
+        ),
       ),
     );
   }
@@ -320,7 +322,7 @@ class _PostsScreenState extends State<PostsScreen> {
               icon: const Icon(Icons.more_vert_rounded),
               splashRadius: 1,
               padding: EdgeInsets.zero,
-              color: const Color.fromRGBO(50, 48, 90, 1),
+              color:  Colors.black,
               itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                 PopupMenuItem<String>(
                   child: ListTile(
@@ -329,12 +331,13 @@ class _PostsScreenState extends State<PostsScreen> {
                     ),
                     hoverColor: Palette.lightRed.withOpacity(0.1),
                     leading: Icon(Icons.delete, size: 24),
-
                     title: const Text('Delete',
                         style: TextStyle(color: Palette.lightRed)),
-                    subtitle: Text('Delete permanently',
-                        style: TextStyle(
-                            color: Palette.lightRed.withOpacity(0.5))),
+                    subtitle: Container(
+                      child: Text('Delete permanently',
+                          style: TextStyle(
+                              color: Palette.lightRed.withOpacity(0.5))),
+                    ),
                     onTap: () async {
                       Navigator.pop(context);
                       showConfirmationDialog(
@@ -343,9 +346,33 @@ class _PostsScreenState extends State<PostsScreen> {
                               color: Palette.lightRed, size: 55),
                           const Text(
                               "Are you sure you want to delete this post?"),
-                              () async {
-                            await _postProvider.delete(post.id!);
-                          });
+                          () async {
+                        await _postProvider.delete(post.id!);
+
+                        Navigator.pop(context); // close confirmation dialog
+                        // Show simple "Deleted successfully" dialog
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            backgroundColor: Palette.darkPurple,
+                            content: const Text(
+                              'Deleted successfully',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text(
+                                  'OK',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+
+                        _reloadData();
+                      });
                     },
                   ),
                 ),
