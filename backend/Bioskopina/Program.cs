@@ -20,6 +20,7 @@ builder.Services.AddTransient<IGenreService, GenreService>();
 builder.Services.AddTransient<IWatchlistService, WatchlistService>();
 builder.Services.AddTransient<IBioskopinaListService, BioskopinaListService>();
 builder.Services.AddTransient<IBioskopinaWatchlistService, BioskopinaWatchlistService>();
+builder.Services.AddTransient<IGenreBioskopinaService, GenreBioskopinaService>();
 builder.Services.AddTransient<IPostService, PostService>();
 builder.Services.AddTransient<ICommentService, CommentService>();
 builder.Services.AddTransient<IPreferredGenreService, PreferredGenreService>();

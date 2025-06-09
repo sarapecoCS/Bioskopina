@@ -29,7 +29,7 @@ public partial class Bioskopina
 
     public virtual ICollection<BioskopinaWatchlist> BioskopinaWatchlists { get; set; } = new List<BioskopinaWatchlist>();
 
-    public virtual ICollection<GenreBiskopina> GenreMovies{ get; set; } = new List<GenreBiskopina>();
+    public virtual ICollection<GenreBioskopina> GenreMovies{ get; set; } = new List<GenreBioskopina>();
 
     public virtual ICollection<Rating> Ratings { get; set; } = new List<Rating>();
 

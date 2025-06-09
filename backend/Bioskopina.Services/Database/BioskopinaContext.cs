@@ -24,7 +24,7 @@ namespace Bioskopina.Services.Database
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<Donation> Donations { get; set; }
         public virtual DbSet<Genre> Genres { get; set; }
-        public virtual DbSet<GenreBiskopina> GenreMovies { get; set; }
+        public virtual DbSet<GenreBioskopina> GenreBioskopina { get; set; }
         public virtual DbSet<List> Lists { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<PreferredGenre> PreferredGenres { get; set; }
@@ -229,7 +229,7 @@ namespace Bioskopina.Services.Database
                 entity.Property(e => e.Name).HasMaxLength(50);
             });
 
-            modelBuilder.Entity<GenreBiskopina>(entity =>
+            modelBuilder.Entity<GenreBioskopina>(entity =>
             {
                 entity.ToTable("Genre_Movies");
 

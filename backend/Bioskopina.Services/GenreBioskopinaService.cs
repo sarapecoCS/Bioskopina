@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Bioskopina.Services
 {
-    public class GenreBioskopinaService : BaseCRUDService<Model.GenreBioskopina, Database.GenreBiskopina, GenreBioskopinaSearchObject, GenreBioskopinaInsertRequest, GenreBioskopinaUpdateRequest>, IGenreBioskopinaService
+    public class GenreBioskopinaService : BaseCRUDService<Model.GenreBioskopina, Database.GenreBioskopina, GenreBioskopinaSearchObject, GenreBioskopinaInsertRequest, GenreBioskopinaUpdateRequest>, IGenreBioskopinaService
     {
         protected BioskopinaContext _context;
         protected IMapper _mapper;
@@ -25,7 +25,7 @@ namespace Bioskopina.Services
 
         public async Task<bool> DeleteByMovieId(int movieId)
         {
-            var set = _context.Set<Database.GenreBiskopina>();
+            var set = _context.Set<Database.GenreBioskopina>();
             var list = await set.Where(x => x.MovieId == movieId).ToListAsync();
 
             if (list.Any())
@@ -42,8 +42,8 @@ namespace Bioskopina.Services
         {
             await DeleteByMovieId(movieId);
 
-            var entities = newGenres.Select(insert => _mapper.Map<Database.GenreBiskopina>(insert));
-            _context.GenreMovies.AddRange(entities);
+            var entities = newGenres.Select(insert => _mapper.Map<Database.GenreBioskopina>(insert));
+            _context.GenreBioskopina.AddRange(entities);
             await _context.SaveChangesAsync();
 
             return true;
@@ -52,7 +52,7 @@ namespace Bioskopina.Services
 
         public override async Task<Model.GenreBioskopina> GetById(int id)
         {
-            var entity = await _context.GenreMovies
+            var entity = await _context.GenreBioskopina
                 .Include(x => x.Genre) 
                 .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -62,7 +62,7 @@ namespace Bioskopina.Services
             return _mapper.Map<Model.GenreBioskopina>(entity);
         }
 
-        public override IQueryable<Database.GenreBiskopina> AddFilter(IQueryable<Database.GenreBiskopina> query, GenreBioskopinaSearchObject? search = null)
+        public override IQueryable<Database.GenreBioskopina> AddFilter(IQueryable<Database.GenreBioskopina> query, GenreBioskopinaSearchObject? search = null)
         {
             if (search?.MovieId != null)
                 query = query.Where(x => x.MovieId == search.MovieId);

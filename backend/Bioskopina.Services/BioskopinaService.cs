@@ -137,7 +137,7 @@ namespace Bioskopina.Services
             // Add updated genre associations
             foreach (var genre in genres)
             {
-                entity.GenreMovies.Add(new GenreBiskopina
+                entity.GenreMovies.Add(new Database.GenreBioskopina
                 {
                     GenreId = genre.Id,
                     Genre = genre,
@@ -163,7 +163,7 @@ namespace Bioskopina.Services
             // Map genres to the join entity and add to movie's GenreMovies collection
             foreach (var genre in genres)
             {
-                entity.GenreMovies.Add(new GenreBiskopina
+                entity.GenreMovies.Add(new Database.GenreBioskopina
                 {
                     GenreId = genre.Id,
                     Genre = genre,

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Bioskopina.Services.Database;
 
-public partial class GenreBiskopina
+public partial class GenreBioskopina
 {
     public int Id { get; set; }
 

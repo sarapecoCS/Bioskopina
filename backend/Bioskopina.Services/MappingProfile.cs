@@ -54,8 +54,8 @@ namespace Bioskopina.Services
             CreateMap<CommentInsertRequest, Database.Comment>();
             CreateMap<CommentUpdateRequest, Database.Comment>();
 
-            CreateMap<Database.GenreBiskopina, Model.GenreBioskopina>();
-            CreateMap<GenreBioskopinaInsertRequest, Database.GenreBiskopina>();
+            CreateMap<Database.GenreBioskopina, Model.GenreBioskopina>();
+            CreateMap<GenreBioskopinaInsertRequest, Database.GenreBioskopina>();
             // CreateMap<GenreBioskopinaUpdateRequest, Database.GenreBiskopina>();
 
             CreateMap<Database.PreferredGenre, Model.PreferredGenre>();

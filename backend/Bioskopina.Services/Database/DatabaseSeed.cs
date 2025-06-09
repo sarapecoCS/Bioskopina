@@ -325,122 +325,122 @@ namespace Bioskopina.Services.Database
 
         private void SeedGenreBioskopina(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<GenreBiskopina>().HasData(
-                new GenreBiskopina()
+            modelBuilder.Entity<GenreBioskopina>().HasData(
+                new GenreBioskopina()
                 {
                     Id = 1,
                     GenreId = 1, // Drama
                     MovieId = 9, // "The Ambush"
                 },
-                new GenreBiskopina()
+                new GenreBioskopina()
                 {
                     Id = 2,
                     GenreId = 3, // Political
                     MovieId = 9, // "The Ambush"
                 },
-                new GenreBiskopina()
+                new GenreBioskopina()
                 {
                     Id = 3,
                     GenreId = 1, // Drama
                     MovieId = 8, // "Early Works"
                 },
-                new GenreBiskopina()
+                new GenreBioskopina()
                 {
                     Id = 4,
                     GenreId = 3, // Political
                     MovieId = 8, // "Early Works"
                 },
-                new GenreBiskopina()
+                new GenreBioskopina()
                 {
                     Id = 5,
                     GenreId = 4, // Art House
                     MovieId = 8, // "Early Works"
                 },
-                new GenreBiskopina()
+                new GenreBioskopina()
                 {
                     Id = 6,
                     GenreId = 1, // Drama
                     MovieId = 7, // "I Even Met Happy Gypsies"
                 },
-                new GenreBiskopina()
+                new GenreBioskopina()
                 {
                     Id = 7,
                     GenreId = 4, // Art House
                     MovieId = 7, // "I Even Met Happy Gypsies"
                 },
-                new GenreBiskopina()
+                new GenreBioskopina()
                 {
                     Id = 8,
                     GenreId = 1, // Drama
                     MovieId = 6, // "Do Not Mention the Cause of Death"
                 },
-                new GenreBiskopina()
+                new GenreBioskopina()
                 {
                     Id = 9,
                     GenreId = 2, // War
                     MovieId = 6, // "Do Not Mention the Cause of Death"
                 },
-                new GenreBiskopina()
+                new GenreBioskopina()
                 {
                     Id = 10,
                     GenreId = 1, // Drama
                     MovieId = 5, // "When I Am Dead and Gone"
                 },
-                new GenreBiskopina()
+                new GenreBioskopina()
                 {
                     Id = 11,
                     GenreId = 4, // Art House
                     MovieId = 5, // "When I Am Dead and Gone"
                 },
-                new GenreBiskopina()
+                new GenreBioskopina()
                 {
                     Id = 12,
                     GenreId = 1, // Drama
                     MovieId = 4, // "It Rains in My Village"
                 },
-                new GenreBiskopina()
+                new GenreBioskopina()
                 {
                     Id = 13,
                     GenreId = 2, // War
                     MovieId = 4, // "It Rains in My Village"
                 },
-                new GenreBiskopina()
+                new GenreBioskopina()
                 {
                     Id = 14,
                     GenreId = 1, // Drama
                     MovieId = 3, // "WR: Mysteries of the Organism"
                 },
-                new GenreBiskopina()
+                new GenreBioskopina()
                 {
                     Id = 15,
                     GenreId = 4, // Art House
                     MovieId = 3, // "WR: Mysteries of the Organism"
                 },
-                new GenreBiskopina()
+                new GenreBioskopina()
                 {
                     Id = 16,
                     GenreId = 3, // Political
                     MovieId = 3, // "WR: Mysteries of the Organism"
                 },
-                new GenreBiskopina()
+                new GenreBioskopina()
                 {
                     Id = 17,
                     GenreId = 1, // Drama
                     MovieId = 2, // "The Rats Woke up"
                 },
-                new GenreBiskopina()
+                new GenreBioskopina()
                 {
                     Id = 18,
                     GenreId = 3, // Political
                     MovieId = 2, // "The Rats Woke up"
                 },
-                new GenreBiskopina()
+                new GenreBioskopina()
                 {
                     Id = 19,
                     GenreId = 1, // Drama
                     MovieId = 1, // "Three"
                 },
-                new GenreBiskopina()
+                new GenreBioskopina()
                 {
                     Id = 20,
                     GenreId = 2, // War
