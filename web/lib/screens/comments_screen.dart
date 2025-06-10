@@ -341,194 +341,190 @@ class _CommentsScreenState extends State<CommentsScreen> {
     );
   }
 
-  ConstrainedBox _buildPopupMenu(Comment comment) {
-    return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 100),
-      child: PopupMenuButton<String>(
-         color: const Color.fromRGBO(10, 10, 10, 1),
-        itemBuilder: (BuildContext context) => [
-          PopupMenuItem<String>(
+ ConstrainedBox _buildPopupMenu(Comment comment) {
+   return ConstrainedBox(
+     constraints: const BoxConstraints(maxWidth: 100),
+     child: PopupMenuButton<String>(
+       color: const Color.fromRGBO(10, 10, 10, 1),
+       itemBuilder: (BuildContext context) => [
+         PopupMenuItem<String>(
+           padding: EdgeInsets.zero,
+           child: ListTile(
+             shape: RoundedRectangleBorder(
+               borderRadius: BorderRadius.circular(10.0),
+               side: BorderSide.none,
+             ),
+             leading: const Icon(Icons.delete, size: 24, color: Colors.white),
+             title: const Text(
+               'Delete',
+               style: TextStyle(color: Colors.white),
+             ),
+             subtitle: Text(
+               'Delete permanently',
+               style: TextStyle(color: Colors.white70),
+             ),
+             onTap: () {
+               Navigator.pop(context); // Close the menu first
+               showConfirmationDialog(
+                 context,
+                 const Icon(
+                   Icons.warning_rounded,
+                   color: Palette.lightRed,
+                   size: 55,
+                 ),
+                 const Text(
+                   "Are you sure you want to delete this comment?",
+                   style: TextStyle(color: Colors.white),
+                   textAlign: TextAlign.center,
+                 ),
+                 () async {
+                   await _commentProvider.delete(comment.id!);
+                   if (mounted) {
+                     setState(() {
+                       _commentFuture = _commentProvider.get(
+                         filter: {
+                           "UserId": "${widget.user.id}",
+                           "NewestFirst": "true",
+                           "Page": "$page",
+                           "PageSize": "$pageSize",
+                         },
+                       );
+                     });
+                   }
+                   // Show success popup AFTER deletion
+                   showSuccessPopup(context, "Comment deleted successfully!");
+                 },
+               );
+             },
+             tileColor: const Color.fromRGBO(18, 18, 18, 1),
+           ),
+         ),
+       ],
+     ),
+   );
+ }
 
-            padding: EdgeInsets.zero,
-            child: ListTile(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                side: BorderSide.none,
-              ),
+ void showSuccessPopup(BuildContext context, String message) {
+   showDialog(
+     context: context,
+     barrierDismissible: true, // user can tap outside to close
+     builder: (context) {
+       return Dialog(
+         shape: RoundedRectangleBorder(
+           borderRadius: BorderRadius.circular(16),
+         ),
+         backgroundColor: Colors.black,
+         child: Padding(
+           padding: const EdgeInsets.all(16.0),
+           child: Column(
+             mainAxisSize: MainAxisSize.min,
+             children: [
+               const Icon(
+                 Icons.check_circle_outline_rounded,
+                 color: Color.fromRGBO(102, 204, 204, 1),
+                 size: 64,
+               ),
+               const SizedBox(height: 16),
+               Text(
+                 message,
+                 style: const TextStyle(
+                   color: Colors.white,
+                   fontSize: 15,
+                 ),
+                 textAlign: TextAlign.center,
+               ),
+             ],
+           ),
+         ),
+       );
+     },
+   );
+ }
 
-              leading: Icon(Icons.delete, size: 24, color: Colors.white),
-              title: const Text(
-                'Delete',
-                style: TextStyle(color: Colors.white),
-              ),
-              subtitle: Text(
-                'Delete permanently',
-                style: TextStyle(color: Colors.white.withOpacity(0.5)),
-              ),
-              onTap: () async {
-                Navigator.pop(context);
-                showConfirmationDialog(
-                  context,
-                  const Icon(
-                    Icons.warning_rounded,
-                    color: Palette.lightRed,
-                    size: 55,
-                  ),
-                  const Text(
-                    "Are you sure you want to delete comment?",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  () async {
-                    await _commentProvider.delete(comment.id!);
-                    if (mounted) {
-                      setState(() {
-                        _commentFuture = _commentProvider.get(
-                          filter: {
-                            "UserId": "${widget.user.id}",
-                            "NewestFirst": "true",
-                            "Page": "$page",
-                            "PageSize": "$pageSize",
-                          },
-                        );
-                      });
-                    }
-
-                    showSuccessPopup(context);
-                  },
-                );
-              },
-              tileColor: const Color.fromRGBO(18, 18, 18, 1),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void showSuccessPopup(BuildContext context) {
-    Future<void> _showSuccessDialog(String message) async {
-      await showDialog(
-        context: context,
-        barrierDismissible: true, // user can tap outside to close
-        builder: (context) {
-          return Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            backgroundColor: Colors.black,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.task_alt_rounded, color: Color.fromRGBO(102, 204, 204, 1), size: 64),
-                  const SizedBox(height: 16),
-                  Text(
-                    message, // display the passed message
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      );
-    }
-
-  }
-void showConfirmationDialog(
-  BuildContext context,
-  Widget icon,
-  Widget text,
-  VoidCallback onConfirm,
-) {
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) {
-      return Dialog(
-        backgroundColor: Colors.black, // Set background to black
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10), // Rounded corners for subtle look
-        ),
-        elevation: 8, // Slight shadow to give depth
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: 320), // Match the width to the success dialog
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0), // Reduced padding
-            child: Column(
-              mainAxisSize: MainAxisSize.min, // Makes the dialog fit content
-              crossAxisAlignment: CrossAxisAlignment.center, // Center the content
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10.0), // Space for the icon
-                  child: icon,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0), // Space for text
-                  child: text,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Cancel button (White)
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        backgroundColor: Color(0xFF15543F),
-                        foregroundColor: Colors.white, // White text color
-                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                        minimumSize: Size.zero, // No extra space around button
-                        side: BorderSide.none, // No border for buttons
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6.0),
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context); // Close dialog on cancel
-                      },
-                      child: const Text(
-                        "No",
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    const SizedBox(width: 16), // Increased space between buttons
-
-                    // Delete button (Red)
-                    Container(
-                      decoration: BoxDecoration(
-                        gradient: Palette.buttonGradient, // Apply gradient here
-                        borderRadius: BorderRadius.circular(6.0), // Rounded corners
-                      ),
-                      child: TextButton(
-                        style: TextButton.styleFrom(
-                          foregroundColor: Colors.white, // White text color (for better contrast)
-                          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                          minimumSize: Size.zero, // No extra space around button
-                          side: BorderSide.none, // No border for buttons
-                        ),
-                        onPressed: () {
-                          onConfirm(); // Perform delete action
-                          Navigator.pop(context); // Close dialog
-                        },
-                        child: const Text(
-                          "Yes",
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    },
-  );
-}
-
-
+ void showConfirmationDialog(
+   BuildContext context,
+   Widget icon,
+   Widget text,
+   VoidCallback onConfirm,
+ ) {
+   showDialog(
+     context: context,
+     barrierDismissible: false,
+     builder: (BuildContext context) {
+       return Dialog(
+         backgroundColor: Colors.black,
+         shape: RoundedRectangleBorder(
+           borderRadius: BorderRadius.circular(10),
+         ),
+         elevation: 8,
+         child: ConstrainedBox(
+           constraints: const BoxConstraints(maxWidth: 320),
+           child: Padding(
+             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
+             child: Column(
+               mainAxisSize: MainAxisSize.min,
+               children: <Widget>[
+                 icon,
+                 const SizedBox(height: 10),
+                 text,
+                 const SizedBox(height: 20),
+                 Row(
+                   mainAxisAlignment: MainAxisAlignment.center,
+                   children: [
+                     // No Button
+                     TextButton(
+                       style: TextButton.styleFrom(
+                         backgroundColor: const Color(0xFF15543F),
+                         foregroundColor: Colors.white,
+                         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                         shape: RoundedRectangleBorder(
+                           borderRadius: BorderRadius.circular(6.0),
+                         ),
+                       ),
+                       onPressed: () {
+                         Navigator.pop(context);
+                       },
+                       child: const Text(
+                         "No",
+                         style: TextStyle(
+                           color: Colors.white,
+                           fontWeight: FontWeight.bold,
+                         ),
+                       ),
+                     ),
+                     const SizedBox(width: 16),
+                     // Yes Button
+                     Container(
+                       decoration: BoxDecoration(
+                         gradient: Palette.buttonGradient,
+                         borderRadius: BorderRadius.circular(6.0),
+                       ),
+                       child: TextButton(
+                         style: TextButton.styleFrom(
+                           foregroundColor: Colors.white,
+                           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                         ),
+                         onPressed: () {
+                           Navigator.pop(context); // Close confirmation first
+                           onConfirm(); // Then perform delete & show success
+                         },
+                         child: const Text(
+                           "Yes",
+                           style: TextStyle(
+                             color: Colors.white,
+                             fontWeight: FontWeight.bold,
+                           ),
+                         ),
+                       ),
+                     ),
+                   ],
+                 ),
+               ],
+             ),
+           ),
+         ),
+       );
+     },
+   );
+ }
 }

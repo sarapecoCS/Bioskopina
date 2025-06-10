@@ -157,22 +157,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(9),
                     child: _base64Image == null
                         ? const SizedBox(
-                            width: 400,
+                            width: 200,
                             height: 200,
                             child: Center(child: Icon(Icons.person, size: 80)))
                         : Image.memory(
                             imageFromBase64String(_base64Image!),
-                            width: 400,
-                            height: 200,
+                            width: 300,
+                            height: 230,
                             fit: BoxFit.cover,
                           ),
                   ),
                   const SizedBox(height: 8),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Tooltip(
                         message: "Date joined",

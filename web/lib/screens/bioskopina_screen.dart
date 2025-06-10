@@ -87,6 +87,7 @@ void showDeletedSuccessDialog(BuildContext context) {
 
 
   @override
+  @override
   Widget build(BuildContext context) {
     return MasterScreenWidget(
       titleWidget: Row(
@@ -107,47 +108,84 @@ void showDeletedSuccessDialog(BuildContext context) {
       showSearch: true,
       onSubmitted: _search,
       controller: _bioskopinaController,
-      child: FutureBuilder<SearchResult<Bioskopina>>(
-        future: _bioskopinaFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const MyProgressIndicator();
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}', style: const TextStyle(color: Colors.red)));
-          } else {
-            var bioskopinaList = snapshot.data?.result ?? [];
-            if (bioskopinaList.isEmpty) {
-              return const Center(
-                child: Text(
-                  'No movies found.',
-                  style: TextStyle(color: Colors.white70, fontSize: 18),
-                ),
-              );
-            }
-            return ScrollbarTheme(
-              data: ScrollbarThemeData(
-                thumbColor: MaterialStateProperty.all(Palette.lightPurple),
-                thickness: MaterialStateProperty.all(6),
-                radius: const Radius.circular(10),
-              ),
-              child: Scrollbar(
-                controller: _scrollController,
-                thumbVisibility: true,
-                child: SingleChildScrollView(
-                  controller: _scrollController,
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                  child: Center(
-                    child: Wrap(
-                      spacing: 16,
-                      runSpacing: 16,
-                      children: _buildBioskopinaCards(bioskopinaList),
+      child: Column(
+        children: [
+          // Beautiful Black Wave Movie Quote Header
+          Padding(
+            padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
+            child: Center(
+              child: Text(
+                'Truth hides in the shadows between frames',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+
+                  fontFamily: 'PlayfairDisplay',
+                  // Or replace with your custom font if desired
+                  shadows: [
+                    Shadow(
+                      offset: Offset(1.5, 1.5),
+                      blurRadius: 4.0,
+                      color: Colors.black87,
                     ),
-                  ),
+                  ],
                 ),
               ),
-            );
-          }
-        },
+            ),
+          ),
+
+          // The FutureBuilder below displays your movies
+          Expanded(
+            child: FutureBuilder<SearchResult<Bioskopina>>(
+              future: _bioskopinaFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const MyProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text(
+                      'Error: ${snapshot.error}',
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                  );
+                } else {
+                  var bioskopinaList = snapshot.data?.result ?? [];
+                  if (bioskopinaList.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        'No movies found.',
+                        style: TextStyle(color: Colors.white70, fontSize: 18),
+                      ),
+                    );
+                  }
+                  return ScrollbarTheme(
+                    data: ScrollbarThemeData(
+                      thumbColor: MaterialStateProperty.all(Palette.lightPurple),
+                      thickness: MaterialStateProperty.all(6),
+                      radius: const Radius.circular(10),
+                    ),
+                    child: Scrollbar(
+                      controller: _scrollController,
+                      thumbVisibility: true,
+                      child: SingleChildScrollView(
+                        controller: _scrollController,
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                        child: Center(
+                          child: Wrap(
+                            spacing: 16,
+                            runSpacing: 16,
+                            children: _buildBioskopinaCards(bioskopinaList),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
