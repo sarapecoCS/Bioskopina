@@ -90,35 +90,38 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
- Future<void> _showSuccessDialog(String message) async {
-   await showDialog<void>(
-     context: context,
-     builder: (ctx) => AlertDialog(
-       backgroundColor: Palette.darkPurple, // Set dialog background color
-       content: Text(
-         message,
-         style: const TextStyle(
-           fontWeight: FontWeight.w600,
-           fontSize: 18,
-           color: Colors.white, // Make text white for contrast
-         ),
-       ),
-       actions: [
-         TextButton(
-           onPressed: () => Navigator.of(ctx).pop(),
-           child: const Text(
-             "OK",
-             style: TextStyle(color: Colors.white), // OK button text white
-           ),
-           style: TextButton.styleFrom(
-             // Optionally, you can add a splash color or background on press
-             // backgroundColor: Palette.darkPurple, // if needed
-           ),
-         ),
-       ],
-     ),
-   );
- }
+Future<void> _showSuccessDialog(String message) async {
+  await showDialog(
+    context: context,
+    barrierDismissible: true, // user can tap outside to close
+    builder: (context) {
+      return Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        backgroundColor: Colors.black,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.task_alt_rounded, color: Color.fromRGBO(102, 204, 204, 1), size: 64),
+              const SizedBox(height: 16),
+              Text(
+                message, // display the passed message
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
 
   Future<void> _saveMovieData() async {
     if (_formKey.currentState?.saveAndValidate() ?? false) {

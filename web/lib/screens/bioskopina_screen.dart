@@ -11,6 +11,7 @@ import '../utils/colors.dart';
 import '../widgets/circular_progress_indicator.dart';
 import 'bioskopina_detail_screen.dart';
 import 'bioskopina_add_screen.dart';
+import '../widgets/custom_dialogs.dart';
 
 class BioskopinaScreen extends StatefulWidget {
   const BioskopinaScreen({super.key});
@@ -28,7 +29,6 @@ class _BioskopinaScreenState extends State<BioskopinaScreen> {
   final ScrollController _scrollController = ScrollController();
   bool isSearching = false;
 
-  // Hover states
   int? _hoveredCardIndex;
   String? _hoveredMenuItem;
 
@@ -52,7 +52,6 @@ class _BioskopinaScreenState extends State<BioskopinaScreen> {
     if (mounted) {
       setState(() {
         _bioskopinaFuture = _bioskopinaProvider.get(filter: {
-
           "NewestFirst": "true",
           if (isSearching) "FTS": _bioskopinaController.text,
         });
@@ -82,36 +81,10 @@ class _BioskopinaScreenState extends State<BioskopinaScreen> {
     super.dispose();
   }
 
-  void showDeletedSuccessDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return Dialog(
-          backgroundColor: const Color(0xFF0A0A0A), // super dark black
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: const [
-                Text(
-                  'Deleted successfully',
-                  style: TextStyle(color: Colors.white, fontSize: 18),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
+void showDeletedSuccessDialog(BuildContext context) {
+  showCustomSuccessDialog(context);
+}
 
-    Future.delayed(const Duration(milliseconds: 1500), () {
-      if (Navigator.canPop(context)) {
-        Navigator.pop(context);
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -302,7 +275,6 @@ class _BioskopinaScreenState extends State<BioskopinaScreen> {
           height: 480,
           decoration: BoxDecoration(
             color: const Color(0xFF18171B),
-
             borderRadius: BorderRadius.circular(15),
             border: Border.all(color: Palette.lightPurple.withOpacity(isHovered ? 1.0 : 0.3), width: 2),
             boxShadow: isHovered
@@ -318,12 +290,11 @@ class _BioskopinaScreenState extends State<BioskopinaScreen> {
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(15),
-            child: SingleChildScrollView(  // <-- Wrap with SingleChildScrollView
-              padding: const EdgeInsets.only(bottom: 10), // optional padding for scroll
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.only(bottom: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Movie image
                   ClipRRect(
                     borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
                     child: SizedBox(
@@ -362,7 +333,6 @@ class _BioskopinaScreenState extends State<BioskopinaScreen> {
                       ),
                     ),
                   ),
-                  // Director
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
                     child: Text(
@@ -372,11 +342,9 @@ class _BioskopinaScreenState extends State<BioskopinaScreen> {
                       style: const TextStyle(
                         color: Colors.white70,
                         fontSize: 14,
-
                       ),
                     ),
                   ),
-                  // Score row
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Row(
@@ -401,7 +369,6 @@ class _BioskopinaScreenState extends State<BioskopinaScreen> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  // Actions
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
                     child: Row(

@@ -59,90 +59,113 @@ class _ReportsScreenState extends State<ReportsScreen> {
     setState(() => isLoading = false);
   }
 
-  Future<void> _exportPdf() async {
-    double pixelRatio = MediaQuery.of(context).devicePixelRatio;
+ Future<void> _exportPdf() async {
+   double pixelRatio = MediaQuery.of(context).devicePixelRatio;
 
-    ui.Image? chartImage = await _screenshotController.captureAsUiImage(pixelRatio: pixelRatio);
-    if (chartImage == null) return;
+   ui.Image? chartImage = await _screenshotController.captureAsUiImage(pixelRatio: pixelRatio);
+   if (chartImage == null) return;
 
-    ByteData? byteData = await chartImage.toByteData(format: ui.ImageByteFormat.png);
-    if (byteData == null) return;
+   ByteData? byteData = await chartImage.toByteData(format: ui.ImageByteFormat.png);
+   if (byteData == null) return;
 
-    Uint8List chartBytes = byteData.buffer.asUint8List();
+   Uint8List chartBytes = byteData.buffer.asUint8List();
 
-    final ByteData logoData = await rootBundle.load("assets/images/logoFilled.png");
-    final Uint8List logoBytes = logoData.buffer.asUint8List();
+   final ByteData logoData = await rootBundle.load("assets/images/logoFilled.png");
+   final Uint8List logoBytes = logoData.buffer.asUint8List();
 
-    final pdf = pw.Document();
+   final pdf = pw.Document();
 
-    pdf.addPage(
-      pw.Page(
-        build: (context) {
-          return pw.Column(
-            children: [
-              pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.center,
-                children: [
-                  pw.Image(pw.MemoryImage(logoBytes), width: 80),
-                  pw.SizedBox(width: 20),
-                  pw.Text(
-                    'Top 5 Black Wave Movies Report',
-                    style: pw.TextStyle(fontSize: 22, color: PdfColor.fromHex("#0C0B1E")),
-                  ),
-                ],
-              ),
-              pw.Divider(),
-              if (includeTopBioskopinaInPdf)
-                pw.Image(pw.MemoryImage(chartBytes), width: 500),
-              pw.SizedBox(height: 10),
-              if (includeTopBioskopinaInPdf)
-                pw.Text(
-                  'Top 5 Black Wave Movies',
-                  style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold),
-                ),
-            ],
-          );
-        },
-      ),
-    );
+   // Get Top 2 movies
+   final topMovies = popularBioskopinaData.take(2).toList();
 
-    final filePath = await FilePicker.platform.saveFile(
-      dialogTitle: "Save PDF Report",
-      fileName: 'Top_Black_Wave_Movies_Report_${DateFormat('yyyyMMdd').format(DateTime.now())}.pdf',
-      type: FileType.custom,
-      allowedExtensions: ['pdf'],
-    );
+   pdf.addPage(
+     pw.Page(
+       build: (context) {
+         return pw.Column(
+           crossAxisAlignment: pw.CrossAxisAlignment.center,
+           children: [
+             pw.Row(
+               mainAxisAlignment: pw.MainAxisAlignment.center,
+               children: [
+                 pw.Image(pw.MemoryImage(logoBytes), width: 80),
+                 pw.SizedBox(width: 20),
+                 pw.Text(
+                   'Top 5 Black Wave Movies Report',
+                   style: pw.TextStyle(fontSize: 22, color: PdfColor.fromHex("#0C0B1E")),
+                 ),
+               ],
+             ),
+             pw.Divider(),
+             if (includeTopBioskopinaInPdf)
+               pw.Image(pw.MemoryImage(chartBytes), width: 500),
+             pw.SizedBox(height: 10),
+             pw.Text(
+               'Top 2 Movies Details',
+               style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold),
+             ),
+             pw.SizedBox(height: 10),
+             // Movie details
+             pw.Column(
+               crossAxisAlignment: pw.CrossAxisAlignment.start,
+               children: topMovies.map((movie) {
+                 return pw.Container(
+                   margin: const pw.EdgeInsets.only(bottom: 8),
+                   child: pw.Bullet(
+                     text:
+                         '${movie.bioskopinaTitleEN ?? "Unknown"} - Score: ${movie.score?.toStringAsFixed(1) ?? "N/A"}',
+                     style: pw.TextStyle(fontSize: 12),
+                   ),
+                 );
+               }).toList(),
+             ),
+           ],
+         );
+       },
+     ),
+   );
 
-    if (filePath != null) {
-      final file = File(filePath);
-      if (!filePath.endsWith('.pdf')) {
-        await File('$filePath.pdf').writeAsBytes(await pdf.save());
-      } else {
-        await file.writeAsBytes(await pdf.save());
-      }
-      if (!mounted) return;
+   final filePath = await FilePicker.platform.saveFile(
+     dialogTitle: "Save PDF Report",
+     fileName: 'Top_Black_Wave_Movies_Report_${DateFormat('yyyyMMdd').format(DateTime.now())}.pdf',
+     type: FileType.custom,
+     allowedExtensions: ['pdf'],
+   );
 
-      showDialog(
-        context: context,
-        builder: (ctx) {
-          return AlertDialog(
-            backgroundColor: Colors.black,
-            title: const Text('Success'),
-            content: const Text('PDF saved successfully!'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(ctx).pop();
-                },
-                child: const Text('Ok', style: TextStyle(color: Colors.white),),
+   if (filePath != null) {
+     final file = File(filePath);
+     if (!filePath.endsWith('.pdf')) {
+       await File('$filePath.pdf').writeAsBytes(await pdf.save());
+     } else {
+       await file.writeAsBytes(await pdf.save());
+     }
+     if (!mounted) return;
 
-              ),
-            ],
-          );
-        },
-      );
-    }
-  }
+     showDialog(
+       context: context,
+       builder: (ctx) {
+         return AlertDialog(
+           backgroundColor: Colors.black,
+           contentPadding: const EdgeInsets.all(20),
+           content: Column(
+             mainAxisSize: MainAxisSize.min,
+             children: const [
+               const Icon(Icons.task_alt_rounded, color: Color.fromRGBO(102, 204, 204, 1), size: 64),
+               SizedBox(height: 10),
+               Text(
+                 'Success',
+                 style: TextStyle(
+                   color: Colors.white,
+                   fontSize: 18,
+                 ),
+               ),
+             ],
+           ),
+         );
+       },
+     );
+   }
+ }
+
 
   @override
   Widget build(BuildContext context) {

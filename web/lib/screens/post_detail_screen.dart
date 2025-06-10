@@ -126,7 +126,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 25.0),
       child: Container(
-        constraints: BoxConstraints(maxWidth: 800), // Set a maxWidth
+        constraints: BoxConstraints(maxWidth: 800),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [Palette.darkPurple, Palette.black],
@@ -157,18 +157,16 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              // Large, full-width image to create a cinematic look
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
                 child: Image.asset(
-                  'assets/images/movie_icon.png', // Replace with your asset path
+                  'assets/images/movie_icon.png',
                   width: double.infinity,
                   height: 250,
                   fit: BoxFit.cover,
                 ),
               ),
               const SizedBox(height: 20),
-              // Movie content description
               Text(
                 post.content ?? "No Content",
                 style: TextStyle(
@@ -212,14 +210,13 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
         child: Column(
           children: [
             _buildPost(widget.post),
-            // Removed separator line below
           ],
         ),
       ),
     );
   }
 
-  // Handle errors
+  // Error dialog (unchanged)
   void showErrorDialog(BuildContext context, dynamic error) {
     showDialog(
       context: context,
@@ -235,6 +232,33 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  // New: Clean, dark Success dialog (same as in ReportsScreen)
+  void showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          backgroundColor: Colors.black,
+          contentPadding: const EdgeInsets.all(20),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: const [
+               const Icon(Icons.task_alt_rounded, color: Color.fromRGBO(102, 204, 204, 1), size: 64),
+              SizedBox(height: 10),
+              Text(
+                'Success',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

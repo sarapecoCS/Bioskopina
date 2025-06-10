@@ -304,83 +304,92 @@ class _PostsScreenState extends State<PostsScreen> {
       ),
     );
   }
+ConstrainedBox _buildPopupMenu(Post post) {
+  return ConstrainedBox(
+    constraints: const BoxConstraints(maxHeight: 23),
+    child: Container(
+      padding: EdgeInsets.zero,
+      child: Row(
+        children: [
+          PopupMenuButton<String>(
+            tooltip: "More actions",
+            offset: const Offset(195, 0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+              side: BorderSide(color: Palette.lightPurple.withOpacity(0.3)),
+            ),
+            icon: const Icon(Icons.more_vert_rounded),
+            splashRadius: 1,
+            padding: EdgeInsets.zero,
+            color: Colors.black,
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              PopupMenuItem<String>(
+                child: ListTile(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(0.3),
+                  ),
+                  hoverColor: Palette.lightRed.withOpacity(0.1),
+                  leading: const Icon(Icons.delete, size: 24),
+                  title: const Text(
+                    'Delete',
+                    style: TextStyle(color: Palette.lightRed),
+                  ),
+                  subtitle: Container(
+                    child: Text(
+                      'Delete permanently',
+                      style: TextStyle(color: Palette.lightRed.withOpacity(0.5)),
+                    ),
+                  ),
+                  onTap: () async {
+                    Navigator.pop(context); // Close popup menu
 
-  ConstrainedBox _buildPopupMenu(Post post) {
-    return ConstrainedBox(
-      constraints: const BoxConstraints(maxHeight: 23),
-      child: Container(
-        padding: EdgeInsets.zero,
-        child: Row(
-          children: [
-            PopupMenuButton<String>(
-              tooltip: "More actions",
-              offset: const Offset(195, 0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                side: BorderSide(color: Palette.lightPurple.withOpacity(0.3)),
-              ),
-              icon: const Icon(Icons.more_vert_rounded),
-              splashRadius: 1,
-              padding: EdgeInsets.zero,
-              color:  Colors.black,
-              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                PopupMenuItem<String>(
-                  child: ListTile(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    hoverColor: Palette.lightRed.withOpacity(0.1),
-                    leading: Icon(Icons.delete, size: 24),
-                    title: const Text('Delete',
-                        style: TextStyle(color: Palette.lightRed)),
-                    subtitle: Container(
-                      child: Text('Delete permanently',
-                          style: TextStyle(
-                              color: Palette.lightRed.withOpacity(0.5))),
-                    ),
-                    onTap: () async {
-                      Navigator.pop(context);
-                      showConfirmationDialog(
-                          context,
-                          const Icon(Icons.warning_rounded,
-                              color: Palette.lightRed, size: 55),
-                          const Text(
-                              "Are you sure you want to delete this post?"),
-                          () async {
+                    // Show confirmation dialog
+                    showConfirmationDialog(
+                      context,
+                      const Icon(Icons.warning_rounded, color: Palette.lightRed, size: 55),
+                      const Text("Are you sure you want to delete this post?"),
+                      () async {
+                        // On confirm delete:
                         await _postProvider.delete(post.id!);
 
-                        Navigator.pop(context); // close confirmation dialog
-                        // Show simple "Deleted successfully" dialog
+                        Navigator.pop(context); // Close confirmation dialog
+
+                        // Show success dialog with icon
                         showDialog(
                           context: context,
-                          builder: (context) => AlertDialog(
-                            backgroundColor: Palette.darkPurple,
-                            content: const Text(
-                              'Deleted successfully',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: const Text(
-                                  'OK',
-                                  style: TextStyle(color: Colors.white),
-                                ),
+                          builder: (ctx) {
+                            return AlertDialog(
+                              backgroundColor: Colors.black,
+                              contentPadding: const EdgeInsets.all(20),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: const [
+                                  Icon(Icons.task_alt_rounded, color: Color.fromRGBO(102, 204, 204, 1), size: 64),
+                                  SizedBox(height: 10),
+                                  Text(
+                                    'Deleted successfully',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            );
+                          },
                         );
 
-                        _reloadData();
-                      });
-                    },
-                  ),
+                        _reloadData(); // Refresh UI or data after delete
+                      },
+                    );
+                  },
                 ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
 }

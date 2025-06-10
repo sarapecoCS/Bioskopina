@@ -406,42 +406,38 @@ class _CommentsScreenState extends State<CommentsScreen> {
   }
 
   void showSuccessPopup(BuildContext context) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: const Color.fromRGBO(18, 18, 18, 1),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          title: const Text(
-            'Deleted Successfully!',
-            style: TextStyle(color: Colors.white),
-          ),
-          content: const Text(
-            'The comment has been deleted permanently.',
-            style: TextStyle(color: Colors.white),
-          ),
-          actions: <Widget>[
-            TextButton(
-              style: TextButton.styleFrom(
-                backgroundColor: const Color.fromRGBO(18, 18, 18, 1),
-                 foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text("OK", style: TextStyle(color: Colors.white)),
+    Future<void> _showSuccessDialog(String message) async {
+      await showDialog(
+        context: context,
+        barrierDismissible: true, // user can tap outside to close
+        builder: (context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
             ),
-          ],
-        );
-      },
-    );
+            backgroundColor: Colors.black,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.task_alt_rounded, color: Color.fromRGBO(102, 204, 204, 1), size: 64),
+                  const SizedBox(height: 16),
+                  Text(
+                    message, // display the passed message
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    }
+
   }
 void showConfirmationDialog(
   BuildContext context,

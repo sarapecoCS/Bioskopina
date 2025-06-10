@@ -126,7 +126,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (mounted) {
         showInfoDialog(
           context,
-          const Icon(Icons.task_alt, color: Palette.lightPurple, size: 50),
+          const Icon(Icons.task_alt, color: Color.fromRGBO(102, 204, 204, 1), size: 50),
           const Text("Updated successfully!", textAlign: TextAlign.center),
         );
       }

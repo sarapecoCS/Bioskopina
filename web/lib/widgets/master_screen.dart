@@ -213,7 +213,7 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
       icon: const Icon(Icons.more_vert_rounded),
       splashRadius: 1,
       padding: EdgeInsets.zero,
-      color: const Color.fromRGBO(50, 48, 90, 1),
+      color: Colors.black,
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
         PopupMenuItem<String>(
           child: ListTile(

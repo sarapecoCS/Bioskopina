@@ -282,7 +282,7 @@ class _HelpScreenState extends State<HelpScreen> {
                               showInfoDialog(
                                   context,
                                   const Icon(Icons.task_alt,
-                                      color: Palette.lightPurple, size: 50),
+                                      color: Color.fromRGBO(102, 204, 204, 1), size: 50),
                                   const Text(
                                     "Answered successfully!",
                                     textAlign: TextAlign.center,
@@ -677,7 +677,7 @@ class _HelpScreenState extends State<HelpScreen> {
       if (context.mounted) {
         showInfoDialog(
             context,
-            const Icon(Icons.task_alt, color: Palette.lightPurple, size: 50),
+            const Icon(Icons.task_alt, color: Color.fromRGBO(102, 204, 204, 1), size: 50),
             const Text(
               "Question has been deleted.",
               textAlign: TextAlign.center,
@@ -710,7 +710,7 @@ class _HelpScreenState extends State<HelpScreen> {
         if (context.mounted) {
           showInfoDialog(
               context,
-              const Icon(Icons.task_alt, color: Palette.lightPurple, size: 50),
+              const Icon(Icons.task_alt, color:Color.fromRGBO(102, 204, 204, 1), size: 50),
               (qa.displayed == true)
                   ? const Text(
                 "Question has been hidden.",
