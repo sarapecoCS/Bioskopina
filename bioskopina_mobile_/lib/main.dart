@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import '../providers/recommender_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/recommender_provider.dart';
 import '../providers/donation_provider.dart';
 import '../providers/payment_intent_provider.dart';
 import '../providers/preferred_genre_provider.dart';
@@ -14,7 +14,6 @@ import '../providers/list_provider.dart';
 import '../providers/watchlist_provider.dart';
 import '../providers/bioskopina_provider.dart';
 import '../providers/comment_provider.dart';
-import '../providers/bioskopina_provider.dart';
 import '../providers/genre_provider.dart';
 import '../providers/post_provider.dart';
 import '../providers/qa_category_provider.dart';
@@ -29,38 +28,51 @@ import './utils/colors.dart';
 import './utils/util.dart';
 
 void main() async {
-  Stripe.publishableKey =
-  const String.fromEnvironment('STRIPE_PUBLISHABLE_KEY', defaultValue: "");
+  WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (_) => MovieProvider()),
-    ChangeNotifierProvider(create: (_) => GenreProvider()),
-    ChangeNotifierProvider(create: (_) => GenreProvider()),
-    ChangeNotifierProvider(create: (_) => QAProvider()),
-    ChangeNotifierProvider(create: (_) => QAcategoryProvider()),
-    ChangeNotifierProvider(create: (_) => UserProvider()),
-    ChangeNotifierProvider(create: (_) => UserProfilePictureProvider()),
-    ChangeNotifierProvider(create: (_) => RatingProvider()),
-    ChangeNotifierProvider(create: (_) => UserPostActionProvider()),
-    ChangeNotifierProvider(
-        create: (context) => PostProvider(
-            userPostActionProvider: context.read<UserPostActionProvider>())),
-    ChangeNotifierProvider(create: (_) => UserCommentActionProvider()),
-    ChangeNotifierProvider(
-        create: (context) => CommentProvider(
-            userCommentActionProvider:
-            context.read<UserCommentActionProvider>())),
-    ChangeNotifierProvider(create: (_) => RoleProvider()),
-    ChangeNotifierProvider(create: (_) => UserRoleProvider()),
-    ChangeNotifierProvider(create: (_) => BioskopinaWatchlistProvider()),
-    ChangeNotifierProvider(create: (_) => WatchlistProvider()),
-    ChangeNotifierProvider(create: (_) => ListtProvider()),
-    ChangeNotifierProvider(create: (_) => BioskopinaListProvider()),
-    ChangeNotifierProvider(create: (_) => PreferredGenreProvider()),
-    ChangeNotifierProvider(create: (_) => PaymentIntentProvider()),
-    ChangeNotifierProvider(create: (_) => DonationProvider()),
-    ChangeNotifierProvider(create: (_) => RecommenderProvider()),
-  ], child: const MyMaterialApp()));
+  Stripe.publishableKey =
+      const String.fromEnvironment('STRIPE_PUBLISHABLE_KEY', defaultValue: "");
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => MovieProvider()),
+        ChangeNotifierProvider(create: (_) => GenreProvider()),
+        ChangeNotifierProvider(create: (_) => QAProvider()),
+        ChangeNotifierProvider(create: (_) => QAcategoryProvider()),
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => UserProfilePictureProvider()),
+        ChangeNotifierProvider(create: (_) => RatingProvider()),
+        ChangeNotifierProvider(create: (_) => UserPostActionProvider()),
+
+        // ProxyProvider for PostProvider
+        ProxyProvider<UserPostActionProvider, PostProvider>(
+          update: (_, userPostActionProvider, __) =>
+              PostProvider(userPostActionProvider: userPostActionProvider),
+        ),
+
+        ChangeNotifierProvider(create: (_) => UserCommentActionProvider()),
+
+        // ProxyProvider for CommentProvider
+        ProxyProvider<UserCommentActionProvider, CommentProvider>(
+          update: (_, userCommentActionProvider, __) =>
+              CommentProvider(userCommentActionProvider: userCommentActionProvider),
+        ),
+
+        ChangeNotifierProvider(create: (_) => RoleProvider()),
+        ChangeNotifierProvider(create: (_) => UserRoleProvider()),
+        ChangeNotifierProvider(create: (_) => BioskopinaWatchlistProvider()),
+        ChangeNotifierProvider(create: (_) => WatchlistProvider()),
+        ChangeNotifierProvider(create: (_) => ListtProvider()),
+        ChangeNotifierProvider(create: (_) => BioskopinaListProvider()),
+        ChangeNotifierProvider(create: (_) => PreferredGenreProvider()),
+        ChangeNotifierProvider(create: (_) => PaymentIntentProvider()),
+        ChangeNotifierProvider(create: (_) => DonationProvider()),
+        ChangeNotifierProvider(create: (_) => RecommenderProvider()),
+      ],
+      child: const MyMaterialApp(),
+    ),
+  );
 }
 
 class MyMaterialApp extends StatelessWidget {
@@ -75,10 +87,10 @@ class MyMaterialApp extends StatelessWidget {
         primarySwatch: generateMaterialColor(Palette.darkPurple),
         scaffoldBackgroundColor: Palette.midnightPurple,
         textTheme: Theme.of(context).textTheme.apply(
-          bodyColor: Palette.lightPurple,
-          displayColor: const Color.fromARGB(255, 90, 83, 155),
-          decorationColor: Palette.lightPurple,
-        ),
+              bodyColor: Palette.lightPurple,
+              displayColor: const Color.fromARGB(255, 90, 83, 155),
+              decorationColor: Palette.lightPurple,
+            ),
         pageTransitionsTheme: PageTransitionsTheme(
           builders: {
             TargetPlatform.android: MyCustomPageTransitionBuilder(),
@@ -90,46 +102,58 @@ class MyMaterialApp extends StatelessWidget {
           selectedColor: Palette.rose,
           checkmarkColor: Palette.midnightPurple,
           backgroundColor: Palette.textFieldPurple,
-          labelPadding: EdgeInsets.only(
-            left: 5,
-            right: 5,
-            top: 0,
-            bottom: 0,
-          ),
+          labelPadding: EdgeInsets.symmetric(horizontal: 5),
         ),
         textSelectionTheme: TextSelectionThemeData(
-            cursorColor: Palette.lightPurple,
-            selectionColor: Palette.midnightPurple.withOpacity(0.6),
-            selectionHandleColor: Colors.transparent),
+          cursorColor: Palette.lightPurple,
+          selectionColor: Palette.midnightPurple.withOpacity(0.6),
+          selectionHandleColor: Colors.transparent,
+        ),
         appBarTheme: const AppBarTheme(
-            backgroundColor: Palette.darkPurple,
-            titleTextStyle: TextStyle(
-                color: Palette.lightPurple,
-                fontSize: 20,
-                fontWeight: FontWeight.w500)),
+          backgroundColor: Palette.darkPurple,
+          titleTextStyle: TextStyle(
+            color: Palette.lightPurple,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ElevatedButton.styleFrom(
-                foregroundColor: Palette.white,
-                backgroundColor: Palette.teal.withOpacity(0.5),
-                textStyle: const TextStyle(color: Palette.white))),
+          style: ElevatedButton.styleFrom(
+            foregroundColor: Palette.white,
+            backgroundColor: Palette.teal.withOpacity(0.5),
+            textStyle: const TextStyle(color: Palette.white),
+          ),
+        ),
         drawerTheme: DrawerThemeData(
           backgroundColor: Palette.midnightPurple,
           scrimColor: Palette.black.withOpacity(0.3),
         ),
         iconTheme: const IconThemeData(color: Palette.lightPurple),
         scrollbarTheme: ScrollbarThemeData(
-            crossAxisMargin: -10,
-            thickness: MaterialStateProperty.all(7),
-            trackBorderColor: MaterialStateProperty.all(Palette.white),
-            thumbColor: MaterialStateProperty.all(
-                Palette.lightPurple.withOpacity(0.5))),
+          crossAxisMargin: -10,
+          thickness: MaterialStateProperty.all(7),
+          trackBorderColor: MaterialStateProperty.all(Palette.white),
+          thumbColor: MaterialStateProperty.all(
+            Palette.lightPurple.withOpacity(0.5),
+          ),
+        ),
         inputDecorationTheme: const InputDecorationTheme(
-            filled: true,
-            fillColor: Palette.darkPurple,
-            labelStyle: TextStyle(color: Palette.lightPurple),
-            helperStyle: TextStyle(color: Palette.lightPurple)),
+          filled: true,
+          fillColor: Palette.darkPurple,
+          labelStyle: TextStyle(color: Palette.lightPurple),
+          helperStyle: TextStyle(color: Palette.lightPurple),
+        ),
       ),
-      home: const LoginScreen(),
+      // TEMP TEST to see if the app stays open - change back to LoginScreen later
+      home: const Scaffold(
+        backgroundColor: Colors.black,
+        body: Center(
+          child: Text(
+            'App is running!',
+            style: TextStyle(color: Colors.white, fontSize: 24),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -137,12 +161,12 @@ class MyMaterialApp extends StatelessWidget {
 class MyCustomPageTransitionBuilder extends PageTransitionsBuilder {
   @override
   Widget buildTransitions<T>(
-      PageRoute<T> route,
-      BuildContext context,
-      Animation<double> animation,
-      Animation<double> secondaryAnimation,
-      Widget child,
-      ) {
+    PageRoute<T> route,
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
     return FadeTransition(
       opacity: animation,
       child: child,

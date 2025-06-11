@@ -19,6 +19,10 @@ class MyFormBuilderTextField extends StatefulWidget {
   String? initialValue;
   int? maxLines;
   int? minLines;
+  final bool? enabled;
+  final TextStyle? style;
+  final TextStyle? disabledStyle;
+
   double? paddingLeft;
   double? paddingRight;
   double? paddingTop;
@@ -32,37 +36,39 @@ class MyFormBuilderTextField extends StatefulWidget {
   Widget? suffixIcon;
 
   MyFormBuilderTextField({
-  super.key,
-  required this.name,
-  this.labelText,
-  this.fillColor,
-  this.obscureText,
-  this.width,
-  this.height,
-  this.borderRadius,
-  this.readOnly,
-  this.keyboardType,
-  this.initialValue,
-  this.maxLines = 1,
-  this.minLines = 1,
-  this.paddingLeft = 0,
-  this.paddingRight = 0,
-  this.paddingTop = 0,
-  this.paddingBottom = 0,
-  this.onChanged,
-  this.validator,
-  this.borderWidth = 0,
-  this.borderColor = Colors.transparent,
-  this.onSubmitted,
-  this.onSaved,
-  this.focusNode,
-  this.contentPadding,
-  this.suffixIcon,
+    super.key,
+    required this.name,
+    this.labelText,
+    this.fillColor,
+    this.obscureText,
+    this.width,
+    this.height,
+    this.borderRadius,
+    this.readOnly,
+    this.keyboardType,
+    this.initialValue,
+    this.maxLines = 1,
+    this.minLines = 1,
+    this.paddingLeft = 0,
+    this.paddingRight = 0,
+    this.paddingTop = 0,
+    this.paddingBottom = 0,
+    this.onChanged,
+    this.validator,
+    this.borderWidth = 0,
+    this.borderColor = Colors.transparent,
+    this.onSubmitted,
+    this.onSaved,
+    this.focusNode,
+    this.contentPadding,
+    this.suffixIcon,
+    this.enabled,
+    this.style,
+    this.disabledStyle,
   });
 
   @override
-  State<MyFormBuilderTextField> createState() =>
-      _MyFormBuilderTextFieldState();
+  State<MyFormBuilderTextField> createState() => _MyFormBuilderTextFieldState();
 }
 
 class _MyFormBuilderTextFieldState extends State<MyFormBuilderTextField> {
@@ -106,7 +112,10 @@ class _MyFormBuilderTextFieldState extends State<MyFormBuilderTextField> {
           keyboardType: widget.keyboardType ?? TextInputType.text,
           readOnly: widget.readOnly ?? false,
           name: widget.name,
-          style: const TextStyle(color: Palette.lightPurple),
+          enabled: widget.enabled ?? true,
+          style: (widget.enabled == false)
+              ? (widget.disabledStyle ?? TextStyle(color: Colors.grey.shade600))
+              : (widget.style ?? const TextStyle(color: Palette.lightPurple)),
           obscuringCharacter: '•',
           obscureText: _obscureText,
           decoration: InputDecoration(
@@ -121,21 +130,23 @@ class _MyFormBuilderTextFieldState extends State<MyFormBuilderTextField> {
             fillColor: _fillColor(),
             labelText: widget.labelText ?? "",
             floatingLabelBehavior: FloatingLabelBehavior.always,
-            labelStyle: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
-              color: Palette.lightPurple,
-            ),
+            labelStyle: (widget.enabled == false)
+                ? (widget.disabledStyle ?? TextStyle(color: Colors.grey.shade600))
+                : const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Palette.lightPurple,
+                  ),
             errorStyle: const TextStyle(color: Palette.lightRed, height: 0.5),
             suffixIcon: widget.suffixIcon ??
                 (widget.obscureText == true
                     ? IconButton(
-                  icon: Icon(
-                    _obscureText ? Icons.visibility_off : Icons.visibility,
-                    color: Palette.lightPurple,
-                  ),
-                  onPressed: _toggleVisibility,
-                )
+                        icon: Icon(
+                          _obscureText ? Icons.visibility_off : Icons.visibility,
+                          color: Palette.lightPurple,
+                        ),
+                        onPressed: _toggleVisibility,
+                      )
                     : null),
           ),
         ),
@@ -157,4 +168,3 @@ class _MyFormBuilderTextFieldState extends State<MyFormBuilderTextField> {
     return widget.fillColor;
   }
 }
-
