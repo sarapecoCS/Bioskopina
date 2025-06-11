@@ -19,8 +19,13 @@ abstract class BaseProvider<T> with ChangeNotifier {
   BaseProvider(String endpoint) {
     _endpoint = endpoint;
 
-    _baseUrl = const String.fromEnvironment("baseUrl",
-        defaultValue: "http://192.168.1.9:5262/");
+    // Use Android emulator localhost alias for Android, otherwise default to LAN IP or environment variable
+    if (Platform.isAndroid) {
+      _baseUrl = "http://10.0.2.2:5262/";
+    } else {
+      _baseUrl = const String.fromEnvironment("baseUrl",
+          defaultValue: "http://192.168.1.9:5262/");
+    }
 
     client.badCertificateCallback = (cert, host, port) => true;
     http = IOClient(client);
@@ -40,7 +45,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
     var response = await http!.get(uri, headers: headers);
 
     if (isValidResponse(response)) {
-      var data = jsonDecode(response.body); //vraća obj u json formatu
+      var data = jsonDecode(response.body);
 
       var result = SearchResult<T>();
       result.count = data['count'];

@@ -7,7 +7,7 @@ part 'bioskopina.g.dart';
 class Bioskopina {
   final int id;
   final String titleEn;
-  final String titleYugo;
+  final String? titleYugo;
   final String synopsis;
   final String director;
   final double score;

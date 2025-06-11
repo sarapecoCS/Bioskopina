@@ -32,6 +32,14 @@ class MyTextField extends StatefulWidget {
 }
 
 class _MyTextFieldState extends State<MyTextField> {
+  bool _obscureText = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _obscureText = widget.obscureText ?? false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -41,29 +49,46 @@ class _MyTextFieldState extends State<MyTextField> {
         controller: widget.controller,
         style: const TextStyle(color: Palette.lightPurple, fontSize: 13),
         textCapitalization: widget.textCapitalization,
-        obscuringCharacter: '✮',
+        // Use dot '•' instead of star '✮' for obscuring character
+        obscuringCharacter: '•',
         keyboardType: widget.keyboardType,
-        obscureText: widget.obscureText ?? false,
+        obscureText: _obscureText,
         decoration: InputDecoration(
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 0, horizontal: 12.0),
-            hintText: widget.hintText ?? "",
-            hintStyle: const TextStyle(
-                height: 0,
-                fontWeight: FontWeight.w400,
-                color: Palette.lightPurple),
-            fillColor: widget.fillColor,
-            enabledBorder: OutlineInputBorder(
-                borderSide:
-                    BorderSide(color: Palette.lightPurple.withOpacity(0.0)),
-                borderRadius: BorderRadius.circular(widget.borderRadius ?? 0)),
-            focusedBorder: OutlineInputBorder(
-                borderSide:
-                    BorderSide(color: Palette.lightPurple.withOpacity(0.8)),
-                borderRadius: BorderRadius.circular(widget.borderRadius ?? 0)),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(widget.borderRadius ?? 0))),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 0, horizontal: 12.0),
+          hintText: widget.hintText ?? "",
+          hintStyle: const TextStyle(
+              height: 0,
+              fontWeight: FontWeight.w400,
+              color: Palette.lightPurple),
+          fillColor: widget.fillColor,
+          enabledBorder: OutlineInputBorder(
+              borderSide:
+                  BorderSide(color: Palette.lightPurple.withOpacity(0.0)),
+              borderRadius: BorderRadius.circular(widget.borderRadius ?? 0)),
+          focusedBorder: OutlineInputBorder(
+              borderSide:
+                  BorderSide(color: Palette.lightPurple.withOpacity(0.8)),
+              borderRadius: BorderRadius.circular(widget.borderRadius ?? 0)),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(widget.borderRadius ?? 0)),
+          // Show eye icon only if obscureText is true (password field)
+          suffixIcon: widget.obscureText == true
+              ? IconButton(
+                  icon: Icon(
+                    _obscureText ? Icons.visibility_off : Icons.visibility,
+                    color: Palette.lightPurple.withOpacity(0.8),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _obscureText = !_obscureText;
+                    });
+                  },
+                )
+              : null,
+        ),
       ),
     );
   }
 }
+

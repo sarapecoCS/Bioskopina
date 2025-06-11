@@ -35,6 +35,9 @@ class MyFormBuilderTextField extends StatefulWidget {
   double? errorHeight;
   EdgeInsetsGeometry? contentPadding;
 
+  // NEW: suffixIcon property
+  final Widget? suffixIcon;
+
   MyFormBuilderTextField({
     super.key,
     required this.name,
@@ -65,6 +68,7 @@ class MyFormBuilderTextField extends StatefulWidget {
     this.focusNode,
     this.errorHeight,
     this.contentPadding,
+    this.suffixIcon,  // NEW: add suffixIcon here
   });
 
   @override
@@ -101,10 +105,9 @@ class _MyFormBuilderTextFieldState extends State<MyFormBuilderTextField> {
           name: widget.name,
           style: const TextStyle(
             color: Palette.lightPurple,
-            //height: 1,
             fontSize: 13,
           ),
-          obscuringCharacter: '✮',
+          obscuringCharacter: '•',
           obscureText: widget.obscureText ?? false,
           decoration: InputDecoration(
             contentPadding: widget.contentPadding ??
@@ -144,6 +147,9 @@ class _MyFormBuilderTextFieldState extends State<MyFormBuilderTextField> {
                 width: widget.borderWidth ?? 0,
               ),
             ),
+
+            // NEW: Pass suffixIcon here
+            suffixIcon: widget.suffixIcon,
           ),
         ),
       ),

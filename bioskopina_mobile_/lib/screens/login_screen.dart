@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:glass/glass.dart';
-import '../models/user_role.dart';
 import 'package:provider/provider.dart';
 
+import '../models/user_role.dart';
 import '../providers/user_comment_action_provider.dart';
 import '../providers/user_post_action_provider.dart';
-import '../screens/home_screen.dart';
-import '../screens/registration_screen.dart';
 import '../providers/bioskopina_provider.dart';
 import '../providers/user_provider.dart';
+import '../screens/home_screen.dart';
+import '../screens/registration_screen.dart';
 import '../utils/colors.dart';
 import '../utils/util.dart';
 import '../widgets/gradient_button.dart';
@@ -32,9 +32,9 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
-    double? containerWidth = screenSize.width * 0.95;
-    double? containerHeight = screenSize.height * 0.67;
-    double? textFieldWidth = containerWidth * 0.9;
+    double containerWidth = screenSize.width * 0.95;
+    double containerHeight = screenSize.height * 0.78;
+    double textFieldWidth = containerWidth * 0.9;
 
     _movieProvider = context.read<MovieProvider>();
     _userProvider = context.read<UserProvider>();
@@ -95,17 +95,17 @@ class _LoginScreenState extends State<LoginScreen> {
                         Authorization.username = username;
                         Authorization.password = password;
 
-                          try {
-                             print("🔄 Calling movieProvider.get()");
-                             await _movieProvider.get();
-                             print("✅ movieProvider.get() done");
+                        try {
+                          print("🔄 Calling movieProvider.get()");
+                          await _movieProvider.get();
+                          print("✅ movieProvider.get() done");
 
-                             print("🔍 Fetching user by username...");
-                             var userResult = await _userProvider.get(filter: {
-                               "RolesIncluded": "true",
-                               "Username": username,
-                               "ProfilePictureIncluded": "true",
-                             });
+                          print("🔍 Fetching user by username...");
+                          var userResult = await _userProvider.get(filter: {
+                            "RolesIncluded": "true",
+                            "Username": username,
+                            "ProfilePictureIncluded": "true",
+                          });
 
                           print("📦 User result count: ${userResult.count}");
 
@@ -115,10 +115,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             List<UserRole> userRoles =
                                 userResult.result.first.userRoles ?? [];
 
-                            print("✅ User roles: ${userRoles.map((e) => e.roleId).toList()}");
+                            print(
+                                "✅ User roles: ${userRoles.map((e) => e.roleId).toList()}");
 
                             if (userRoles.any((role) => role.roleId == 2)) {
-                              print("✅ User has required role. Navigating to HomeScreen.");
+                              print(
+                                  "✅ User has required role. Navigating to HomeScreen.");
 
                               if (context.mounted) {
                                 Navigator.of(context).pushReplacement(
@@ -212,7 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ));
                         },
                         child: const Text(
-                          "Not registered?",
+                          "Don't have an account? Sign up",
                           style: TextStyle(
                               color: Palette.lightPurple,
                               fontWeight: FontWeight.normal),

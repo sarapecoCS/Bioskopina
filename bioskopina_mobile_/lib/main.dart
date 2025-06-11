@@ -27,7 +27,7 @@ import '../screens/login_screen.dart';
 import './utils/colors.dart';
 import './utils/util.dart';
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   Stripe.publishableKey =
@@ -144,20 +144,12 @@ class MyMaterialApp extends StatelessWidget {
           helperStyle: TextStyle(color: Palette.lightPurple),
         ),
       ),
-      // TEMP TEST to see if the app stays open - change back to LoginScreen later
-      home: const Scaffold(
-        backgroundColor: Colors.black,
-        body: Center(
-          child: Text(
-            'App is running!',
-            style: TextStyle(color: Colors.white, fontSize: 24),
-          ),
-        ),
-      ),
+      home: const LoginScreen(), // Your login screen set as home
     );
   }
 }
 
+// 👇👇 You forgot this part — ADD THIS BACK
 class MyCustomPageTransitionBuilder extends PageTransitionsBuilder {
   @override
   Widget buildTransitions<T>(
