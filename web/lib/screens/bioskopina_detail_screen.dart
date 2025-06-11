@@ -367,7 +367,7 @@ Future<void> _showSuccessDialog(String message) async {
           const SizedBox(height: 16),
           MyFormBuilderTextField(
             name: 'score',
-            labelText: 'This value is system-generated and cannot be modified.',
+            labelText: 'This value is system-generated and cannot be modified',
             enabled: false,
             keyboardType: TextInputType.number,
              disabledStyle: TextStyle(color: Colors.grey.shade600),
