@@ -218,8 +218,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     paddingBottom: 10,
                                     hideBorder: true,
                                     gradient: const LinearGradient(colors: [
-                                      Palette.buttonRed,
-                                      Palette.buttonRed,
+                                       Color.fromRGBO(38, 70, 64, 1.0),
+                                            Color.fromRGBO(38, 70, 64, 1.0),
                                     ]),
                                     child: const Row(
                                       mainAxisAlignment:

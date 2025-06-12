@@ -31,52 +31,54 @@ class _ExploreScreenState extends State<ExploreScreen> {
   int page = 0;
   int pageSize = 10;
 
-
   Map<String, dynamic> _filter = {
     "GetEmptyList": "true",
   };
 
   @override
   void initState() {
+    super.initState();
     _genreProvider = context.read<GenreProvider>();
     _bioskopinaProvider = context.read<MovieProvider>();
     _genreFuture = _genreProvider.get(filter: {"SortAlphabetically": "true"});
-
-    super.initState();
   }
 
   @override
-  Widget build(BuildContext context) {
-    return MasterScreenWidget(
-      selectedIndex: widget.selectedIndex,
-      showNavBar: true,
-      showProfileIcon: false,
-      controller: _searchController,
-      showSearch: true,
-      onSubmitted: _search,
-      onCleared: _updateFilter,
-      title: "Explore",
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _buildGenres(),
-          Expanded(
-            child: BioskopinaCards(
-              selectedIndex: widget.selectedIndex,
-              page: page,
-              pageSize: pageSize,
-              fetchMovie: fetchMovie,
-              fetchPage: fetchPage,
-              filter: _filter,
-            ), // Search results section
-          ),
-        ],
-      ),
-    );
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
-  void _search(String text) {
+  void _search() {
+    // Reset to first page on new search/filter
+    setState(() {
+      page = 0;
+    });
     _updateFilter();
+  }
+
+  void _updateFilter() {
+    _exploreFormKey.currentState?.saveAndValidate();
+    var genreIds = _exploreFormKey.currentState?.fields["genres"]?.value;
+
+    final searchText = _searchController.text.trim();
+
+    if ((genreIds == null || genreIds.isEmpty) && searchText.isEmpty) {
+      setState(() {
+        page = 0;
+        _filter = {"GetEmptyList": "true"};
+      });
+    } else {
+      setState(() {
+        page = 0;
+        _filter = {
+          if (searchText.isNotEmpty) "FTS": searchText,
+          "GenresIncluded": (genreIds != null && genreIds.isNotEmpty).toString(),
+          if (genreIds != null && genreIds.isNotEmpty) "GenreIds": genreIds,
+          "TopFirst": "true",
+        };
+      });
+    }
   }
 
   Future<SearchResult<Bioskopina>> fetchMovie() {
@@ -91,66 +93,120 @@ class _ExploreScreenState extends State<ExploreScreen> {
     return _bioskopinaProvider.get(filter: filter);
   }
 
-
-  Widget _buildGenres() {
-    return FutureBuilder<SearchResult<Genre>>(
-        future: _genreFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: Wrap(
-                children: List.generate(12, (_) => const ChipIndicator()),
+  @override
+  Widget build(BuildContext context) {
+    return MasterScreenWidget(
+      selectedIndex: widget.selectedIndex,
+      showNavBar: true,
+      showProfileIcon: false,
+      controller: _searchController,
+      showSearch: false, // using our custom search field below
+      onCleared: _updateFilter,
+      title: "Explore",
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Search bar with icon buttons
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: 'Search movies...',
+                hintStyle: TextStyle(color: Colors.grey.shade500),
+                prefixIcon: IconButton(
+                  icon: const Icon(Icons.search, color: Colors.blueAccent),
+                  onPressed: _search,
+                  tooltip: "Search",
+                ),
+                suffixIcon: _searchController.text.isNotEmpty
+                    ? IconButton(
+                        icon: const Icon(Icons.clear, color: Colors.grey),
+                        onPressed: () {
+                          _searchController.clear();
+                          _updateFilter();
+                        },
+                        tooltip: "Clear search",
+                      )
+                    : null,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: Colors.grey.shade700),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: Colors.blueAccent, width: 2),
+                ),
               ),
-            ); // Loading state
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}'); // Error state
-          } else {
-            // Data loaded successfully
-            var genres = snapshot.data!.result;
-            return FormBuilder(
-              key: _exploreFormKey,
-              child: MyFormBuilderFilterChip(
-                onChanged: ((p0) {
-                  _updateFilter();
-                }),
-                width: 500,
-                showCheckmark: false,
-                padding:
-                    const EdgeInsets.only(top: 0, bottom: 0, left: 1, right: 1),
-                name: 'genres',
-                options: [
-                  ...genres.map(
-                    (genre) => FormBuilderChipOption(
-                      value: genre.id.toString(),
-                      child: Text(genre.name!,
-                          style:
-                              const TextStyle(color: Palette.midnightPurple)),
-                    ),
+              textInputAction: TextInputAction.search,
+              onSubmitted: (_) => _search(),
+              style: const TextStyle(color: Colors.white),
+              cursorColor: Colors.blueAccent,
+            ),
+          ),
+
+          // Genres filter chips
+          _buildGenres(),
+
+          // Results list
+          Expanded(
+            child: BioskopinaCards(
+              selectedIndex: widget.selectedIndex,
+              page: page,
+              pageSize: pageSize,
+              fetchMovie: fetchMovie,
+              fetchPage: fetchPage,
+              filter: _filter,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+Widget _buildGenres() {
+  return FutureBuilder<SearchResult<Genre>>(
+    future: _genreFuture,
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return Center(
+          child: Wrap(
+            spacing: 8,
+            runSpacing: 6,
+            children: List.generate(12, (_) => const ChipIndicator()),
+          ),
+        );
+      } else if (snapshot.hasError) {
+        return Padding(
+          padding: const EdgeInsets.all(8),
+          child: Text('Error: ${snapshot.error}', style: const TextStyle(color: Colors.redAccent)),
+        );
+      } else {
+        var genres = snapshot.data!.result;
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+          child: FormBuilder(
+            key: _exploreFormKey,
+            child: MyFormBuilderFilterChip(
+              name: 'genres',
+              options: genres.map((genre) {
+                return FormBuilderChipOption(
+                  value: genre.id.toString(),
+                  // Here we add style to text and chips inside chip options
+                  child: Text(
+                    genre.name ?? '',
+                    style: const TextStyle(color: Colors.white),
                   ),
-                ],
-              ),
-            );
-          }
-        });
-  }
-
-  void _updateFilter() {
-    _exploreFormKey.currentState?.saveAndValidate();
-    var genreIds = _exploreFormKey.currentState?.fields["genres"]?.value;
-
-    if (genreIds.isEmpty && _searchController.text.isEmpty) {
-      setState(() {
-        _filter = {"GetEmptyList": "true"};
-      });
-    } else {
-      setState(() {
-        _filter = {
-          "FTS": _searchController.text,
-          "GenresIncluded": "true",
-          "TopFirst": "true",
-          "GenreIds": genreIds,
-        };
-      });
-    }
-  }
+                );
+              }).toList(),
+              showCheckmark: false,
+              onChanged: (_) => _updateFilter(),
+              // No selectedColor, backgroundColor, labelStyle, etc. here
+            ),
+          ),
+        );
+      }
+    },
+  );
+}
 }

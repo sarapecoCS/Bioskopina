@@ -206,7 +206,7 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
           icon: Icons.home,
           backgroundGradient: Palette.navGradient1,
         ),
-        // Removed "Saved" button (for NebulaScreen)
+
         NavigationBarButton(
           text: 'Explore',
           icon:  Icons.local_movies,

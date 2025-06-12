@@ -354,7 +354,7 @@ class _QuestionCardsState extends State<QuestionCards>
               ),
               visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
               hoverColor: Palette.lightRed.withOpacity(0.1),
-              leading: Icon(Icons.delete, size: 24),
+              leading: Icon(Icons.delete, color:Colors.red, size: 24),
               title: const Text('Delete',
                   style: TextStyle(color: Palette.lightRed)),
               onTap: () {
@@ -362,7 +362,7 @@ class _QuestionCardsState extends State<QuestionCards>
                 showConfirmationDialog(
                     context,
                     const Icon(Icons.warning_rounded,
-                        color: Palette.lightRed, size: 55),
+                        color: Colors.red, size: 55),
                     const Text(
                       "Are you sure you want to delete this question?",
                       textAlign: TextAlign.center,

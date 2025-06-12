@@ -694,7 +694,7 @@ Widget _buildDetails() {
               ),
               const SizedBox(height: 4),
               SizedBox(
-                width: 80, // adjust width if needed
+                width: 120, // adjust width if needed
                 child: Text(
                   widget.bioskopina.director ?? "Unknown",
                   style: const TextStyle(color: Palette.lightPurple, fontSize: 14),

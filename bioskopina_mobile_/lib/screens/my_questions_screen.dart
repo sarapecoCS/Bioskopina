@@ -63,7 +63,7 @@ class _MyQuestionsScreenState extends State<MyQuestionsScreen> {
           padding: EdgeInsets.only(
             left: 20,
             bottom: 10,
-            top: 10,
+            top: 40,
           ),
           child: Text("You've asked previously.."),
         ),
@@ -92,15 +92,15 @@ class _MyQuestionsScreenState extends State<MyQuestionsScreen> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 10),
+            padding: const EdgeInsets.only(top: 30),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Text(
-                  "Have a question? Ask away ",
-                  style: TextStyle(fontSize: 17),
+                  "Have a question? We're here to help!",
+                  style: TextStyle(fontSize: 16),
                 ),
-                Icon(Icons.movie_filter, size: 24, color: Colors.purpleAccent),
+
               ],
             ),
           ),
@@ -110,20 +110,20 @@ class _MyQuestionsScreenState extends State<MyQuestionsScreen> {
               children: [
                 Container(
                   constraints: const BoxConstraints(maxHeight: 120),
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
                   child: MyFormBuilderTextField(
                     name: "question",
                     errorHeight: 1,
                     minLines: 5,
-                    fillColor: Palette.textFieldPurple.withOpacity(0.3),
+                    fillColor: Palette.textFieldPurple.withOpacity(0.45),
                     maxLines: null,
                     textAlignVertical: TextAlignVertical.center,
                     keyboardType: TextInputType.multiline,
-                    borderRadius: 15,
-                    errorBorderRadius: 15,
+                    borderRadius: 18,
+                    errorBorderRadius: 18,
                     focusNode: _focusNode,
                     contentPadding:
-                        const EdgeInsets.only(left: 10, right: 10, top: 25),
+                        const EdgeInsets.only(left: 16, right: 16, top: 28),
                     validator: (val) {
                       if (val == null ||
                           val.isEmpty ||
@@ -143,9 +143,9 @@ class _MyQuestionsScreenState extends State<MyQuestionsScreen> {
                       return null;
                     },
                   ).asGlass(
-                    blurX: 5,
-                    blurY: 5,
-                    clipBorderRadius: BorderRadius.circular(15),
+                    blurX: 6,
+                    blurY: 6,
+                    clipBorderRadius: BorderRadius.circular(18),
                     tintColor: Palette.textFieldPurple,
                   ),
                 ),
@@ -160,7 +160,10 @@ class _MyQuestionsScreenState extends State<MyQuestionsScreen> {
                           strokeWidth: 2,
                         ); // Loading state
                       } else if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}'); // Error state
+                        return Text(
+                          'Error: ${snapshot.error}',
+                          style: const TextStyle(color: Colors.red),
+                        ); // Error state
                       } else {
                         // Data loaded successfully
                         var qaCategoryList = snapshot.data!.result;
@@ -197,10 +200,11 @@ class _MyQuestionsScreenState extends State<MyQuestionsScreen> {
                                 });
                               }),
                         ).asGlass(
-                            blurX: 5,
-                            blurY: 5,
-                            tintColor: Palette.buttonRed,
-                            clipBorderRadius: BorderRadius.circular(50));
+                          blurX: 6,
+                          blurY: 6,
+                          tintColor: Palette.buttonRed,
+                          clipBorderRadius: BorderRadius.circular(60),
+                        );
                       }
                     }),
               ],

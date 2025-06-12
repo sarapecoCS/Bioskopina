@@ -16,18 +16,25 @@ class Palette {
   static const Color searchBar = Color.fromRGBO(35, 35, 35, 1); // Neutral dark gray
   static const Color dropdownMenu = Color.fromRGBO(50, 50, 50, 1); // Dark gray
   static const Color disabledControl = Color.fromRGBO(80, 80, 80, 1); // Soft neutral
-  static const Color selectedGenre = Color.fromRGBO(245, 184, 255, 1); // Accent pink
+  static const Color selectedGenre = Color.fromRGBO(120, 184, 255, 1); // Accent blue
+
   static const Color popupMenu = Color.fromRGBO(30, 30, 30, 1); // Deep gray
   static const Color listTile = Color.fromRGBO(25, 25, 25, 1.0); // Nearly black
   static const Color ratingPurple = Color.fromRGBO(70, 70, 70, 1); // Soft dark gray
-  static const Color buttonRed = Color.fromRGBO(138, 38, 58, 1); // Keep slight red
+  static const Color buttonRed =  Color.fromRGBO(50, 110, 50, 1.0);
+
+
+
+
+
+  // Keep slight blue
   static const Color buttonRed2 = Color.fromRGBO(200, 80, 100, 1.0); // Muted rose red
   static const Color stardust = Color.fromRGBO(216, 218, 254, 1); // Keep as faint highlight
   static const Color lightYellow = Color.fromRGBO(255, 255, 200, 1); // Soft yellow highlight
   static const Color turquoise = Color.fromRGBO(120, 200, 200, 1); // Muted turquoise
   static const Color turquoiseLight = Color.fromRGBO(100, 180, 180, 1); // Softer turquoise
   static const Color techPurple = Color.fromRGBO(140, 120, 140, 1); // Muted tech purple
-  static const Color rose = Color.fromRGBO(200, 120, 140, 1); // Muted rose
+  static const Color rose =  Color.fromRGBO(120, 140, 200, 1); // Muted rose
   static const Color lime = Color.fromRGBO(180, 200, 100, 1); // Soft lime green
 
   // Gradients
@@ -85,12 +92,13 @@ class Palette {
 
   static const LinearGradient barChartGradient4 = LinearGradient(
     colors: [
-      Color.fromRGBO(70, 70, 70, 1.0),
-      Color.fromRGBO(40, 40, 40, 1.0),
+      Color.fromRGBO(220, 230, 240, 1.0), // Very light bluish white
+      Color.fromRGBO(200, 210, 220, 1.0), // A bit darker but still soft
     ],
     begin: Alignment.bottomCenter,
     end: Alignment.topCenter,
   );
+
 
   static const LinearGradient barChartGradient5 = LinearGradient(
     colors: [
@@ -170,12 +178,13 @@ static const LinearGradient navGradient3 = LinearGradient(
 
 static const LinearGradient navGradient4 = LinearGradient(
   colors: [
-    Color.fromRGBO(150, 200, 255, 0.9), // Soft blue glow
-    Color.fromRGBO(30, 60, 120, 0.9),   // Mid blue navy
+        Color.fromRGBO(140, 180, 220, 1.0), // Brighter soft blue
+         Color.fromRGBO(100, 140, 180, 1.0),
   ],
-  begin: Alignment.topCenter,
-  end: Alignment.bottomCenter,
+  begin: Alignment.bottomCenter,
+  end: Alignment.topCenter,
 );
+
 
 static const LinearGradient navGradient5 = LinearGradient(
   colors: [

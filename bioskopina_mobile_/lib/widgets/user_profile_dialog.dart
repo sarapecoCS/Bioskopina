@@ -46,14 +46,15 @@ class _UserProfileDialogState extends State<UserProfileDialog> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: Image.memory(
-                        imageFromBase64String(
-                            widget.loggedUser.profilePicture!.profilePicture!),
-                        width: imageWidth,
-                        height: imageHeight,
-                        fit: BoxFit.cover,
-                      )),
+                    borderRadius: BorderRadius.circular(100),
+                    child: Image.memory(
+                      imageFromBase64String(
+                          widget.loggedUser.profilePicture!.profilePicture!),
+                      width: imageWidth,
+                      height: imageHeight,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
                 const SizedBox(width: 10),
                 Column(
@@ -62,12 +63,14 @@ class _UserProfileDialogState extends State<UserProfileDialog> {
                     Container(
                       constraints: BoxConstraints(
                           maxWidth: screenSize.width * 0.4, maxHeight: 50),
-                      child: Text("${widget.loggedUser.username}",
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                              color: Palette.selectedGenre,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500)),
+                      child: Text(
+                        "${widget.loggedUser.username}",
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            color: Palette.selectedGenre,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                      ),
                     ),
                     Container(
                       constraints: BoxConstraints(
@@ -91,52 +94,78 @@ class _UserProfileDialogState extends State<UserProfileDialog> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const SettingsScreen(),
-                      ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Palette.buttonRed,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50)),
+                // Settings button with gradient background
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: Palette. buttonGradient,
+                    borderRadius: BorderRadius.circular(30),
                   ),
-                  child: const Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text('Settings', style: TextStyle(color: Palette.white)),
-                      SizedBox(width: 5),
-                      Icon(Icons.settings_rounded, size: 15),
-                    ],
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const SettingsScreen(),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                    ),
+                    child: const Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text('Settings',
+                            style: TextStyle(color: Colors.white)),
+                        SizedBox(width: 5),
+                        Icon(Icons.settings_rounded,
+                            size: 15, color: Colors.white),
+                      ],
+                    ),
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    Authorization.username = "";
-                    Authorization.password = "";
-                    LoggedUser.user = null;
 
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => const LoginScreen(),
-                    ));
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Palette.buttonRed,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50)),
+                // Log Out button with gradient background
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: Palette. buttonGradient,
+                    borderRadius: BorderRadius.circular(50),
                   ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      const Text('Log Out',
-                          style: TextStyle(color: Palette.white)),
-                      const SizedBox(width: 5),
-                      Icon(Icons.logout, size: 16, color: Colors.white),
-                    ],
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Authorization.username = "";
+                      Authorization.password = "";
+                      LoggedUser.user = null;
+
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => const LoginScreen(),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: const [
+                        Text('Log Out', style: TextStyle(color: Colors.white)),
+                        SizedBox(width: 5),
+                        Icon(Icons.logout, size: 16, color: Colors.white),
+                      ],
+                    ),
                   ),
                 ),
               ],

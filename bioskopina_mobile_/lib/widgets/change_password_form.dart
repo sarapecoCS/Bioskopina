@@ -23,6 +23,11 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
   final FocusNode _focusNode3 = FocusNode();
   late final UserProvider _userProvider;
 
+  // Add booleans to track if password is visible or not
+  bool _oldPasswordVisible = false;
+  bool _newPasswordVisible = false;
+  bool _confirmPasswordVisible = false;
+
   @override
   void initState() {
     _userProvider = context.read<UserProvider>();
@@ -61,143 +66,177 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
 
   Widget _buildChild(BuildContext context) {
     return FormBuilder(
-        key: _formKey,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 25, bottom: 25),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              MyFormBuilderTextField(
-                name: "oldPassword",
-                labelText: "Old password",
-                fillColor: Palette.textFieldPurple.withOpacity(0.5),
-                width: 400,
-                paddingBottom: 25,
-                borderRadius: 50,
-                obscureText: true,
-                focusNode: _focusNode1,
-                validator: (val) {
-                  if (val == null || val.isEmpty) {
-                    return "This field cannot be empty.";
-                  }
-                  return null;
+      key: _formKey,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 25, bottom: 25),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            MyFormBuilderTextField(
+              name: "oldPassword",
+              labelText: "Old password",
+              fillColor: Palette.textFieldPurple.withOpacity(0.5),
+              width: 400,
+              paddingBottom: 25,
+              borderRadius: 50,
+              obscureText: !_oldPasswordVisible,
+              focusNode: _focusNode1,
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _oldPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                  color: Colors.grey,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _oldPasswordVisible = !_oldPasswordVisible;
+                  });
                 },
               ),
-              MySeparator(
-                width: 450,
-                borderRadius: 50,
-                opacity: 0.7,
-                paddingBottom: 25,
-              ),
-              MyFormBuilderTextField(
-                name: "newPassword",
-                labelText: "New password",
-                fillColor: Palette.textFieldPurple.withOpacity(0.5),
-                width: 400,
-                paddingBottom: 25,
-                borderRadius: 50,
-                obscureText: true,
-                focusNode: _focusNode2,
-                validator: (val) {
-                  if (val == null || val.isEmpty) {
-                    return "This field cannot be empty.";
-                  } else if (val.length < 8) {
-                    return 'Password is too short.';
-                  } else if (containsNumbers(val) == false) {
-                    return 'Password must contain at least one number';
-                  } else if (containsUppercase(val) == false) {
-                    return 'Password must contain at least one uppercase letter.';
-                  } else if (containsLowercase(val) == false) {
-                    return 'Password must contain at least one lowercase letter.';
-                  }
-                  return null;
+              validator: (val) {
+                if (val == null || val.isEmpty) {
+                  return "This field cannot be empty.";
+                }
+                return null;
+              },
+            ),
+            MySeparator(
+              width: 450,
+              borderRadius: 50,
+              opacity: 0.7,
+              paddingBottom: 25,
+            ),
+            MyFormBuilderTextField(
+              name: "newPassword",
+              labelText: "New password",
+              fillColor: Palette.textFieldPurple.withOpacity(0.5),
+              width: 400,
+              paddingBottom: 25,
+              borderRadius: 50,
+              obscureText: !_newPasswordVisible,
+              focusNode: _focusNode2,
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _newPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                  color: Colors.grey,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _newPasswordVisible = !_newPasswordVisible;
+                  });
                 },
               ),
-              MyFormBuilderTextField(
-                name: "passwordConfirmation",
-                labelText: "Repeat new password",
-                fillColor: Palette.textFieldPurple.withOpacity(0.5),
-                width: 400,
-                paddingBottom: 25,
-                borderRadius: 50,
-                obscureText: true,
-                focusNode: _focusNode3,
-                validator: (val) {
-                  if (val == null || val.isEmpty) {
-                    return "This field cannot be empty.";
-                  } else if (_formKey
-                          .currentState?.fields['newPassword']?.value !=
-                      val) {
-                    return "Passwords do not match.";
-                  }
-                  return null;
+              validator: (val) {
+                if (val == null || val.isEmpty) {
+                  return "This field cannot be empty.";
+                } else if (val.length < 8) {
+                  return 'Password is too short.';
+                } else if (containsNumbers(val) == false) {
+                  return 'Password must contain at least one number';
+                } else if (containsUppercase(val) == false) {
+                  return 'Password must contain at least one uppercase letter.';
+                } else if (containsLowercase(val) == false) {
+                  return 'Password must contain at least one lowercase letter.';
+                }
+                return null;
+              },
+            ),
+            MyFormBuilderTextField(
+              name: "passwordConfirmation",
+              labelText: "Repeat new password",
+              fillColor: Palette.textFieldPurple.withOpacity(0.5),
+              width: 400,
+              paddingBottom: 25,
+              borderRadius: 50,
+              obscureText: !_confirmPasswordVisible,
+              focusNode: _focusNode3,
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _confirmPasswordVisible
+                      ? Icons.visibility
+                      : Icons.visibility_off,
+                  color: Colors.grey,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _confirmPasswordVisible = !_confirmPasswordVisible;
+                  });
                 },
               ),
-              GradientButton(
-                onPressed: () async {
-                  if (_formKey.currentState?.saveAndValidate() == true) {
-                    try {
-                      var changePassRequest = {
-                        "userId": "${LoggedUser.user!.id!}",
-                        "oldPassword":
-                            _formKey.currentState?.fields["oldPassword"]?.value,
-                        "newPassword":
-                            _formKey.currentState?.fields["newPassword"]?.value,
-                        "passwordConfirmation": _formKey.currentState
-                            ?.fields["passwordConfirmation"]?.value,
-                      };
-                      await _userProvider.changePassword(
-                          LoggedUser.user!.id!, changePassRequest);
-                      Authorization.password =
-                          _formKey.currentState?.fields["newPassword"]?.value;
+              validator: (val) {
+                if (val == null || val.isEmpty) {
+                  return "This field cannot be empty.";
+                } else if (_formKey.currentState?.fields['newPassword']?.value !=
+                    val) {
+                  return "Passwords do not match.";
+                }
+                return null;
+              },
+            ),
+            GradientButton(
+              onPressed: () async {
+                if (_formKey.currentState?.saveAndValidate() == true) {
+                  try {
+                    var changePassRequest = {
+                      "userId": "${LoggedUser.user!.id!}",
+                      "oldPassword":
+                          _formKey.currentState?.fields["oldPassword"]?.value,
+                      "newPassword":
+                          _formKey.currentState?.fields["newPassword"]?.value,
+                      "passwordConfirmation": _formKey.currentState
+                          ?.fields["passwordConfirmation"]
+                          ?.value,
+                    };
+                    await _userProvider.changePassword(
+                        LoggedUser.user!.id!, changePassRequest);
+                    Authorization.password =
+                        _formKey.currentState?.fields["newPassword"]?.value;
 
-                      if (context.mounted) {
-                        Navigator.of(context).pop();
-                        showInfoDialog(
-                            context,
-                            const Icon(Icons.task_alt,
-                                color: Palette.lightPurple, size: 50),
-                            const Text(
-                              "Password changed successfully!",
-                              textAlign: TextAlign.center,
-                            ));
-                      }
-                    } on Exception catch (e) {
-                      if (context.mounted) {
-                        showInfoDialog(
-                            context,
-                            const Icon(Icons.warning_rounded,
-                                color: Palette.lightRed, size: 50),
-                            Text(
-                              "Invalid old password. \n\n $e",
-                              textAlign: TextAlign.center,
-                            ));
-
-                        // showErrorDialog(context, e);
-                      }
+                    if (context.mounted) {
+                      Navigator.of(context).pop();
+                      showInfoDialog(
+                          context,
+                          const Icon(Icons.task_alt,
+                              color: Palette.lightPurple, size: 50),
+                          const Text(
+                            "Password changed successfully!",
+                            textAlign: TextAlign.center,
+                          ));
                     }
-                  } else {
-                    showInfoDialog(
-                        context,
-                        const Icon(Icons.warning_rounded,
-                            color: Palette.lightRed, size: 50),
-                        const Text(
-                          "There are validation errors.",
-                          textAlign: TextAlign.center,
-                        ));
+                  } on Exception catch (e) {
+                    if (context.mounted) {
+                      showInfoDialog(
+                          context,
+                          const Icon(Icons.warning_rounded,
+                              color: Palette.lightRed, size: 50),
+                          Text(
+                            "Invalid old password. \n\n $e",
+                            textAlign: TextAlign.center,
+                          ));
+                    }
                   }
-                },
-                gradient: Palette.buttonGradient,
-                borderRadius: 50,
-                width: 150,
-                height: 30,
-                paddingTop: 10,
-                child: const Text("Change Password",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500, color: Palette.white)),
-              ),
-            ],
-          ),
-        ));
+                } else {
+                  showInfoDialog(
+                      context,
+                      const Icon(Icons.warning_rounded,
+                          color: Palette.lightRed, size: 50),
+                      const Text(
+                        "There are validation errors.",
+                        textAlign: TextAlign.center,
+                      ));
+                }
+              },
+              gradient: Palette.buttonGradient,
+              borderRadius: 50,
+              width: 150,
+              height: 30,
+              paddingTop: 10,
+              child: const Text("Change Password",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500, color: Palette.white)),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
