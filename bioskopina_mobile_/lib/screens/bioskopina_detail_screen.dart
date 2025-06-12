@@ -86,9 +86,9 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
     super.initState();
   }
 
-  Future<List<int>> getRecommendedMoviesIds(int animeId) async {
+  Future<List<int>> getRecommendedMoviesIds(int movieId) async {
     try {
-      Recommender recData = await _recommenderProvider.getById(animeId);
+      Recommender recData = await _recommenderProvider.getById(movieId);
 
       int? coMovieId1 = recData.coMovieId1;
       int? coMovieId2 = recData.coMovieId2;
@@ -225,64 +225,79 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
     );
   }
 
-  Widget _buildRecommendations() {
-    return FutureBuilder<List<int>>(
-        future: getRecommendedMoviesIds(widget.bioskopina.id!),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator(); // Loading state
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}'); // Error state
-          } else {
-            // Data loaded successfully
-            var recMovieIds = snapshot.data!;
+ Widget _buildRecommendations() {
+   return FutureBuilder<List<int>>(
+     future: getRecommendedMoviesIds(widget.bioskopina.id!),
+     builder: (context, snapshot) {
+       if (snapshot.connectionState == ConnectionState.waiting) {
+         return const CircularProgressIndicator();
+       } else if (snapshot.hasError) {
+         return Text('Error: ${snapshot.error}');
+       } else {
+         var recMovieIds = snapshot.data!;
+         print('Recommended movie IDs: $recMovieIds');
 
-            if (recMovieIds.isEmpty) {
-              return Container();
-            }
-            return FutureBuilder<SearchResult<Bioskopina>>(
-                future: _movieProvider
-                    .get(filter: {"GenresIncluded": true, "Ids": recMovieIds}),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                    // Loading state
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}'); // Error state
-                  } else {
-                    // Data loaded successfully
-                    var recAnimeList = snapshot.data!.result;
+         if (recMovieIds.isEmpty) {
+           return const Padding(
+             padding: EdgeInsets.all(8.0),
+             child: Text('No recommendations found.'),
+           );
+         }
 
-                    return Column(
-                      children: [
-                        MySeparator(
-                          width: MediaQuery.of(context).size.width * 0.8,
-                          paddingTop: 20,
-                          paddingBottom: 10,
-                          borderRadius: 50,
-                          opacity: 0.8,
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(bottom: 15),
-                          child: Text("Recommendations",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500, fontSize: 16)),
-                        ),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: _buildRecAnimeCards(recAnimeList),
-                          ),
-                        )
-                      ],
-                    );
-                  }
-                });
-          }
-        });
-  }
+         return FutureBuilder<SearchResult<Bioskopina>>(
+           future: _movieProvider.get(
+             filter: {"GenresIncluded": true, "Ids": recMovieIds},
+           ),
+           builder: (context, snapshot) {
+             if (snapshot.connectionState == ConnectionState.waiting) {
+               return const CircularProgressIndicator();
+             } else if (snapshot.hasError) {
+               return Text('Error: ${snapshot.error}');
+             } else {
+               var recBioskopinaList = snapshot.data!.result;
+               print('Recommended movies fetched: ${recBioskopinaList.length}');
 
-  List<Widget> _buildRecAnimeCards(List<Bioskopina> recBioskopinaList) {
+               if (recBioskopinaList.isEmpty) {
+                 return const Padding(
+                   padding: EdgeInsets.all(8.0),
+                   child: Text('No recommended movies found.'),
+                 );
+               }
+
+               return Column(
+                 children: [
+                   MySeparator(
+                     width: MediaQuery.of(context).size.width * 0.8,
+                     paddingTop: 20,
+                     paddingBottom: 10,
+                     borderRadius: 50,
+                     opacity: 0.8,
+                   ),
+                   const Padding(
+                     padding: EdgeInsets.only(bottom: 15),
+                     child: Text(
+                       "Recommendations",
+                       style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                     ),
+                   ),
+                   SingleChildScrollView(
+                     scrollDirection: Axis.horizontal,
+                     child: Row(
+                       children: _buildRecBioskopinaCards(recBioskopinaList),
+                     ),
+                   ),
+                 ],
+               );
+             }
+           },
+         );
+       }
+     },
+   );
+ }
+
+
+  List<Widget> _buildRecBioskopinaCards(List<Bioskopina> recBioskopinaList) {
     return List.generate(
       recBioskopinaList.length,
           (index) => BioskopinaCard(
@@ -508,18 +523,18 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
                       width: screenSize.width,
                       controller: _youtubePlayerController,
                       showVideoProgressIndicator: true,
-                      progressIndicatorColor: Colors.red,
+                      progressIndicatorColor: Colors.blue,
                       progressColors: const ProgressBarColors(
-                        playedColor: Colors.red,
-                        handleColor: Colors.redAccent,
+                        playedColor: Colors.blue,
+                        handleColor: Colors.blue,
                       ),
                       bottomActions: [
                          CurrentPosition(),
                          ProgressBar(
                           isExpanded: true,
                           colors: ProgressBarColors(
-                            playedColor: Colors.red,
-                            handleColor: Colors.redAccent,
+                            playedColor: Colors.blue,
+                            handleColor: Colors.blue,
                           ),
                         ),
                          RemainingDuration(),
@@ -603,104 +618,102 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
     );
   }
 
-  Widget _buildDetails() {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: 15,
-        left: 20,
-        right: 20,
+Widget _buildDetails() {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+    child: Container(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      decoration: BoxDecoration(
+        color: Palette.darkPurple.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Palette.lightPurple.withOpacity(0.5)),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
+          // Rating
           Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              const Text(
+                "Rating",
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14, color: Colors.white),
+              ),
+              const SizedBox(height: 4),
+              Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text("Score",
-                      style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
-                  const SizedBox(
-                    height: 5,
+                  const Icon(Icons.star, color: Colors.yellow , size: 16),
+                  const SizedBox(width: 4),
+                  Text(
+                    widget.bioskopina.score.toString(),
+                    style: const TextStyle(color: Palette.starYellow, fontSize: 14),
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.star,
-                        color: Colors.yellow,
-                        size: 15,
-                      ),
-                      Text(widget.bioskopina.score.toString(),
-                          style: const TextStyle(color: Palette.starYellow))
-                    ],
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text("Duration",
-                      style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Text(widget.bioskopina.duration.toString(),
-                      style: const TextStyle(color: Palette.lightPurple))
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text("Studio",
-                      style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Container(
-                    constraints: const BoxConstraints(maxWidth: 100),
-                    child: Text(widget.bioskopina.director!,
-                        style: const TextStyle(color: Palette.lightPurple)),
-                  )
                 ],
               ),
             ],
           ),
+
+          // Divider
+          Container(
+            height: 40,
+            width: 1,
+            color: Palette.lightPurple.withOpacity(0.5),
+          ),
+
+          // Duration
           Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text("Yugoslavian",
-                      style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Container(
-                    constraints: const BoxConstraints(maxWidth: 180),
-                    child: Text(widget.bioskopina.titleYugo!,
-                        style: const TextStyle(color: Palette.lightPurple)),
-                  )
-                ],
+              const Text(
+                "Duration",
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14, color: Colors.white),
               ),
-              const SizedBox(
-                height: 20,
+              const SizedBox(height: 4),
+              Text(
+                "${widget.bioskopina.runtime} min",
+                style: const TextStyle(color: Palette.lightPurple, fontSize: 14),
+              ),
+            ],
+          ),
+
+          // Divider
+          Container(
+            height: 40,
+            width: 1,
+            color: Palette.lightPurple.withOpacity(0.5),
+          ),
+
+          // Director (fixed here)
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                "Director",
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14, color: Colors.white),
+              ),
+              const SizedBox(height: 4),
+              SizedBox(
+                width: 80, // adjust width if needed
+                child: Text(
+                  widget.bioskopina.director ?? "Unknown",
+                  style: const TextStyle(color: Palette.lightPurple, fontSize: 14),
+                  overflow: TextOverflow.visible,
+                  maxLines: 1,
+                  softWrap: false,
+                  textAlign: TextAlign.center,
+                ),
               ),
             ],
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+
+
+}
+
 
 
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/bioskopina.dart';
 import '../screens/bioskopina_detail_screen.dart';
 
-class BioskopinaCard extends StatelessWidget {
+class BioskopinaCard extends StatefulWidget {
   final Bioskopina bioskopina;
   final int selectedIndex;
 
@@ -13,64 +13,150 @@ class BioskopinaCard extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<BioskopinaCard> createState() => _BioskopinaCardState();
+}
+
+class _BioskopinaCardState extends State<BioskopinaCard> with SingleTickerProviderStateMixin {
+  bool _pressed = false;
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 100),
+      lowerBound: 0.95,
+      upperBound: 1.0,
+      value: 1.0,
+    );
+
+    _scaleAnimation = _controller.drive(Tween(begin: 1.0, end: 0.95));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _onTapDown(TapDownDetails details) {
+    _controller.reverse();
+  }
+
+  void _onTapUp(TapUpDetails details) {
+    _controller.forward();
+  }
+
+  void _onTapCancel() {
+    _controller.forward();
+  }
+
+  @override
   Widget build(BuildContext context) {
     double cardWidth = MediaQuery.of(context).size.width * 0.44;
     double cardHeight = MediaQuery.of(context).size.height * 0.3;
 
-    return Container(
-      width: cardWidth,
-      height: cardHeight,
-      margin: const EdgeInsets.all(7),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: Colors.purple.withOpacity(0.3)),
-        color: Colors.deepPurple.shade900,
-      ),
-      child: Column(
-        children: [
-          Expanded(
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => BioskopinaDetailScreen(bioskopina: bioskopina,selectedIndex: selectedIndex),
-                ));
-              },
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(15),
-                  topRight: Radius.circular(15),
-                ),
-                child: bioskopina.imageUrl != null
+    return ScaleTransition(
+      scale: _scaleAnimation,
+      child: Container(
+        width: cardWidth,
+        height: cardHeight,
+        margin: const EdgeInsets.all(7),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: const Color.fromRGBO(120, 170, 220, 0.5), // cold blue border
+            width: 1.2,
+          ),
+          color: const Color.fromRGBO(20, 20, 20, 1.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.6),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: GestureDetector(
+          onTapDown: _onTapDown,
+          onTapUp: (details) {
+            _onTapUp(details);
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => BioskopinaDetailScreen(
+                bioskopina: widget.bioskopina,
+                selectedIndex: widget.selectedIndex,
+              ),
+            ));
+          },
+          onTapCancel: _onTapCancel,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Stack(
+              children: [
+                widget.bioskopina.imageUrl != null
                     ? Image.network(
-                  bioskopina.imageUrl!,
-                  width: cardWidth,
-                  height: cardHeight * 0.85,
-                  fit: BoxFit.cover,
-                )
+                        widget.bioskopina.imageUrl!,
+                        width: cardWidth,
+                        height: cardHeight,
+                        fit: BoxFit.cover,
+                      )
                     : Container(
-                  width: cardWidth,
-                  height: cardHeight * 0.85,
-                  color: Colors.black12,
-                  alignment: Alignment.center,
-                  child: const Icon(Icons.image_not_supported, color: Colors.grey),
+                        width: cardWidth,
+                        height: cardHeight,
+                        color: Colors.black12,
+                        alignment: Alignment.center,
+                        child: const Icon(
+                          Icons.image_not_supported,
+                          color: Colors.grey,
+                          size: 40,
+                        ),
+                      ),
+                // Gradient overlay at bottom for title
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  height: cardHeight * 0.25,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.transparent,
+                          Color.fromARGB(180, 0, 0, 0),
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    alignment: Alignment.bottomCenter,
+                    child: Text(
+                      widget.bioskopina.titleEn ?? "No Title",
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        shadows: [
+                          Shadow(
+                            blurRadius: 4,
+                            color: Colors.black87,
+                            offset: Offset(0, 1),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: Text(
-              bioskopina.titleEn ?? "Without title",
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

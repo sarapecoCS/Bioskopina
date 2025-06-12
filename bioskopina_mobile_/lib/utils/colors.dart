@@ -138,44 +138,54 @@ class Palette {
     barChartGradient4
   ];
 
-  // Nav Gradients (optional, keeping original style muted)
-  static const LinearGradient navGradient1 = LinearGradient(
-    colors: [
-      Color.fromRGBO(120, 180, 200, 0.8),
-      Color.fromRGBO(40, 60, 80, 0.8),
-    ],
-  );
+// Nav Gradients (modern icy blue vibe, popping like buttonGradient)
+static const LinearGradient navGradient1 = LinearGradient(
+  colors: [
+    Color.fromRGBO(163, 212, 255, 1.0), // Soft icy blue
+    Color.fromRGBO(7, 44, 109, 1.0),    // Deep cold navy
+  ],
+  begin: Alignment.topLeft,
+  end: Alignment.bottomRight,
+);
 
-  static const LinearGradient navGradient2 = LinearGradient(
-    colors: [
-      Color.fromRGBO(60, 60, 60, 0.8),
-      Color.fromRGBO(90, 90, 90, 0.8),
-      Color.fromRGBO(30, 30, 30, 0.8),
-    ],
-  );
+static const LinearGradient navGradient2 = LinearGradient(
+  colors: [
+    Color.fromRGBO(140, 190, 240, 1.0), // Slightly stronger ice blue
+    Color.fromRGBO(40, 80, 140, 1.0),   // Muted rich blue
+    Color.fromRGBO(10, 30, 80, 1.0),    // Dark navy
+  ],
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
+);
 
-  static const LinearGradient navGradient3 = LinearGradient(
-    colors: [
-      Color.fromRGBO(60, 60, 60, 0.8),
-      Color.fromRGBO(45, 45, 45, 0.8),
-      Color.fromRGBO(35, 35, 35, 0.8),
-    ],
-  );
+static const LinearGradient navGradient3 = LinearGradient(
+  colors: [
+    Color.fromRGBO(180, 220, 255, 1.0), // Very light sky blue
+    Color.fromRGBO(60, 100, 160, 1.0),  // Cold blue
+    Color.fromRGBO(20, 50, 100, 1.0),   // Deep navy blue
+  ],
+  begin: Alignment.topLeft,
+  end: Alignment.bottomRight,
+);
 
-  static const LinearGradient navGradient4 = LinearGradient(
-    colors: [
-      Color.fromRGBO(70, 70, 70, 0.85),
-      Color.fromRGBO(60, 60, 60, 0.85),
-    ],
-  );
+static const LinearGradient navGradient4 = LinearGradient(
+  colors: [
+    Color.fromRGBO(150, 200, 255, 0.9), // Soft blue glow
+    Color.fromRGBO(30, 60, 120, 0.9),   // Mid blue navy
+  ],
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
+);
 
-  static const LinearGradient navGradient5 = LinearGradient(
-    colors: [
-      Color.fromRGBO(120, 180, 200, 0.8),
-      Color.fromRGBO(90, 90, 90, 0.8),
-      Color.fromRGBO(60, 60, 60, 0.8),
-    ],
-  );
+static const LinearGradient navGradient5 = LinearGradient(
+  colors: [
+    Color.fromRGBO(170, 220, 255, 1.0), // Bright cold blue
+    Color.fromRGBO(80, 130, 200, 1.0),  // Rich navy blue
+    Color.fromRGBO(20, 40, 80, 1.0),    // Deep dark navy
+  ],
+  begin: Alignment.topLeft,
+  end: Alignment.bottomRight,
+);
 
   // Icon Colors
   static const Color movieIco_e902 = Color.fromRGBO(110, 110, 110, 1);

@@ -136,7 +136,7 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
           leading: _buildLeading(context),
           title: widget.titleWidget ?? Text(widget.title ?? ""),
           actions: _buildActions,
-          iconTheme: const IconThemeData(color: Colors.purple),
+          iconTheme: const IconThemeData(color: Colors.white),
           bottom: _buildTabBar(),
         ),
         bottomNavigationBar: _buildNavigationBar(),
@@ -159,10 +159,12 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
   ResponsiveNavigationBar? _buildNavigationBar() {
     return (widget.showNavBar == true)
         ? ResponsiveNavigationBar(
-      backgroundColor: Colors.purple,
+    backgroundColor:  Color.fromRGBO(20, 20, 20, 1.0),
+
+
       backgroundOpacity: 1,
       activeIconColor: Colors.white,
-      inactiveIconColor: Colors.purple,
+      inactiveIconColor: Colors.white,
       fontSize: 25,
       padding: const EdgeInsets.all(4),
       showActiveButtonText: false,
@@ -207,7 +209,7 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
         // Removed "Saved" button (for NebulaScreen)
         NavigationBarButton(
           text: 'Explore',
-          icon: Icons.explore,
+          icon:  Icons.local_movies,
           backgroundGradient: Palette.navGradient3,
           padding: const EdgeInsets.all(10),
         ),
@@ -223,28 +225,32 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
         : null;
   }
 
-  TabBar? _buildTabBar() {
-    return (widget.showTabBar == true)
-        ? TabBar(
-      tabAlignment:
-      (widget.isScrollable ?? false) ? TabAlignment.start : null,
-      dividerColor: Colors.transparent,
-      isScrollable: widget.isScrollable ?? false,
-      indicatorSize: TabBarIndicatorSize.tab,
-      controller: widget.tabController,
-      labelColor: Colors.white,
-      unselectedLabelColor: Colors.purple,
-      labelPadding: widget.labelPadding ?? const EdgeInsets.all(5),
-      tabs: widget.tabs ?? [],
-      indicator: BoxDecoration(
-          gradient: Palette.navGradient4,
-          borderRadius: widget.borderRadius ??
-              const BorderRadius.only(
-                  topLeft: Radius.circular(50),
-                  topRight: Radius.circular(50))),
-    )
-        : null;
-  }
+TabBar? _buildTabBar() {
+  return (widget.showTabBar == true)
+      ? TabBar(
+          tabAlignment:
+              (widget.isScrollable ?? false) ? TabAlignment.start : null,
+          dividerColor: Colors.transparent,
+          isScrollable: widget.isScrollable ?? false,
+          indicatorSize: TabBarIndicatorSize.tab,
+          controller: widget.tabController,
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.white70,
+          labelPadding: widget.labelPadding ?? const EdgeInsets.all(5),
+          tabs: widget.tabs ?? [],
+          indicator: BoxDecoration(
+            color: const Color.fromRGBO(45, 45, 55, 0.85), // solid cold dark gray-blue
+            borderRadius: widget.borderRadius ??
+                const BorderRadius.only(
+                  topLeft: Radius.circular(60),
+                  topRight: Radius.circular(60),
+                ),
+          ),
+        )
+      : null;
+}
+
+
 
   Widget _buildFloatingActionButton() {
     if (widget.showFloatingActionButton == false) {
@@ -309,7 +315,7 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
         },
         icon: const Icon(
           Icons.arrow_back_rounded,
-          color: Colors.purple,
+          color: Colors.blue,
         ),
       );
     } else if (widget.showHelpIcon == true) {

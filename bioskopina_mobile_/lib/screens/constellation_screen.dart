@@ -37,7 +37,7 @@ class _ConstellationScreenState extends State<ConstellationScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
-                    const Text("Group Anime in individual Stars",
+                    const Text("Group movie in individual Stars",
                         style: TextStyle(fontSize: 16)),
                     const SizedBox(width: 5),
                     Icon(Icons.auto_awesome, size: 24),

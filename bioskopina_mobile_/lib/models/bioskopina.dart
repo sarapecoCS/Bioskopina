@@ -6,30 +6,39 @@ part 'bioskopina.g.dart';
 @JsonSerializable()
 class Bioskopina {
   final int id;
+  @JsonKey(name: 'titleEn')
   final String titleEn;
-  final String? titleYugo;
+
   final String synopsis;
   final String director;
+  @JsonKey(name: 'score')
   final double score;
+  @JsonKey(name: 'genreMovies')
   final List<GenreBioskopina> genreMovies;
-  final int? duration;
-  final String? imageUrl;
-  final String? trailerUrl;
-  final DateTime? releaseDate;
+  @JsonKey(name: 'runtime')
+  final int runtime;
+  final int yearRelease;
 
-  Bioskopina(
-      this.id,
-      this.titleEn,
-      this.titleYugo,
-      this.synopsis,
-      this.director,
-      this.score,
-      this.genreMovies, {
-        this.duration,
-        this.imageUrl,
-        this.trailerUrl,
-        this.releaseDate,
-      });
+  @JsonKey(name: 'imageUrl')
+  final String? imageUrl;
+  @JsonKey(name: 'trailerUrl')
+  final String? trailerUrl;
+
+  Bioskopina({
+    required this.id,
+    required this.titleEn,
+
+    required this.synopsis,
+    required this.director,
+    required this.score,
+    required this.genreMovies,
+    required this.runtime,
+    required this.yearRelease,
+
+
+    this.imageUrl,
+    this.trailerUrl,
+  });
 
   factory Bioskopina.fromJson(Map<String, dynamic> json) =>
       _$BioskopinaFromJson(json);
