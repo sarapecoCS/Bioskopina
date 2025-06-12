@@ -2334,13 +2334,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "animeId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
         "Name": "movieId",
-        "Type": "",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],

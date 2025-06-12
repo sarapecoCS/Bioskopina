@@ -18,9 +18,9 @@ namespace Bioskopina.Controllers
 
         [Authorize]
         [HttpGet("Recommender/{movieId}")]
-        public virtual async Task<Model.Recommender?> Get(int animeId, CancellationToken cancellationToken = default)
+        public virtual async Task<Model.Recommender?> Get(int movieId, CancellationToken cancellationToken = default)
         {
-            return await _recommenderService.GetById(animeId, cancellationToken);
+            return await _recommenderService.GetById(movieId, cancellationToken);
         }
 
         [Authorize]

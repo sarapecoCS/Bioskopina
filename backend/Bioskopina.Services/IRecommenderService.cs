@@ -11,7 +11,7 @@ namespace Bioskopina.Services
 {
     public interface IRecommenderService : ICRUDService<Model.Recommender, RecommenderSearchObject, RecommenderInsertRequest, RecommenderUpdateRequest>
     {
-        Task<Model.Recommender?> GetById(int id, CancellationToken cancellationToken = default);
+        Task<Model.Recommender?> GetById(int movieid, CancellationToken cancellationToken = default);
         Task<PagedResult<Model.Recommender>> TrainMovieModelAsync(CancellationToken cancellationToken = default);
         Task DeleteAllRecommendations(CancellationToken cancellationToken = default);
     }
