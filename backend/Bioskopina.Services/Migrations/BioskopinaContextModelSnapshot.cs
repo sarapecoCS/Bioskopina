@@ -244,7 +244,7 @@ namespace Bioskopina.Services.Migrations
                         new
                         {
                             Id = 1,
-                            DateStarted = new DateTime(2025, 7, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateStarted = new DateTime(2025, 7, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             MovieId = 1,
                             WatchStatus = "Watching",
                             WatchlistId = 1
@@ -252,27 +252,173 @@ namespace Bioskopina.Services.Migrations
                         new
                         {
                             Id = 2,
-                            DateFinished = new DateTime(2025, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateStarted = new DateTime(2025, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateStarted = new DateTime(2025, 7, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             MovieId = 2,
-                            WatchStatus = "Completed",
-                            WatchlistId = 3
+                            WatchStatus = "Watching",
+                            WatchlistId = 1
                         },
                         new
                         {
                             Id = 3,
-                            DateStarted = new DateTime(2025, 7, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateFinished = new DateTime(2025, 6, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateStarted = new DateTime(2025, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             MovieId = 3,
+                            WatchStatus = "Completed",
+                            WatchlistId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            DateFinished = new DateTime(2025, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateStarted = new DateTime(2025, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MovieId = 2,
+                            WatchStatus = "Completed",
+                            WatchlistId = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            DateStarted = new DateTime(2025, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MovieId = 4,
                             WatchStatus = "On Hold",
                             WatchlistId = 2
                         },
                         new
                         {
-                            Id = 4,
-                            DateStarted = new DateTime(2025, 7, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            MovieId = 4,
+                            Id = 6,
+                            DateStarted = new DateTime(2025, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MovieId = 5,
+                            WatchStatus = "On Hold",
+                            WatchlistId = 2
+                        },
+                        new
+                        {
+                            Id = 7,
+                            DateStarted = new DateTime(2025, 6, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MovieId = 1,
                             WatchStatus = "Dropped",
+                            WatchlistId = 3
+                        },
+                        new
+                        {
+                            Id = 8,
+                            DateStarted = new DateTime(2025, 6, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MovieId = 6,
+                            WatchStatus = "Dropped",
+                            WatchlistId = 3
+                        },
+                        new
+                        {
+                            Id = 9,
+                            DateStarted = new DateTime(2025, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MovieId = 3,
+                            WatchStatus = "Watching",
                             WatchlistId = 4
+                        },
+                        new
+                        {
+                            Id = 10,
+                            DateStarted = new DateTime(2025, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MovieId = 5,
+                            WatchStatus = "Watching",
+                            WatchlistId = 4
+                        },
+                        new
+                        {
+                            Id = 11,
+                            DateStarted = new DateTime(2025, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MovieId = 7,
+                            WatchStatus = "Watching",
+                            WatchlistId = 4
+                        },
+                        new
+                        {
+                            Id = 12,
+                            DateStarted = new DateTime(2025, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MovieId = 8,
+                            WatchStatus = "Watching",
+                            WatchlistId = 4
+                        },
+                        new
+                        {
+                            Id = 13,
+                            DateFinished = new DateTime(2025, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateStarted = new DateTime(2025, 3, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MovieId = 1,
+                            WatchStatus = "Completed",
+                            WatchlistId = 5
+                        },
+                        new
+                        {
+                            Id = 14,
+                            DateFinished = new DateTime(2025, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateStarted = new DateTime(2025, 3, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MovieId = 2,
+                            WatchStatus = "Completed",
+                            WatchlistId = 5
+                        },
+                        new
+                        {
+                            Id = 15,
+                            DateFinished = new DateTime(2025, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateStarted = new DateTime(2025, 3, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MovieId = 3,
+                            WatchStatus = "Completed",
+                            WatchlistId = 5
+                        },
+                        new
+                        {
+                            Id = 16,
+                            DateFinished = new DateTime(2025, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateStarted = new DateTime(2025, 3, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MovieId = 4,
+                            WatchStatus = "Completed",
+                            WatchlistId = 5
+                        },
+                        new
+                        {
+                            Id = 17,
+                            DateFinished = new DateTime(2025, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateStarted = new DateTime(2025, 3, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MovieId = 5,
+                            WatchStatus = "Completed",
+                            WatchlistId = 5
+                        },
+                        new
+                        {
+                            Id = 18,
+                            DateFinished = new DateTime(2025, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateStarted = new DateTime(2025, 3, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MovieId = 6,
+                            WatchStatus = "Completed",
+                            WatchlistId = 5
+                        },
+                        new
+                        {
+                            Id = 19,
+                            DateFinished = new DateTime(2025, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateStarted = new DateTime(2025, 3, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MovieId = 7,
+                            WatchStatus = "Completed",
+                            WatchlistId = 5
+                        },
+                        new
+                        {
+                            Id = 20,
+                            DateFinished = new DateTime(2025, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateStarted = new DateTime(2025, 3, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MovieId = 8,
+                            WatchStatus = "Completed",
+                            WatchlistId = 5
+                        },
+                        new
+                        {
+                            Id = 21,
+                            DateFinished = new DateTime(2025, 4, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateStarted = new DateTime(2025, 3, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MovieId = 9,
+                            WatchStatus = "Completed",
+                            WatchlistId = 5
                         });
                 });
 
@@ -1476,6 +1622,12 @@ namespace Bioskopina.Services.Migrations
                             Id = 4,
                             DateAdded = new DateTime(2025, 7, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            DateAdded = new DateTime(2025, 7, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = 5
                         });
                 });
 

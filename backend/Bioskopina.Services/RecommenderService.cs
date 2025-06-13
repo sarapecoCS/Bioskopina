@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Bioskopina.Model.Requests;
 using Bioskopina.Model.SearchObjects;
@@ -18,9 +18,11 @@ namespace Bioskopina.Services
     {
         protected readonly IMapper _mapper;
         private readonly BioskopinaContext _context;
+
+        static readonly object isLocked = new object();
         static MLContext mlContext = null;
-        static object isLocked = new object();
         static ITransformer model = null;
+        static PredictionEngine<BioskopinaRecommendation, CoBioskopinaPrediction> predictionEngine = null;
 
         public RecommenderService(IMapper mapper, BioskopinaContext context) : base(context, mapper)
         {
@@ -32,7 +34,7 @@ namespace Bioskopina.Services
         {
             var entity = await _context.Recommenders.FirstOrDefaultAsync(r => r.MovieId == movieId, cancellationToken);
 
-            if (entity is null)
+            if (entity == null)
                 return null;
 
             return _mapper.Map<Model.Recommender>(entity);
@@ -42,115 +44,83 @@ namespace Bioskopina.Services
         {
             lock (isLocked)
             {
-                if (mlContext == null)
+                if (mlContext == null || model == null)
                 {
                     mlContext = new MLContext();
 
-                    var tmpData = _context.Watchlists.Include(w => w.BioWatchlists).ToList();
+                    var watchlists = _context.Watchlists.Include(w => w.BioWatchlists).ToList();
 
                     var data = new List<BioskopinaRecommendation>();
 
-                    foreach (var x in tmpData)
+                    foreach (var w in watchlists)
                     {
-                        if (x.BioWatchlists.Count > 1)
+                        if (w.BioWatchlists.Count > 1)
                         {
-                            var distinctItemId = x.BioWatchlists.Select(y => y.MovieId).ToList();
+                            var distinctMovieIds = w.BioWatchlists.Select(b => b.MovieId).Distinct().ToList();
 
-                            distinctItemId?.ForEach(y =>
+                            foreach (var movieA in distinctMovieIds)
                             {
-                                var relatedItems = x.BioWatchlists.Where(z => z.MovieId != y);
-
-                                foreach (var z in relatedItems)
+                                foreach (var movieB in distinctMovieIds)
                                 {
-                                    data.Add(new BioskopinaRecommendation()
+                                    if (movieA != movieB)
                                     {
-                                        MovieId = (uint)y,
-                                        CoMovieId = (uint)z.MovieId,
-                                    });
+                                        data.Add(new BioskopinaRecommendation
+                                        {
+                                            MovieId = (uint)movieA,
+                                            CoMovieId = (uint)movieB,
+                                            Label = 1f  // Positive co-occurrence
+                                        });
+                                    }
                                 }
-                            });
+                            }
                         }
                     }
 
-                    var trainData = mlContext.Data.LoadFromEnumerable(data);
+                    if (!data.Any())
+                        throw new Exception("Not enough data to train the recommendation model.");
 
-                    MatrixFactorizationTrainer.Options options = new MatrixFactorizationTrainer.Options();
-                    options.MatrixColumnIndexColumnName = nameof(BioskopinaRecommendation.MovieId);
-                    options.MatrixRowIndexColumnName = nameof(BioskopinaRecommendation.CoMovieId);
-                    options.LabelColumnName = "Label";
-                    options.LossFunction = MatrixFactorizationTrainer.LossFunctionType.SquareLossOneClass;
-                    options.Alpha = 0.01;
-                    options.Lambda = 0.025;
-                    options.NumberOfIterations = 100;
-                    options.C = 0.00001;
+                    var trainingDataView = mlContext.Data.LoadFromEnumerable(data);
 
-                    var est = mlContext.Recommendation().Trainers.MatrixFactorization(options);
-
-                    model = est.Fit(trainData);
-                }
-            }
-
-            var movies = _context.Bioskopina.Where(x => x.Id != movieId).ToList();
-
-            var predictionResult = new List<Tuple<Database.Bioskopina, float>>();
-
-            foreach (var m in movies)
-            {
-                var predictionengine = mlContext.Model.CreatePredictionEngine<BioskopinaRecommendation, CoBioskopinaPrediction>(model);
-                var prediction = predictionengine.Predict(
-                                     new BioskopinaRecommendation()
-                                     {
-                                         MovieId = (uint)movieId,
-                                         CoMovieId = (uint)m.Id 
-                                     });
-
-                predictionResult.Add(new Tuple<Database.Bioskopina, float>(m, prediction.Score));
-            }
-
-            var finalResult = predictionResult.OrderByDescending(x => x.Item2).Select(x => x.Item1).Take(3).ToList();
-
-            return _mapper.Map<List<Model.Bioskopina>>(finalResult);
-        }
-
-        public async Task<PagedResult<Model.Recommender>> TrainMovieModelAsync(CancellationToken cancellationToken = default)
-        {
-            var movies = await _context.Bioskopina.ToListAsync(cancellationToken);
-            var numberOfRecords = await _context.BioskopinaWatchlists.CountAsync(cancellationToken);
-
-            if (movies.Count > 4 && numberOfRecords > 8)
-            {
-                List<Database.Recommender> recommendList = new List<Database.Recommender>();
-
-                foreach (var m in movies)
-                {
-                    var recommendedMovies = Recommend(m.Id);
-
-                    var resultRecommend = new Database.Recommender()
+                    var options = new MatrixFactorizationTrainer.Options
                     {
-                        MovieId = m.Id,
-                        CoMovieId1 = recommendedMovies[0].Id,
-                        CoMovieId2 = recommendedMovies[1].Id,
-                        CoMovieId3 = recommendedMovies[2].Id
+                        MatrixColumnIndexColumnName = nameof(BioskopinaRecommendation.MovieId),
+                        MatrixRowIndexColumnName = nameof(BioskopinaRecommendation.CoMovieId),
+                        LabelColumnName = nameof(BioskopinaRecommendation.Label),
+                        LossFunction = MatrixFactorizationTrainer.LossFunctionType.SquareLossOneClass,
+                        Alpha = 0.01,
+                        Lambda = 0.025,
+                        NumberOfIterations = 100,
+                        C = 0.00001
                     };
-                    recommendList.Add(resultRecommend);
+
+                    var pipeline = mlContext.Recommendation().Trainers.MatrixFactorization(options);
+
+                    model = pipeline.Fit(trainingDataView);
+
+                    predictionEngine = mlContext.Model.CreatePredictionEngine<BioskopinaRecommendation, CoBioskopinaPrediction>(model);
                 }
-
-                await CreateNewRecommendation(recommendList, cancellationToken);
-                await _context.SaveChangesAsync();
-
-                return _mapper.Map<PagedResult<Model.Recommender>>(recommendList);
             }
-            else
+
+            var allMovies = _context.Bioskopina.Where(m => m.Id != movieId).ToList();
+
+            var scoredMovies = new List<(Database.Bioskopina Movie, float Score)>();
+
+            foreach (var movie in allMovies)
             {
-                throw new Exception("Not enough data to generate recommendations.");
-            }
-        }
+                var input = new BioskopinaRecommendation
+                {
+                    MovieId = (uint)movieId,
+                    CoMovieId = (uint)movie.Id
+                };
 
-        public async Task DeleteAllRecommendations(CancellationToken cancellationToken = default)
-        {
-            var allRecommenders = await _context.Recommenders.ToListAsync(cancellationToken);
-            _context.Recommenders.RemoveRange(allRecommenders);
-            await _context.SaveChangesAsync(cancellationToken);
+                var prediction = predictionEngine.Predict(input);
+
+                scoredMovies.Add((movie, prediction.Score));
+            }
+
+            var topMovies = scoredMovies.OrderByDescending(m => m.Score).Take(3).Select(m => m.Movie).ToList();
+
+            return _mapper.Map<List<Model.Bioskopina>>(topMovies);
         }
 
         public async Task CreateNewRecommendation(List<Database.Recommender> results, CancellationToken cancellationToken = default)
@@ -200,6 +170,91 @@ namespace Bioskopina.Services
             {
                 await _context.Recommenders.AddRangeAsync(results);
             }
+        }
+
+        public async Task<PagedResult<Model.Recommender>> TrainMovieModelAsync(CancellationToken cancellationToken = default)
+        {
+            var movies = await _context.Bioskopina.ToListAsync(cancellationToken);
+            var numberOfRecords = await _context.BioskopinaWatchlists.CountAsync(cancellationToken);
+
+            if (movies.Count > 4 && numberOfRecords > 8)
+            {
+                List<Database.Recommender> recommendList = new List<Database.Recommender>();
+
+                foreach (var m in movies)
+                {
+                    var recommendedMovies = Recommend(m.Id);
+
+                    var resultRecommend = new Database.Recommender()
+                    {
+                        MovieId = m.Id,
+                        CoMovieId1 = recommendedMovies[0].Id,
+                        CoMovieId2 = recommendedMovies[1].Id,
+                        CoMovieId3 = recommendedMovies[2].Id
+                    };
+                    recommendList.Add(resultRecommend);
+                }
+
+                await CreateNewRecommendation(recommendList, cancellationToken);
+                await _context.SaveChangesAsync(cancellationToken);
+
+                // Wrap the list into PagedResult:
+                var mappedResult = _mapper.Map<List<Model.Recommender>>(recommendList);
+                var pagedResult = new PagedResult<Model.Recommender>
+                {
+                    TotalCount = mappedResult.Count,
+                    Items = mappedResult
+                };
+
+                return pagedResult;
+            }
+            else
+            {
+                throw new Exception("Not enough data to generate recommendations.");
+            }
+        }
+
+
+        public async Task DeleteAllRecommendations(CancellationToken cancellationToken = default)
+        {
+            var allRecommenders = await _context.Recommenders.ToListAsync(cancellationToken);
+            _context.Recommenders.RemoveRange(allRecommenders);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task CreateOrUpdateRecommendationsAsync(List<Database.Recommender> newRecommendations, CancellationToken cancellationToken = default)
+        {
+            var existingRecommendations = await _context.Recommenders.ToListAsync(cancellationToken);
+            var moviesCount = await _context.Bioskopina.CountAsync(cancellationToken);
+
+            if (existingRecommendations.Count == 0)
+            {
+                await _context.Recommenders.AddRangeAsync(newRecommendations, cancellationToken);
+                return;
+            }
+
+            // Update existing or add new
+            foreach (var rec in newRecommendations)
+            {
+                var existing = existingRecommendations.FirstOrDefault(r => r.MovieId == rec.MovieId);
+                if (existing != null)
+                {
+                    existing.CoMovieId1 = rec.CoMovieId1;
+                    existing.CoMovieId2 = rec.CoMovieId2;
+                    existing.CoMovieId3 = rec.CoMovieId3;
+                }
+                else
+                {
+                    await _context.Recommenders.AddAsync(rec, cancellationToken);
+                }
+            }
+
+            // Remove recommendations for movies that no longer exist
+            var movieIds = newRecommendations.Select(r => r.MovieId).ToHashSet();
+            var toRemove = existingRecommendations.Where(r => !movieIds.Contains(r.MovieId)).ToList();
+
+            if (toRemove.Any())
+                _context.Recommenders.RemoveRange(toRemove);
         }
     }
 }

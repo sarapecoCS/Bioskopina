@@ -14,5 +14,6 @@ namespace Bioskopina.Services
         Task<Model.Recommender?> GetById(int movieid, CancellationToken cancellationToken = default);
         Task<PagedResult<Model.Recommender>> TrainMovieModelAsync(CancellationToken cancellationToken = default);
         Task DeleteAllRecommendations(CancellationToken cancellationToken = default);
+        List<Model.Bioskopina> Recommend(int movieId);
     }
 }

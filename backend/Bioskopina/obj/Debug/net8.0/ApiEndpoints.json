@@ -2327,8 +2327,8 @@
   },
   {
     "ContainingType": "Bioskopina.Controllers.RecommenderController",
-    "Method": "Get",
-    "RelativePath": "Recommender/{movieId}",
+    "Method": "RecommendMovies",
+    "RelativePath": "Recommender/recommend-movies/{movieId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -2341,7 +2341,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "Bioskopina.Model.Recommender",
+        "Type": "System.Collections.Generic.List\u00601[[Bioskopina.Model.Bioskopina, Bioskopina.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",

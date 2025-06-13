@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 
 import '../models/recommender.dart';
@@ -11,65 +12,36 @@ class RecommenderProvider extends ChangeNotifier {
   String? _baseUrl;
   final String _endpoint = "Recommender";
 
-  HttpClient client = HttpClient();
-  IOClient? http;
+  final HttpClient _client = HttpClient();
+  IOClient? _http;
 
   RecommenderProvider() {
-    _baseUrl = const String.fromEnvironment("baseUrl",
-        defaultValue: "http://192.168.1.9:5262/");
+    _baseUrl = const String.fromEnvironment(
+      "baseUrl",
+      defaultValue: "http://192.168.1.9:5262/",
+    );
 
-    client.badCertificateCallback = (cert, host, port) => true;
-    http = IOClient(client);
+    _client.badCertificateCallback = (cert, host, port) => true;
+    _http = IOClient(_client);
   }
 
-  Future<Recommender> getById(int id) async {
-    var url = "$_baseUrl$_endpoint/$id";
+  /// Headers builder
+  Map<String, String> createHeaders() {
+    String username = Authorization.username ?? "";
+    String password = Authorization.password ?? "";
 
-    var uri = Uri.parse(url);
-    var headers = createHeaders();
+    String basicAuth =
+        "Basic ${base64Encode(utf8.encode('$username:$password'))}";
 
-    var response = await http!.get(uri, headers: headers);
-
-    if (isValidResponse(response)) {
-      var data = jsonDecode(response.body);
-      return Recommender.fromJson(data);
-    } else {
-      throw Exception("Unknown error");
-    }
+    return {
+      "Content-Type": "application/json",
+      "Authorization": basicAuth,
+    };
   }
 
-  Future trainData() async {
-    var url = "$_baseUrl/TrainModelAsync";
-    var uri = Uri.parse(url);
-    var headers = createHeaders();
-
-    Response response = await post(uri, headers: headers);
-
-    if (isValidResponse(response)) {
-      var data = jsonDecode(response.body);
-      return data;
-    } else {
-      throw Exception("Unknown error");
-    }
-  }
-
-  Future deleteData() async {
-    var url = "$_baseUrl/ClearRecommendations";
-    var uri = Uri.parse(url);
-    var headers = createHeaders();
-
-    Response response = await delete(uri, headers: headers);
-    if (isValidResponse(response)) {
-    } else {
-      throw Exception("Unknown error");
-    }
-  }
-
-  // -----------------------------------
-  // -----------------------------------
-
-  bool isValidResponse(Response response) {
-    if (response.statusCode < 299) {
+  /// Validate HTTP response status code
+  bool isValidResponse(http.Response response) {
+    if (response.statusCode < 300) {
       return true;
     } else if (response.statusCode == 401) {
       throw Exception("Unauthorized");
@@ -79,21 +51,65 @@ class RecommenderProvider extends ChangeNotifier {
     }
   }
 
-  Map<String, String> createHeaders() {
-    String username = Authorization.username ?? "";
-    String password = Authorization.password ?? "";
+  /// Fetch Recommender by movieId
+  Future<Recommender> getById(int movieId) async {
+    var url = "$_baseUrl$_endpoint/$movieId";
+    var uri = Uri.parse(url);
+    var headers = createHeaders();
 
-    String basicAuth =
-        "Basic ${base64Encode(utf8.encode('$username:$password'))}";
+    var response = await _http!.get(uri, headers: headers);
+    print("Requesting recommendations for movieId: $movieId");
+    print("Response status: ${response.statusCode}");
+    print("Response body: ${response.body}");
 
-    var headers = {
-      "Content-Type": "application/json",
-      "Authorization": basicAuth
-    };
-
-    return headers;
+    if (isValidResponse(response)) {
+      var data = jsonDecode(response.body);
+      print("Parsed data: $data");
+      return Recommender.fromJson(data);
+    } else {
+      throw Exception("Unknown error");
+    }
   }
 
+  /// Returns a list of recommended movie IDs, ignoring nulls
+  Future<List<int>> getRecommendedMovieIds(int movieId) async {
+    Recommender recommender = await getById(movieId);
+    return [
+      recommender.coMovieId1,
+      recommender.coMovieId2,
+      recommender.coMovieId3,
+    ].whereType<int>().toList();
+  }
+
+  /// Calls API endpoint to trigger training
+  Future<dynamic> trainData() async {
+    var url = "$_baseUrl/TrainModelAsync";
+    var uri = Uri.parse(url);
+    var headers = createHeaders();
+
+    var response = await _http!.post(uri, headers: headers);
+
+    if (isValidResponse(response)) {
+      var data = jsonDecode(response.body);
+      return data;
+    } else {
+      throw Exception("Unknown error");
+    }
+  }
+
+  /// Calls API endpoint to clear recommendations
+  Future<void> deleteData() async {
+    var url = "$_baseUrl/ClearRecommendations";
+    var uri = Uri.parse(url);
+    var headers = createHeaders();
+
+    var response = await _http!.delete(uri, headers: headers);
+    if (!isValidResponse(response)) {
+      throw Exception("Unknown error");
+    }
+  }
+
+  /// Utility to convert Map params to query string (optional)
   String getQueryString(Map params,
       {String prefix = '&', bool inRecursion = false}) {
     String query = '';
@@ -114,12 +130,10 @@ class RecommenderProvider extends ChangeNotifier {
         }
         query += '$prefix$key=$encoded';
       } else if (value is DateTime) {
-        query += '$prefix$key=${(value as DateTime).toIso8601String()}';
+        query += '$prefix$key=${(value).toIso8601String()}';
       } else if (value is List<int>) {
-        // Handle list of integers (anime IDs)
         for (int id in value) {
-          query += '$prefix$key=$id';
-          query += '&'; // Add '&' to separate multiple IDs
+          query += '$prefix$key=$id&';
         }
       } else if (value is List || value is Map) {
         if (value is List) value = value.asMap();

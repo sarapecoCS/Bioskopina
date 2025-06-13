@@ -3800,7 +3800,7 @@
         }
       }
     },
-    "/Recommender/{movieId}": {
+    "/Recommender/recommend-movies/{movieId}": {
       "get": {
         "tags": [
           "Recommender"
@@ -3822,17 +3822,26 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Recommender"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Bioskopina"
+                  }
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Recommender"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Bioskopina"
+                  }
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Recommender"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Bioskopina"
+                  }
                 }
               }
             }
@@ -6020,16 +6029,15 @@
       "BioskopinaListPagedResult": {
         "type": "object",
         "properties": {
-          "result": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/BioskopinaList"
             },
-            "nullable": true
-          },
-          "count": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           }
         },
@@ -6042,16 +6050,15 @@
       "BioskopinaPagedResult": {
         "type": "object",
         "properties": {
-          "result": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Bioskopina"
             },
-            "nullable": true
-          },
-          "count": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           }
         },
@@ -6207,16 +6214,15 @@
       "BWatchlistPagedResult": {
         "type": "object",
         "properties": {
-          "result": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/BWatchlist"
             },
-            "nullable": true
-          },
-          "count": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           }
         },
@@ -6314,16 +6320,15 @@
       "CommentPagedResult": {
         "type": "object",
         "properties": {
-          "result": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Comment"
             },
-            "nullable": true
-          },
-          "count": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           }
         },
@@ -6401,16 +6406,15 @@
       "DonationPagedResult": {
         "type": "object",
         "properties": {
-          "result": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Donation"
             },
-            "nullable": true
-          },
-          "count": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           }
         },
@@ -6472,16 +6476,15 @@
       "GenreBioskopinaPagedResult": {
         "type": "object",
         "properties": {
-          "result": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/GenreBioskopina"
             },
-            "nullable": true
-          },
-          "count": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           }
         },
@@ -6504,16 +6507,15 @@
       "GenrePagedResult": {
         "type": "object",
         "properties": {
-          "result": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Genre"
             },
-            "nullable": true
-          },
-          "count": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           }
         },
@@ -6572,16 +6574,15 @@
       "ListPagedResult": {
         "type": "object",
         "properties": {
-          "result": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/List"
             },
-            "nullable": true
-          },
-          "count": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           }
         },
@@ -6738,16 +6739,15 @@
       "PostPagedResult": {
         "type": "object",
         "properties": {
-          "result": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Post"
             },
-            "nullable": true
-          },
-          "count": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           }
         },
@@ -6812,16 +6812,15 @@
       "PreferredGenrePagedResult": {
         "type": "object",
         "properties": {
-          "result": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/PreferredGenre"
             },
-            "nullable": true
-          },
-          "count": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           }
         },
@@ -6893,16 +6892,15 @@
       "QAcategoryPagedResult": {
         "type": "object",
         "properties": {
-          "result": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/QAcategory"
             },
-            "nullable": true
-          },
-          "count": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           }
         },
@@ -6946,16 +6944,15 @@
       "QAPagedResult": {
         "type": "object",
         "properties": {
-          "result": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/QA"
             },
-            "nullable": true
-          },
-          "count": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           }
         },
@@ -7045,16 +7042,15 @@
       "RatingPagedResult": {
         "type": "object",
         "properties": {
-          "result": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Rating"
             },
-            "nullable": true
-          },
-          "count": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           }
         },
@@ -7104,16 +7100,15 @@
       "RecommenderPagedResult": {
         "type": "object",
         "properties": {
-          "result": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Recommender"
             },
-            "nullable": true
-          },
-          "count": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           }
         },
@@ -7146,16 +7141,15 @@
       "RolePagedResult": {
         "type": "object",
         "properties": {
-          "result": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Role"
             },
-            "nullable": true
-          },
-          "count": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           }
         },
@@ -7288,16 +7282,15 @@
       "UserCommentActionPagedResult": {
         "type": "object",
         "properties": {
-          "result": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/UserCommentAction"
             },
-            "nullable": true
-          },
-          "count": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           }
         },
@@ -7355,16 +7348,15 @@
       "UserPagedResult": {
         "type": "object",
         "properties": {
-          "result": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/User"
             },
-            "nullable": true
-          },
-          "count": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           }
         },
@@ -7413,16 +7405,15 @@
       "UserPostActionPagedResult": {
         "type": "object",
         "properties": {
-          "result": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/UserPostAction"
             },
-            "nullable": true
-          },
-          "count": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           }
         },
@@ -7467,16 +7458,15 @@
       "UserProfilePicturePagedResult": {
         "type": "object",
         "properties": {
-          "result": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/UserProfilePicture"
             },
-            "nullable": true
-          },
-          "count": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           }
         },
@@ -7561,16 +7551,15 @@
       "UserRolePagedResult": {
         "type": "object",
         "properties": {
-          "result": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/UserRole"
             },
-            "nullable": true
-          },
-          "count": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           }
         },
@@ -7664,16 +7653,15 @@
       "WatchlistPagedResult": {
         "type": "object",
         "properties": {
-          "result": {
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Watchlist"
             },
-            "nullable": true
-          },
-          "count": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           }
         },

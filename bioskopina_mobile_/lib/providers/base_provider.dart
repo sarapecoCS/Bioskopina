@@ -48,10 +48,19 @@ abstract class BaseProvider<T> with ChangeNotifier {
       var data = jsonDecode(response.body);
 
       var result = SearchResult<T>();
-      result.count = data['count'];
 
-      for (var item in data['result']) {
-        result.result.add(fromJson(item));
+      // Set count safely with fallback
+      result.count = (data['totalCount'] ?? 0) as int;
+
+      // Safely parse list of items
+      var items = data['items'] as List<dynamic>?;
+      if (items != null) {
+        for (var item in items) {
+          result.result.add(fromJson(item));
+        }
+      } else {
+        // Maybe log warning or set empty list
+        result.result = [];
       }
       return result;
     } else {
@@ -59,21 +68,6 @@ abstract class BaseProvider<T> with ChangeNotifier {
     }
   }
 
-  Future<T> getById(int id) async {
-    var url = "$_baseUrl$_endpoint/$id";
-
-    var uri = Uri.parse(url);
-    var headers = createHeaders();
-
-    var response = await http!.get(uri, headers: headers);
-
-    if (isValidResponse(response)) {
-      var data = jsonDecode(response.body);
-      return fromJson(data);
-    } else {
-      throw Exception("Unknown error");
-    }
-  }
 
   Future<T> insert(dynamic request, {bool notifyAllListeners = true}) async {
     var url = "$_baseUrl$_endpoint";

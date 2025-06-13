@@ -6,22 +6,24 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Bioskopina.Controllers
 {
-    public class RecommenderController
+    public class RecommenderController : ControllerBase
     {
         private readonly IRecommenderService _recommenderService;
 
 
-        public RecommenderController(IRecommenderService service)
+        public RecommenderController(IRecommenderService service) 
         {
             _recommenderService = service;
         }
 
         [Authorize]
-        [HttpGet("Recommender/{movieId}")]
-        public virtual async Task<Model.Recommender?> Get(int movieId, CancellationToken cancellationToken = default)
+        [HttpGet("Recommender/recommend-movies/{movieId}")]
+        public virtual ActionResult<List<Model.Bioskopina>> RecommendMovies(int movieId)
         {
-            return await _recommenderService.GetById(movieId, cancellationToken);
+            var result = _recommenderService.Recommend(movieId);
+            return Ok(result);
         }
+
 
         [Authorize]
         [HttpPost("TrainModelAsync")]

@@ -33,7 +33,7 @@ namespace Bioskopina.Services
 
             query = AddInclude(query, search);
 
-            result.Count = await query.CountAsync();
+            result.TotalCount = await query.CountAsync();
 
             if (search?.Page.HasValue == true && search?.PageSize.HasValue == true)
             {
@@ -43,7 +43,7 @@ namespace Bioskopina.Services
             var list = await query.ToListAsync();
 
             var tmp = _mapper.Map<List<T>>(list);
-            result.Result = tmp;
+            result.Items = tmp;
             return result;
         }
 

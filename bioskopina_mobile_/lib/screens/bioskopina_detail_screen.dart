@@ -86,51 +86,7 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
     super.initState();
   }
 
-  Future<List<int>> getRecommendedMoviesIds(int movieId) async {
-    try {
-      Recommender recData = await _recommenderProvider.getById(movieId);
 
-      int? coMovieId1 = recData.coMovieId1;
-      int? coMovieId2 = recData.coMovieId2;
-      int? coMovieId3 = recData.coMovieId3;
-
-      List<int> recommendedMovieIds = [];
-
-      if (coMovieId1 != null) {
-        try {
-          Recommender recMovie1 =
-          await _recommenderProvider.getById(coMovieId1);
-          recommendedMovieIds.add(recMovie1.movieId!);
-        } catch (e) {
-          // Do nothing
-        }
-      }
-
-      if (coMovieId2 != null) {
-        try {
-          Recommender recMovie2 =
-          await _recommenderProvider.getById(coMovieId2);
-          recommendedMovieIds.add(recMovie2.movieId!);
-        } catch (e) {
-          // Do nothing
-        }
-      }
-
-      if (coMovieId3 != null) {
-        try {
-          Recommender recMovie3 =
-          await _recommenderProvider.getById(coMovieId3);
-          recommendedMovieIds.add(recMovie3.movieId!);
-        } catch (e) {
-          // Do nothing
-        }
-      }
-
-      return recommendedMovieIds;
-    } catch (e) {
-      return [];
-    }
-  }
 
   void _updatePlaybackStatus(int position, bool isPlaying) {
     setState(() {
@@ -226,84 +182,84 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
   }
 
  Widget _buildRecommendations() {
-   return FutureBuilder<List<int>>(
-     future: getRecommendedMoviesIds(widget.bioskopina.id!),
+   return FutureBuilder<List<Bioskopina>>(
+     future: _movieProvider.getRecommendedMovies(widget.bioskopina.id!),
      builder: (context, snapshot) {
        if (snapshot.connectionState == ConnectionState.waiting) {
-         return const CircularProgressIndicator();
+         return const Center(child: CircularProgressIndicator());
        } else if (snapshot.hasError) {
          return Text('Error: ${snapshot.error}');
        } else {
-         var recMovieIds = snapshot.data!;
-         print('Recommended movie IDs: $recMovieIds');
+         var recommendedMovies = snapshot.data ?? [];
+         print('Recommended movies fetched: ${recommendedMovies.length}');
 
-         if (recMovieIds.isEmpty) {
+         if (recommendedMovies.isEmpty) {
            return const Padding(
              padding: EdgeInsets.all(8.0),
              child: Text('No recommendations found.'),
            );
          }
 
-         return FutureBuilder<SearchResult<Bioskopina>>(
-           future: _movieProvider.get(
-             filter: {"GenresIncluded": true, "Ids": recMovieIds},
-           ),
-           builder: (context, snapshot) {
-             if (snapshot.connectionState == ConnectionState.waiting) {
-               return const CircularProgressIndicator();
-             } else if (snapshot.hasError) {
-               return Text('Error: ${snapshot.error}');
-             } else {
-               var recBioskopinaList = snapshot.data!.result;
-               print('Recommended movies fetched: ${recBioskopinaList.length}');
-
-               if (recBioskopinaList.isEmpty) {
-                 return const Padding(
-                   padding: EdgeInsets.all(8.0),
-                   child: Text('No recommended movies found.'),
-                 );
-               }
-
-               return Column(
-                 children: [
-                   MySeparator(
-                     width: MediaQuery.of(context).size.width * 0.8,
-                     paddingTop: 20,
-                     paddingBottom: 10,
-                     borderRadius: 50,
-                     opacity: 0.8,
-                   ),
-                   const Padding(
-                     padding: EdgeInsets.only(bottom: 15),
-                     child: Text(
-                       "Recommendations",
-                       style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-                     ),
-                   ),
-                   SingleChildScrollView(
-                     scrollDirection: Axis.horizontal,
-                     child: Row(
-                       children: _buildRecBioskopinaCards(recBioskopinaList),
-                     ),
-                   ),
-                 ],
-               );
-             }
-           },
+         return Column(
+           crossAxisAlignment: CrossAxisAlignment.start,
+           children: [
+             MySeparator(
+               width: MediaQuery.of(context).size.width * 0.8,
+               paddingTop: 20,
+               paddingBottom: 10,
+               borderRadius: 50,
+               opacity: 0.8,
+             ),
+             const Padding(
+               padding: EdgeInsets.only(bottom: 15),
+               child: Text(
+                 "Recommendations",
+                 style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+               ),
+             ),
+             SingleChildScrollView(
+               scrollDirection: Axis.horizontal,
+               child: Row(
+                 children: _buildRecBioskopinaCards(recommendedMovies),
+               ),
+             ),
+           ],
          );
        }
      },
    );
  }
 
+ List<Widget> _buildRecBioskopinaCards(List<Bioskopina> movies) {
+   return movies.map((movie) {
+     return Container(
+       width: 150,
+       margin: const EdgeInsets.symmetric(horizontal: 8),
+       child: Column(
+         children: [
+           ClipRRect(
+             borderRadius: BorderRadius.circular(8),
+             child: Image.network(
+               movie.imageUrl ?? '',
+               width: 140,
+               height: 200,
+               fit: BoxFit.cover,
+               errorBuilder: (context, error, stackTrace) => const Icon(Icons.broken_image),
+             ),
+           ),
+           const SizedBox(height: 6),
+           Text(
+             movie.titleEn ?? 'Unknown',
+             maxLines: 2,
+             overflow: TextOverflow.ellipsis,
+             textAlign: TextAlign.center,
+           ),
+         ],
+       ),
+     );
+   }).toList();
+}
 
-  List<Widget> _buildRecBioskopinaCards(List<Bioskopina> recBioskopinaList) {
-    return List.generate(
-      recBioskopinaList.length,
-          (index) => BioskopinaCard(
-          bioskopina: recBioskopinaList[index], selectedIndex: widget.selectedIndex),
-    );
-  }
 
   Widget _buildSeeMoreRatings() {
     return Padding(
@@ -495,70 +451,81 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
         });
   }
 
-  Widget _buildTrailer() {
-    final Size screenSize = MediaQuery.of(context).size;
+ Widget _buildTrailer() {
+   final Size screenSize = MediaQuery.of(context).size;
 
-    return Visibility(
-      visible: widget.bioskopina.trailerUrl != null && widget.bioskopina.trailerUrl != "",
-      child: Center(
-        child: Padding(
-          padding:
-          const EdgeInsets.only(left: 15, right: 15, bottom: 15, top: 10),
-          child: Column(
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(bottom: 10),
-                child: Text("Trailer",
-                    style:
-                    TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
-              ),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: ValueListenableBuilder<int>(
-                  valueListenable: playbackPosition,
-                  builder: (context, position, _) {
-                    //print("Playback position: $position");
-                    // Widget tree that depends on playbackPosition
-                    return YoutubePlayer(
-                      width: screenSize.width,
-                      controller: _youtubePlayerController,
-                      showVideoProgressIndicator: true,
-                      progressIndicatorColor: Colors.blue,
-                      progressColors: const ProgressBarColors(
-                        playedColor: Colors.blue,
-                        handleColor: Colors.blue,
-                      ),
-                      bottomActions: [
-                         CurrentPosition(),
-                         ProgressBar(
-                          isExpanded: true,
-                          colors: ProgressBarColors(
-                            playedColor: Colors.blue,
-                            handleColor: Colors.blue,
-                          ),
-                        ),
-                         RemainingDuration(),
-                        GestureDetector(
-                            onTap: () {
-                              _youtubePlayerController.pause();
-                              _enterFullScreen();
-                            },
-                            child: const Padding(
-                              padding: EdgeInsets.only(left: 5),
-                              child: Icon(Icons.fullscreen_rounded,
-                                  color: Palette.white, size: 30),
-                            ))
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+   final String? trailerUrl = widget.bioskopina.trailerUrl;
+   final String videoId = YoutubePlayer.convertUrlToId(trailerUrl ?? "") ?? "";
+
+   if (trailerUrl == null || trailerUrl.isEmpty || videoId.isEmpty) {
+     return const Padding(
+       padding: EdgeInsets.all(16.0),
+       child: Text(
+         "Trailer unavailable.",
+         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+         textAlign: TextAlign.center,
+       ),
+     );
+   }
+
+   return Center(
+     child: Padding(
+       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+       child: Column(
+         children: [
+           const Padding(
+             padding: EdgeInsets.only(bottom: 10),
+             child: Text(
+               "Trailer",
+               style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+             ),
+           ),
+           ClipRRect(
+             borderRadius: BorderRadius.circular(15),
+             child: ValueListenableBuilder<int>(
+               valueListenable: playbackPosition,
+               builder: (context, position, _) {
+                 return YoutubePlayer(
+                   width: screenSize.width,
+                   controller: _youtubePlayerController,
+                   showVideoProgressIndicator: true,
+                   progressIndicatorColor: Colors.blue,
+                   progressColors: const ProgressBarColors(
+                     playedColor: Colors.blue,
+                     handleColor: Colors.blue,
+                   ),
+                   bottomActions: [
+                     CurrentPosition(),
+                     ProgressBar(
+                       isExpanded: true,
+                       colors: const ProgressBarColors(
+                         playedColor: Colors.blue,
+                         handleColor: Colors.blue,
+                       ),
+                     ),
+                     RemainingDuration(),
+                     GestureDetector(
+                       onTap: () {
+                         _youtubePlayerController.pause();
+                         _enterFullScreen();
+                       },
+                       child: const Padding(
+                         padding: EdgeInsets.only(left: 5),
+                         child: Icon(Icons.fullscreen_rounded,
+                             color: Palette.white, size: 30),
+                       ),
+                     ),
+                   ],
+                 );
+               },
+             ),
+           ),
+         ],
+       ),
+     ),
+   );
+ }
+
 
   void _enterFullScreen() {
     SystemChrome.setPreferredOrientations([

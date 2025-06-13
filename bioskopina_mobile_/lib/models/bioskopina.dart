@@ -5,19 +5,19 @@ part 'bioskopina.g.dart';
 
 @JsonSerializable()
 class Bioskopina {
-  final int id;
+  final int? id;
   @JsonKey(name: 'titleEn')
-  final String titleEn;
+  final String? titleEn;
 
-  final String synopsis;
-  final String director;
+  final String? synopsis;
+  final String? director;
   @JsonKey(name: 'score')
-  final double score;
+  final double? score;
   @JsonKey(name: 'genreMovies')
-  final List<GenreBioskopina> genreMovies;
+  final List<GenreBioskopina>? genreMovies;
   @JsonKey(name: 'runtime')
-  final int runtime;
-  final int yearRelease;
+  final int? runtime;
+  final int? yearRelease;
 
   @JsonKey(name: 'imageUrl')
   final String? imageUrl;
@@ -25,17 +25,14 @@ class Bioskopina {
   final String? trailerUrl;
 
   Bioskopina({
-    required this.id,
-    required this.titleEn,
-
-    required this.synopsis,
-    required this.director,
-    required this.score,
-    required this.genreMovies,
-    required this.runtime,
-    required this.yearRelease,
-
-
+    this.id,
+    this.titleEn,
+    this.synopsis,
+    this.director,
+    this.score,
+    this.genreMovies,
+    this.runtime,
+    this.yearRelease,
     this.imageUrl,
     this.trailerUrl,
   });
