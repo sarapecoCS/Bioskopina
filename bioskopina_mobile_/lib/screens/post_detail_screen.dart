@@ -12,6 +12,8 @@ import '../models/search_result.dart';
 import '../utils/colors.dart';
 import '../widgets/content_card.dart';
 
+
+
 class PostDetailScreen extends StatefulWidget {
   final Post post;
   const PostDetailScreen({super.key, required this.post});

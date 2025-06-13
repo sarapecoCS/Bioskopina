@@ -45,7 +45,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => RatingProvider()),
         ChangeNotifierProvider(create: (_) => UserPostActionProvider()),
 
-        // ProxyProvider for PostProvider
+        // ✅ Correct ProxyProvider for PostProvider
         ProxyProvider<UserPostActionProvider, PostProvider>(
           update: (_, userPostActionProvider, __) =>
               PostProvider(userPostActionProvider: userPostActionProvider),
@@ -53,7 +53,7 @@ void main() {
 
         ChangeNotifierProvider(create: (_) => UserCommentActionProvider()),
 
-        // ProxyProvider for CommentProvider
+        // ✅ Correct ProxyProvider for CommentProvider
         ProxyProvider<UserCommentActionProvider, CommentProvider>(
           update: (_, userCommentActionProvider, __) =>
               CommentProvider(userCommentActionProvider: userCommentActionProvider),
@@ -144,12 +144,12 @@ class MyMaterialApp extends StatelessWidget {
           helperStyle: TextStyle(color: Palette.lightPurple),
         ),
       ),
-      home: const LoginScreen(), // Your login screen set as home
+      home: const LoginScreen(), // 👈 Starting screen
     );
   }
 }
 
-// 👇👇 You forgot this part — ADD THIS BACK
+// Custom Page Transition
 class MyCustomPageTransitionBuilder extends PageTransitionsBuilder {
   @override
   Widget buildTransitions<T>(
