@@ -150,14 +150,14 @@ class _RatingsScreenState extends State<RatingsScreen> {
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.star, size: 15)
+                                  Icon(Icons.star,color:Colors.yellow, size: 15)
                                   ,
                                   const SizedBox(width: 3),
                                   Text(
                                     "${rating.ratingValue.toString()}/10",
                                     style: const TextStyle(
                                       color: Palette.starYellow,
-                                      fontSize: 13,
+                                      fontSize: 10,
                                     ),
                                   ),
                                   const Text(" by"),

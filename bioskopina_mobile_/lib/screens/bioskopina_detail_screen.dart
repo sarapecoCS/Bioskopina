@@ -51,61 +51,76 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
   late RecommenderProvider _recommenderProvider;
   late MovieProvider _movieProvider;
 
-  @override
-  void initState() {
-    _genreProvider = context.read<GenreProvider>();
-    _genreFuture = _genreProvider.get(filter: {"SortAlphabetically": "true"});
-    _recommenderProvider = context.read<RecommenderProvider>();
-    _movieProvider = context.read<MovieProvider>();
+@override
+void initState() {
+  super.initState();
 
-    _userProvider = context.read<UserProvider>();
+  _genreProvider = context.read<GenreProvider>();
+  _genreFuture = _genreProvider.get(filter: {"SortAlphabetically": "true"});
 
-    _ratingProvider = context.read<RatingProvider>();
-    _ratingFuture = _ratingProvider.get(filter: {
-      "MovieId": "${widget.bioskopina.id}",
-      "NewestFirst": "true",
-      "TakeItems": 1
-    });
+  _recommenderProvider = context.read<RecommenderProvider>();
+  _movieProvider = context.read<MovieProvider>();
+  _userProvider = context.read<UserProvider>();
+  _ratingProvider = context.read<RatingProvider>();
 
-    String videoLink = "${widget.bioskopina.trailerUrl}";
-    String videoId = extractVideoId(videoLink);
+  _ratingFuture = _ratingProvider.get(filter: {
+    "MovieId": "${widget.bioskopina.id}",
+    "NewestFirst": "true",
+    "TakeItems": 1,
+  });
 
-    playbackPosition = ValueNotifier<int>(0);
-    isPlaying = ValueNotifier<bool>(false);
+  // Get trailer URL, use empty string if null, trim whitespace
+  String videoLink = (widget.bioskopina.trailerUrl ?? '').trim();
 
-    _youtubePlayerController = YoutubePlayerController(
-      initialVideoId: videoId,
-      flags: YoutubePlayerFlags(
-        autoPlay: isPlaying.value,
-      ),
-    );
+  // Extract YouTube video ID from URL
+  String videoId = extractVideoId(videoLink);
 
-    // When entering fullscreen playback continues from where it left off
-    _youtubePlayerController.addListener(updateVideoProgress);
-
-    super.initState();
+  // If extraction failed, use fallback video ID
+  if (videoId.isEmpty) {
+    videoId = '9RXs4tnExXM'; // fallback ID (e.g., classic Black Wave example)
   }
 
+  print('Trailer URL: $videoLink');
+  print('Extracted videoId: $videoId');
 
+  // Initialize YouTube player controller
+  _youtubePlayerController = YoutubePlayerController(
+    initialVideoId: videoId,
+    flags: const YoutubePlayerFlags(
+      autoPlay: true,
+      mute: false,
+    ),
+  );
 
-  void _updatePlaybackStatus(int position, bool isPlaying) {
-    setState(() {
-      playbackPosition.value = position;
-      this.isPlaying.value = isPlaying;
-    });
+  // Add listener for updating playback status
+  _youtubePlayerController.addListener(updateVideoProgress);
+
+  // Initialize playback value notifiers
+  playbackPosition = ValueNotifier<int>(0);
+  isPlaying = ValueNotifier<bool>(false);
+}
+
+// Update the playbackPosition and isPlaying value notifiers, inside setState
+void _updatePlaybackStatus(int position, bool playing) {
+  setState(() {
+    playbackPosition.value = position;
+    isPlaying.value = playing;
+  });
+}
+
+// Listener for YoutubePlayerController that updates playback info
+void updateVideoProgress() {
+  playbackPosition.value = _youtubePlayerController.value.position.inSeconds;
+  isPlaying.value = _youtubePlayerController.value.isPlaying;
+}
+
+// Safely parse date string, returning null if invalid or placeholder
+DateTime? parseDate(String? dateString) {
+  if (dateString == null || dateString.contains("0001-01-01")) {
+    return null;
   }
-
-  void updateVideoProgress() {
-    playbackPosition.value = _youtubePlayerController.value.position.inSeconds;
-    isPlaying.value = _youtubePlayerController.value.isPlaying;
-  }
-
-  DateTime? parseDate(String? dateString) {
-    if (dateString == null || dateString.contains("0001-01-01")) {
-      return null;
-    }
-    return DateTime.tryParse(dateString);
-  }
+  return DateTime.tryParse(dateString);
+}
 
   @override
   Widget build(BuildContext context) {
@@ -211,7 +226,7 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
                opacity: 0.8,
              ),
              const Padding(
-               padding: EdgeInsets.only(bottom: 15),
+               padding: EdgeInsets.only(bottom: 15, left: 12),
                child: Text(
                  "Recommendations",
                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
@@ -231,34 +246,49 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
  }
 
  List<Widget> _buildRecBioskopinaCards(List<Bioskopina> movies) {
-   return movies.map((movie) {
-     return Container(
-       width: 150,
-       margin: const EdgeInsets.symmetric(horizontal: 8),
-       child: Column(
-         children: [
-           ClipRRect(
-             borderRadius: BorderRadius.circular(8),
-             child: Image.network(
-               movie.imageUrl ?? '',
-               width: 140,
-               height: 200,
-               fit: BoxFit.cover,
-               errorBuilder: (context, error, stackTrace) => const Icon(Icons.broken_image),
+   return movies.asMap().entries.map((entry) {
+     int index = entry.key;
+     Bioskopina movie = entry.value;
+     return GestureDetector(
+       onTap: () {
+         Navigator.push(
+           context,
+           MaterialPageRoute(
+             builder: (context) => BioskopinaDetailScreen(
+               bioskopina: movie,
+               selectedIndex: index,  // pass the index here
              ),
            ),
-           const SizedBox(height: 6),
-           Text(
-             movie.titleEn ?? 'Unknown',
-             maxLines: 2,
-             overflow: TextOverflow.ellipsis,
-             textAlign: TextAlign.center,
-           ),
-         ],
+         );
+       },
+       child: Container(
+         width: 150,
+         margin: const EdgeInsets.symmetric(horizontal: 8),
+         child: Column(
+           children: [
+             ClipRRect(
+               borderRadius: BorderRadius.circular(8),
+               child: Image.network(
+                 movie.imageUrl ?? '',
+                 width: 140,
+                 height: 200,
+                 fit: BoxFit.cover,
+                 errorBuilder: (context, error, stackTrace) => const Icon(Icons.broken_image),
+               ),
+             ),
+             const SizedBox(height: 6),
+             Text(
+               movie.titleEn ?? 'Unknown',
+               maxLines: 2,
+               overflow: TextOverflow.ellipsis,
+               textAlign: TextAlign.center,
+             ),
+           ],
+         ),
        ),
      );
    }).toList();
-}
+ }
 
 
   Widget _buildSeeMoreRatings() {
@@ -451,117 +481,132 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
         });
   }
 
- Widget _buildTrailer() {
-   final Size screenSize = MediaQuery.of(context).size;
+Widget _buildTrailer() {
+  final Size screenSize = MediaQuery.of(context).size;
 
-   final String? trailerUrl = widget.bioskopina.trailerUrl;
-   final String videoId = YoutubePlayer.convertUrlToId(trailerUrl ?? "") ?? "";
+  final String? trailerUrl = widget.bioskopina.trailerUrl;
 
-   if (trailerUrl == null || trailerUrl.isEmpty || videoId.isEmpty) {
-     return const Padding(
-       padding: EdgeInsets.all(16.0),
-       child: Text(
-         "Trailer unavailable.",
-         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-         textAlign: TextAlign.center,
-       ),
-     );
+  final String videoId = YoutubePlayer.convertUrlToId(trailerUrl ?? "") ?? "";
+
+  if (trailerUrl == null || trailerUrl.isEmpty || videoId.isEmpty) {
+    return const Padding(
+      padding: EdgeInsets.all(16.0),
+      child: Text(
+        "Trailer unavailable.",
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+
+  return Center(
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      child: Column(
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(bottom: 10),
+            child: Text(
+              "Trailer",
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+            ),
+          ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: YoutubePlayer(
+              width: screenSize.width,
+              controller: _youtubePlayerController,
+              showVideoProgressIndicator: true,
+              progressIndicatorColor: Colors.blue,
+              progressColors: const ProgressBarColors(
+                playedColor: Colors.blue,
+                handleColor: Colors.blue,
+              ),
+              bottomActions: [
+                CurrentPosition(),
+                ProgressBar(
+                  isExpanded: true,
+                  colors: const ProgressBarColors(
+                    playedColor: Colors.blue,
+                    handleColor: Colors.blue,
+                  ),
+                ),
+                RemainingDuration(),
+                GestureDetector(
+                  onTap: () {
+                    _youtubePlayerController.pause();
+                    // Remove _controller.enterFullScreen(); as it doesn't exist
+                    // If you want fullscreen, handle separately
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.only(left: 5),
+                    child: Icon(Icons.fullscreen_rounded,
+                        color: Colors.white, size: 30),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+
+ void _enterFullScreen() {
+   SystemChrome.setPreferredOrientations([
+     DeviceOrientation.landscapeRight,
+     DeviceOrientation.landscapeLeft,
+   ]);
+
+   String? videoLink = widget.bioskopina.trailerUrl;
+   print('Trailer URL: $videoLink');
+
+   // Defensive: check trailerUrl type and null
+   if (videoLink == null || videoLink.isEmpty) {
+     print('Error: trailerUrl is null or empty!');
+     return;
    }
 
-   return Center(
-     child: Padding(
-       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-       child: Column(
-         children: [
-           const Padding(
-             padding: EdgeInsets.only(bottom: 10),
-             child: Text(
-               "Trailer",
-               style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-             ),
-           ),
-           ClipRRect(
-             borderRadius: BorderRadius.circular(15),
-             child: ValueListenableBuilder<int>(
-               valueListenable: playbackPosition,
-               builder: (context, position, _) {
-                 return YoutubePlayer(
-                   width: screenSize.width,
-                   controller: _youtubePlayerController,
-                   showVideoProgressIndicator: true,
-                   progressIndicatorColor: Colors.blue,
-                   progressColors: const ProgressBarColors(
-                     playedColor: Colors.blue,
-                     handleColor: Colors.blue,
-                   ),
-                   bottomActions: [
-                     CurrentPosition(),
-                     ProgressBar(
-                       isExpanded: true,
-                       colors: const ProgressBarColors(
-                         playedColor: Colors.blue,
-                         handleColor: Colors.blue,
-                       ),
-                     ),
-                     RemainingDuration(),
-                     GestureDetector(
-                       onTap: () {
-                         _youtubePlayerController.pause();
-                         _enterFullScreen();
-                       },
-                       child: const Padding(
-                         padding: EdgeInsets.only(left: 5),
-                         child: Icon(Icons.fullscreen_rounded,
-                             color: Palette.white, size: 30),
-                       ),
-                     ),
-                   ],
-                 );
-               },
-             ),
-           ),
-         ],
+   // Extract video ID safely
+   String videoId = YoutubePlayer.convertUrlToId(videoLink) ?? "";
+   print('Extracted videoId: $videoId');
+
+   if (videoId.isEmpty) {
+     print('Error: Could not extract valid video ID!');
+     return;
+   }
+
+   Navigator.push(
+     context,
+     MaterialPageRoute(
+       builder: (context) => VideoScreen(
+         videoId: videoId,
+         playbackPosition: playbackPosition,
+         isPlaying: isPlaying,
+         updatePlaybackStatus: _updatePlaybackStatus,
        ),
      ),
-   );
+   ).then((value) {
+     SystemChrome.setPreferredOrientations([
+       DeviceOrientation.portraitUp,
+     ]);
+
+     if (value != null && value is List && value.length == 2) {
+       int position = value[0];
+       bool playing = value[1];
+
+       _youtubePlayerController.seekTo(Duration(seconds: position));
+
+       if (playing) {
+         _youtubePlayerController.play();
+       } else {
+         _youtubePlayerController.pause();
+       }
+     }
+   });
  }
-
-
-  void _enterFullScreen() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
-
-    String videoLink = "${widget.bioskopina.trailerUrl}";
-
-    // Using custom method
-    //  String videoId = extractVideoId(videoLink);
-
-    // Using method from package:
-    String videoId = YoutubePlayer.convertUrlToId(videoLink) ?? "";
-
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => VideoScreen(
-              videoId: videoId,
-              playbackPosition: playbackPosition,
-              isPlaying: isPlaying,
-              updatePlaybackStatus: _updatePlaybackStatus,
-            ))).then((value) {
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitUp,
-      ]);
-      _youtubePlayerController.seekTo(Duration(seconds: value[0]));
-
-      if (value[1] == true) {
-        _youtubePlayerController.play();
-      } else if (value[1] == false) {
-        _youtubePlayerController.pause();
-      }
-    });
-  }
 
   @override
   void dispose() {
