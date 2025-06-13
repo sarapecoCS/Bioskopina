@@ -315,7 +315,7 @@ TabBar? _buildTabBar() {
         },
         icon: const Icon(
           Icons.arrow_back_rounded,
-          color: Colors.blue,
+          color: Colors.white,
         ),
       );
     } else if (widget.showHelpIcon == true) {
