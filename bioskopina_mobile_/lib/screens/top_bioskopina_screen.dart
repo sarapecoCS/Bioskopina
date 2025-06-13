@@ -38,13 +38,13 @@ class _TopBioskopinaScreenState extends State<TopBioskopinaScreen> {
       selectedIndex: widget.selectedIndex,
       page: page,
       pageSize: pageSize,
-      fetchMovie: fetchAnime,
+      fetchMovie: fetchMovies,
       fetchPage: fetchPage,
       filter: _filter,
     );
   }
 
-  Future<SearchResult<Bioskopina>> fetchAnime() {
+  Future<SearchResult<Bioskopina>> fetchMovies() {
     return _bioskopinaProvider.get(filter: {
       ..._filter,
       "Page": "$page",

@@ -128,7 +128,7 @@ class _InfoScreenState extends State<InfoScreen> {
                     child: const Icon(
                       Icons.edit,
                       size: 24,
-                      color: Colors.purpleAccent,
+                      color: Colors.white,
                     ),
                   ),
                 ],
@@ -222,11 +222,7 @@ class _InfoScreenState extends State<InfoScreen> {
                     TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
                 _buildCompleted(watchlist),
                 const SizedBox(height: 30),
-                const Text("Mean Score",
-                    style:
-                    TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-                _buildMean(),
-                const SizedBox(height: 30)
+
               ],
             ),
           );
