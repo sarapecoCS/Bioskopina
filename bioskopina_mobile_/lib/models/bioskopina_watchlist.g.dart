@@ -24,7 +24,8 @@ BioskopinaWatchlist _$BioskopinaWatchlistFromJson(Map<String, dynamic> json) =>
           : Bioskopina.fromJson(json['bioskopina'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$BioskopinaWatchlistToJson(BioskopinaWatchlist instance) =>
+Map<String, dynamic> _$BioskopinaWatchlistToJson(
+        BioskopinaWatchlist instance) =>
     <String, dynamic>{
       'id': instance.id,
       'movieId': instance.movieId,

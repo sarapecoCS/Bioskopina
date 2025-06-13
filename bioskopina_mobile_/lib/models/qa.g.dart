@@ -19,7 +19,7 @@ QA _$QAFromJson(Map<String, dynamic> json) => QA(
       user: json['user'] == null
           ? null
           : User.fromJson(json['user'] as Map<String, dynamic>),
-);
+    );
 
 Map<String, dynamic> _$QAToJson(QA instance) => <String, dynamic>{
       'id': instance.id,

@@ -41,23 +41,24 @@ void main() {
         ChangeNotifierProvider(create: (_) => QAProvider()),
         ChangeNotifierProvider(create: (_) => QAcategoryProvider()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
+
         ChangeNotifierProvider(create: (_) => UserProfilePictureProvider()),
         ChangeNotifierProvider(create: (_) => RatingProvider()),
         ChangeNotifierProvider(create: (_) => UserPostActionProvider()),
 
-        // ✅ Correct ProxyProvider for PostProvider
-        ProxyProvider<UserPostActionProvider, PostProvider>(
-          update: (_, userPostActionProvider, __) =>
-              PostProvider(userPostActionProvider: userPostActionProvider),
-        ),
+        // Inject UserPostActionProvider into PostProvider
+        ChangeNotifierProvider(create: (context) {
+          final userPostActionProvider = context.read<UserPostActionProvider>();
+          return PostProvider(userPostActionProvider: userPostActionProvider);
+        }),
 
         ChangeNotifierProvider(create: (_) => UserCommentActionProvider()),
 
-        // ✅ Correct ProxyProvider for CommentProvider
-        ProxyProvider<UserCommentActionProvider, CommentProvider>(
-          update: (_, userCommentActionProvider, __) =>
-              CommentProvider(userCommentActionProvider: userCommentActionProvider),
-        ),
+        // Inject UserCommentActionProvider into CommentProvider
+        ChangeNotifierProvider(create: (context) {
+          final userCommentActionProvider = context.read<UserCommentActionProvider>();
+          return CommentProvider(userCommentActionProvider: userCommentActionProvider);
+        }),
 
         ChangeNotifierProvider(create: (_) => RoleProvider()),
         ChangeNotifierProvider(create: (_) => UserRoleProvider()),

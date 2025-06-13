@@ -11,16 +11,14 @@ import '../providers/comment_provider.dart';
 import '../utils/colors.dart';
 import '../utils/util.dart';
 
-typedef FetchPage = Future<SearchResult<Comment>> Function(
-    Map<String, dynamic> filter);
+typedef FetchPage = Future<SearchResult<Comment>> Function(Map<String, dynamic> filter);
 
-// ignore: must_be_immutable
 class CommentCards extends StatefulWidget {
   final Future<SearchResult<Comment>> Function() fetchComments;
-  Map<String, dynamic> filter;
+  final Map<String, dynamic> filter;
   final FetchPage fetchPage;
   int page;
-  int pageSize;
+  final int pageSize;
 
   CommentCards({
     super.key,
@@ -35,8 +33,7 @@ class CommentCards extends StatefulWidget {
   State<CommentCards> createState() => _CommentCardsState();
 }
 
-class _CommentCardsState extends State<CommentCards>
-    with AutomaticKeepAliveClientMixin<CommentCards> {
+class _CommentCardsState extends State<CommentCards> with AutomaticKeepAliveClientMixin<CommentCards> {
   late Future<SearchResult<Comment>> _commentFuture;
   final ScrollController _scrollController = ScrollController();
   late final CommentProvider _commentProvider;
@@ -48,26 +45,30 @@ class _CommentCardsState extends State<CommentCards>
 
   @override
   void initState() {
+    super.initState();
     _commentFuture = widget.fetchComments();
     _commentProvider = context.read<CommentProvider>();
 
-    setTotalItems();
-
-    _commentProvider.addListener(() {
-      _reloadData();
-      setTotalItems();
+    // Set total items once after initial fetch
+    _commentFuture.then((result) {
+      if (mounted) {
+        setState(() {
+          totalItems = result.count;
+        });
+      }
     });
 
-    super.initState();
+    _commentProvider.addListener(() {
+      // Reload data when CommentProvider updates
+      _reloadData();
+    });
   }
 
-  void setTotalItems() async {
-    var commentResult = await _commentFuture;
-    if (mounted) {
-      setState(() {
-        totalItems = commentResult.count;
-      });
-    }
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _commentProvider.removeListener(_reloadData);
+    super.dispose();
   }
 
   void _reloadData() {
@@ -78,6 +79,15 @@ class _CommentCardsState extends State<CommentCards>
           "Page": "${widget.page}",
           "PageSize": "${widget.pageSize}"
         });
+
+        // Update total items after fetch completes
+        _commentFuture.then((result) {
+          if (mounted) {
+            setState(() {
+              totalItems = result.count;
+            });
+          }
+        });
       });
     }
   }
@@ -86,46 +96,44 @@ class _CommentCardsState extends State<CommentCards>
   Widget build(BuildContext context) {
     super.build(context);
     return FutureBuilder<SearchResult<Comment>>(
-        future: _commentFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return SingleChildScrollView(
-              physics: const NeverScrollableScrollPhysics(),
-              child: Center(
-                child: Wrap(
-                  //Implement proper post indicator
-                  children: List.generate(6, (_) => const ContentIndicator()),
-                ),
+      future: _commentFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return SingleChildScrollView(
+            physics: const NeverScrollableScrollPhysics(),
+            child: Center(
+              child: Wrap(
+                children: List.generate(6, (_) => const ContentIndicator()),
               ),
-            );
-            // Loading state
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}'); // Error state
-          } else {
-            // Data loaded successfully
-            var commentList = snapshot.data!.result;
+            ),
+          );
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else {
+          var commentList = snapshot.data!.result;
 
-            return SingleChildScrollView(
-              controller: _scrollController,
-              child: Center(
-                child: Column(
-                  children: [
-                    Wrap(
-                      children: _buildCommentCards(commentList),
-                    ),
-                    MyPaginationButtons(
-                      page: widget.page,
-                      pageSize: widget.pageSize,
-                      totalItems: totalItems,
-                      fetchPage: fetchPage,
-                      hasSearch: false,
-                    ),
-                  ],
-                ),
+          return SingleChildScrollView(
+            controller: _scrollController,
+            child: Center(
+              child: Column(
+                children: [
+                  Wrap(
+                    children: _buildCommentCards(commentList),
+                  ),
+                  MyPaginationButtons(
+                    page: widget.page,
+                    pageSize: widget.pageSize,
+                    totalItems: totalItems,
+                    fetchPage: fetchPage,
+                    hasSearch: false,
+                  ),
+                ],
               ),
-            );
-          }
-        });
+            ),
+          );
+        }
+      },
+    );
   }
 
   Future<void> fetchPage(int requestedPage) async {
@@ -140,31 +148,35 @@ class _CommentCardsState extends State<CommentCards>
         setState(() {
           _commentFuture = Future.value(result);
           widget.page = requestedPage;
+
+          // Update total items on page change
+          totalItems = result.count;
         });
       }
-    } on Exception catch (e) {
+    } catch (e) {
       if (mounted) {
-        showErrorDialog(context, e);
+        final ex = e is Exception ? e : Exception(e.toString());
+        showErrorDialog(context, ex);
       }
     }
   }
 
+
   List<Widget> _buildCommentCards(List<Comment> commentList) {
     if (commentList.isEmpty) {
-      return List.generate(
-          1,
-          (index) => const Empty(
-                text: Text("No comments yet.."),
-                showGradientButton: false,
-                iconSize: 128,
-              ));
+      return [
+        const Empty(
+          text: Text("No comments yet.."),
+          showGradientButton: false,
+          iconSize: 128,
+        ),
+      ];
     }
-    return List.generate(
-      commentList.length,
-      (index) => ContentCard(
-        comment: commentList[index],
-        cardColor: Palette.midnightPurple.withOpacity(0.1),
-      ),
-    );
+    return commentList
+        .map((comment) => ContentCard(
+              comment: comment,
+              cardColor: Palette.midnightPurple.withOpacity(0.1),
+            ))
+        .toList();
   }
 }
