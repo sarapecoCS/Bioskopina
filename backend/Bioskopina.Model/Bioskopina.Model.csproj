@@ -7,15 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pictures\**" />
+    <EmbeddedResource Remove="Pictures\**" />
+    <None Remove="Pictures\**" />
+  </ItemGroup>
+
+  <ItemGroup>
 	  <PackageReference Include="Microsoft.ML" Version="4.0.2" />
 	  <PackageReference Include="RabbitMQ.Client" Version="6.2.1" />
 
 
 
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Pictures\" />
   </ItemGroup>
 
 </Project>

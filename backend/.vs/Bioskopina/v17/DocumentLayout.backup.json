@@ -3,24 +3,16 @@
   "WorkspaceRootPath": "D:\\Bioskopina\\backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Bioskopina\\backend\\Bioskopina.Services\\Migrations\\20250614091338_updatedatabase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Bioskopina.Services\\Migrations\\20250614091338_updatedatabase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B7B29F16-EFFC-4B5F-A991-EAB62169CC69}|RabbitMQConsumer\\RabbitMQConsumer.csproj|d:\\bioskopina\\backend\\rabbitmqconsumer\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B7B29F16-EFFC-4B5F-A991-EAB62169CC69}|RabbitMQConsumer\\RabbitMQConsumer.csproj|solutionrelative:rabbitmqconsumer\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EAFDF74C-8FDC-49A3-BF34-D0D8A7A4B518}|Bioskopina.Services\\Bioskopina.Services.csproj|d:\\bioskopina\\backend\\bioskopina.services\\database\\databaseseed.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EAFDF74C-8FDC-49A3-BF34-D0D8A7A4B518}|Bioskopina.Services\\Bioskopina.Services.csproj|solutionrelative:bioskopina.services\\database\\databaseseed.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{7C2B842E-B22B-493A-9A6F-78D2131429D7}|Solution Items{7C2B842E-B22B-493A-9A6F-78D2131429D7}|D:\\Bioskopina\\backend\\docker-compose.yml||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{7C2B842E-B22B-493A-9A6F-78D2131429D7}|Solution Items{7C2B842E-B22B-493A-9A6F-78D2131429D7}|solutionrelative:docker-compose.yml||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0A72776C-6061-4189-8DBC-07D00634F706}|Bioskopina\\BioskopinaAPI.csproj|d:\\bioskopina\\backend\\bioskopina\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{0A72776C-6061-4189-8DBC-07D00634F706}|Bioskopina\\BioskopinaAPI.csproj|solutionrelative:bioskopina\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0A72776C-6061-4189-8DBC-07D00634F706}|Bioskopina\\BioskopinaAPI.csproj|d:\\bioskopina\\backend\\bioskopina\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0A72776C-6061-4189-8DBC-07D00634F706}|Bioskopina\\BioskopinaAPI.csproj|solutionrelative:bioskopina\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0A72776C-6061-4189-8DBC-07D00634F706}|Bioskopina\\BioskopinaAPI.csproj|d:\\bioskopina\\backend\\bioskopina\\controllers\\recommendercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0A72776C-6061-4189-8DBC-07D00634F706}|Bioskopina\\BioskopinaAPI.csproj|solutionrelative:bioskopina\\controllers\\recommendercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{7C2B842E-B22B-493A-9A6F-78D2131429D7}|Solution Items{7C2B842E-B22B-493A-9A6F-78D2131429D7}|D:\\Bioskopina\\backend\\Dockerfile||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{7C2B842E-B22B-493A-9A6F-78D2131429D7}|Solution Items{7C2B842E-B22B-493A-9A6F-78D2131429D7}|solutionrelative:Dockerfile||{3B902123-F8A7-4915-9F01-361F908088D0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -35,66 +27,41 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "20250614091338_updatedatabase.cs",
-              "DocumentMoniker": "D:\\Bioskopina\\backend\\Bioskopina.Services\\Migrations\\20250614091338_updatedatabase.cs",
-              "RelativeDocumentMoniker": "Bioskopina.Services\\Migrations\\20250614091338_updatedatabase.cs",
-              "ToolTip": "D:\\Bioskopina\\backend\\Bioskopina.Services\\Migrations\\20250614091338_updatedatabase.cs",
-              "RelativeToolTip": "Bioskopina.Services\\Migrations\\20250614091338_updatedatabase.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\Bioskopina\\backend\\RabbitMQConsumer\\Program.cs",
+              "RelativeDocumentMoniker": "RabbitMQConsumer\\Program.cs",
+              "ToolTip": "D:\\Bioskopina\\backend\\RabbitMQConsumer\\Program.cs",
+              "RelativeToolTip": "RabbitMQConsumer\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-14T09:13:38.705Z",
+              "WhenOpened": "2025-06-14T11:06:39.621Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "D:\\Bioskopina\\backend\\Bioskopina\\appsettings.json",
-              "RelativeDocumentMoniker": "Bioskopina\\appsettings.json",
-              "ToolTip": "D:\\Bioskopina\\backend\\Bioskopina\\appsettings.json",
-              "RelativeToolTip": "Bioskopina\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAABHAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-06-14T09:09:26.043Z",
+              "Title": "Dockerfile",
+              "DocumentMoniker": "D:\\Bioskopina\\backend\\Dockerfile",
+              "RelativeDocumentMoniker": "Dockerfile",
+              "ToolTip": "D:\\Bioskopina\\backend\\Dockerfile",
+              "RelativeToolTip": "Dockerfile",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-06-14T11:02:07.467Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "DatabaseSeed.cs",
-              "DocumentMoniker": "D:\\Bioskopina\\backend\\Bioskopina.Services\\Database\\DatabaseSeed.cs",
-              "RelativeDocumentMoniker": "Bioskopina.Services\\Database\\DatabaseSeed.cs",
-              "ToolTip": "D:\\Bioskopina\\backend\\Bioskopina.Services\\Database\\DatabaseSeed.cs",
-              "RelativeToolTip": "Bioskopina.Services\\Database\\DatabaseSeed.cs",
-              "ViewState": "AgIAAMYAAAAAAAAAAAAAANQAAAApAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-14T09:09:02.214Z",
+              "Title": "docker-compose.yml",
+              "DocumentMoniker": "D:\\Bioskopina\\backend\\docker-compose.yml",
+              "RelativeDocumentMoniker": "docker-compose.yml",
+              "ToolTip": "D:\\Bioskopina\\backend\\docker-compose.yml",
+              "RelativeToolTip": "docker-compose.yml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003775|",
+              "WhenOpened": "2025-06-14T11:01:59.789Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\Bioskopina\\backend\\Bioskopina\\Program.cs",
-              "RelativeDocumentMoniker": "Bioskopina\\Program.cs",
-              "ToolTip": "D:\\Bioskopina\\backend\\Bioskopina\\Program.cs",
-              "RelativeToolTip": "Bioskopina\\Program.cs",
-              "ViewState": "AgIAAC4AAAAAAAAAAAAAADgAAAAjAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-13T16:53:22.963Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "RecommenderController.cs",
-              "DocumentMoniker": "D:\\Bioskopina\\backend\\Bioskopina\\Controllers\\RecommenderController.cs",
-              "RelativeDocumentMoniker": "Bioskopina\\Controllers\\RecommenderController.cs",
-              "ToolTip": "D:\\Bioskopina\\backend\\Bioskopina\\Controllers\\RecommenderController.cs",
-              "RelativeToolTip": "Bioskopina\\Controllers\\RecommenderController.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAQwBcAAAAeAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-13T06:41:27.263Z"
             }
           ]
         }
