@@ -205,7 +205,7 @@ namespace Bioskopina.Services.Database
                     Email = "sara.peco@edu.fit.ba",
                     ProfilePictureId = 1,
                     DateJoined = new DateTime(2025, 3, 31),
-                    Username = "saraapeco",
+                    Username = "administrator",
                 },
                 new User()
                 {
@@ -217,7 +217,7 @@ namespace Bioskopina.Services.Database
                     Email ="armina.cosic@edu.fit.ba",
                     ProfilePictureId = 1,
                     DateJoined = new DateTime(2025, 3, 31),
-                    Username = "arminaacosic",
+                    Username = "korisnik",
                 },
                   new User()
                   {
