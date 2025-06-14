@@ -1,5 +1,3 @@
-# Dockerfile za API (Bioskopina)
-
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 80
@@ -18,6 +16,11 @@ RUN dotnet publish "Bioskopina.csproj" -c Release -o /app/publish /p:UseAppHost=
 
 FROM base AS final
 WORKDIR /app
+
+# Copy the published app
 COPY --from=publish /app/publish .
+
+# Copy UserPicture folder explicitly so images are inside container
+COPY UserPicture /app/UserPicture
 
 ENTRYPOINT ["dotnet", "Bioskopina.dll"]

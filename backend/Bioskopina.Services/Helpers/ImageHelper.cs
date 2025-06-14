@@ -7,10 +7,10 @@ namespace Bioskopina.Services.Helpers
     {
         public static byte[] ConvertImageToByteArray(string relativeImagePath)
         {
-            
+
             string baseDir = AppContext.BaseDirectory;
 
-          
+
             string fullImagePath = Path.Combine(baseDir, relativeImagePath);
 
             Console.WriteLine("Generated Full Image Path: " + fullImagePath);
@@ -25,6 +25,8 @@ namespace Bioskopina.Services.Helpers
                 throw new FileNotFoundException($"Image not found at: {fullImagePath}");
             }
         }
+
+
 
     }
 }
