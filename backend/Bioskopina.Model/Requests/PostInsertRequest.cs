@@ -9,7 +9,7 @@ namespace Bioskopina.Model.Requests
 {
     public class PostInsertRequest
     {
-        public int CommunityId { get; set; }
+      
 
         public int UserId { get; set; }
 
