@@ -49,12 +49,8 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers(x =>
 {
     x.Filters.Add<ErrorFilter>();
-})
-.AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-    options.JsonSerializerOptions.WriteIndented = true;  
 });
+
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
