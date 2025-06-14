@@ -8,7 +8,6 @@ class GradientButton extends StatefulWidget {
   double? width;
   double? height;
   double? borderRadius;
-  LinearGradient? gradient;
   Widget? child;
   double? paddingLeft;
   double? paddingRight;
@@ -18,6 +17,7 @@ class GradientButton extends StatefulWidget {
   double? contentPaddingRight;
   double? contentPaddingTop;
   double? contentPaddingBottom;
+  final Gradient? gradient;
   bool? hideBorder;
 
   GradientButton({
@@ -25,8 +25,8 @@ class GradientButton extends StatefulWidget {
     this.onPressed,
     this.width,
     this.height,
-    this.borderRadius = 0,
     this.gradient,
+    this.borderRadius = 0,
     this.child,
     this.paddingLeft = 0,
     this.paddingRight = 0,

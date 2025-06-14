@@ -60,6 +60,15 @@ class Palette {
     ],
   );
 
+static const LinearGradient buttonGradient3 = LinearGradient(
+  colors: [
+    Color.fromRGBO(30, 30, 30, 1.0), // Very dark gray
+    Color.fromRGBO(60, 60, 60, 1.0), // Slightly lighter dark gray
+  ],
+  begin: Alignment.topLeft,
+  end: Alignment.bottomRight,
+);
+
   // Bar Chart Gradients
   static const LinearGradient barChartGradient = LinearGradient(
     colors: [

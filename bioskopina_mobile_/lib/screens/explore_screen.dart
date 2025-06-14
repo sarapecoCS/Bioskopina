@@ -98,7 +98,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
     return MasterScreenWidget(
       selectedIndex: widget.selectedIndex,
       showNavBar: true,
-      showProfileIcon: false,
+
+      showHelpIcon: true,
+      showProfileIcon: true,
       controller: _searchController,
       showSearch: false, // using our custom search field below
       onCleared: _updateFilter,

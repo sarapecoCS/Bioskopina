@@ -474,7 +474,7 @@ class _ContentCardState extends State<ContentCard> {
         icon: const Icon(Icons.more_horiz_rounded),
         splashRadius: 1,
         padding: EdgeInsets.zero,
-        color: const Color.fromRGBO(50, 48, 90, 1),
+        color: Palette.darkPurple,
         itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
           PopupMenuItem<String>(
             child: ListTile(
