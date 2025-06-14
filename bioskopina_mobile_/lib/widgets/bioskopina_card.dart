@@ -74,7 +74,7 @@ class _BioskopinaCardState extends State<BioskopinaCard> with SingleTickerProvid
           color: const Color.fromRGBO(20, 20, 20, 1.0),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.6),
+              color: Colors.black.withOpacity(0.9),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -119,7 +119,7 @@ class _BioskopinaCardState extends State<BioskopinaCard> with SingleTickerProvid
                   left: 0,
                   right: 0,
                   bottom: 0,
-                  height: cardHeight * 0.25,
+                  height: cardHeight * 0.6,
                   child: Container(
                     decoration: const BoxDecoration(
                       gradient: LinearGradient(
@@ -144,9 +144,9 @@ class _BioskopinaCardState extends State<BioskopinaCard> with SingleTickerProvid
                         fontSize: 14,
                         shadows: [
                           Shadow(
-                            blurRadius: 4,
+                            blurRadius: 8,
                             color: Colors.black87,
-                            offset: Offset(0, 1),
+                            offset: Offset(0,6),
                           ),
                         ],
                       ),

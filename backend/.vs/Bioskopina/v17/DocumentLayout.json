@@ -32,7 +32,7 @@
               "RelativeDocumentMoniker": "Bioskopina.Services\\PostService.cs",
               "ToolTip": "D:\\Bioskopina\\backend\\Bioskopina.Services\\PostService.cs",
               "RelativeToolTip": "Bioskopina.Services\\PostService.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAB0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-14T16:29:01.678Z",
               "EditorCaption": ""
@@ -47,8 +47,7 @@
               "RelativeToolTip": "Bioskopina.Model\\Post.cs",
               "ViewState": "AgIAABEAAAAAAAAAAAAAABUAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-14T16:26:57.929Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-14T16:26:57.929Z"
             },
             {
               "$type": "Document",
@@ -60,8 +59,7 @@
               "RelativeToolTip": "Dockerfile",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-06-14T12:52:47.945Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-14T12:52:47.945Z"
             }
           ]
         }

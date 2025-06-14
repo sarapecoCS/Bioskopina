@@ -38,6 +38,13 @@ class _UserProfileDialogState extends State<UserProfileDialog> {
                 color: Palette.lightPurple.withOpacity(0.3),
                 width: 1,
               ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.4),
+                  blurRadius: 12,
+                  offset: const Offset(0, 5),
+                ),
+              ],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,9 +76,17 @@ class _UserProfileDialogState extends State<UserProfileDialog> {
                             "${widget.loggedUser.username}",
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
-                                color: Palette.selectedGenre,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
+                              color: Palette.selectedGenre,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 4,
+                                  color: Colors.black38,
+                                  offset: Offset(1, 1),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         Container(
@@ -80,6 +95,17 @@ class _UserProfileDialogState extends State<UserProfileDialog> {
                           child: Text(
                             "${widget.loggedUser.firstName} ${widget.loggedUser.lastName}",
                             overflow: TextOverflow.fade,
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 14,
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 3,
+                                  color: Colors.black26,
+                                  offset: Offset(1, 1),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],
@@ -101,6 +127,13 @@ class _UserProfileDialogState extends State<UserProfileDialog> {
                       decoration: BoxDecoration(
                         gradient: Palette.buttonGradient,
                         borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            blurRadius: 6,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
                       ),
                       child: ElevatedButton(
                         onPressed: () {
@@ -138,6 +171,13 @@ class _UserProfileDialogState extends State<UserProfileDialog> {
                       decoration: BoxDecoration(
                         gradient: Palette.buttonGradient,
                         borderRadius: BorderRadius.circular(50),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            blurRadius: 6,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
                       ),
                       child: ElevatedButton(
                         onPressed: () {

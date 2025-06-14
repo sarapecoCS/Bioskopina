@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\Bioskopina\\backend\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{EAFDF74C-8FDC-49A3-BF34-D0D8A7A4B518}|Bioskopina.Services\\Bioskopina.Services.csproj|d:\\bioskopina\\backend\\bioskopina.services\\postservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EAFDF74C-8FDC-49A3-BF34-D0D8A7A4B518}|Bioskopina.Services\\Bioskopina.Services.csproj|solutionrelative:bioskopina.services\\postservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{48B5A599-F3B6-46DD-9403-98E8B9D25399}|Bioskopina.Model\\Bioskopina.Model.csproj|d:\\bioskopina\\backend\\bioskopina.model\\post.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{48B5A599-F3B6-46DD-9403-98E8B9D25399}|Bioskopina.Model\\Bioskopina.Model.csproj|solutionrelative:bioskopina.model\\post.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -23,6 +27,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "PostService.cs",
+              "DocumentMoniker": "D:\\Bioskopina\\backend\\Bioskopina.Services\\PostService.cs",
+              "RelativeDocumentMoniker": "Bioskopina.Services\\PostService.cs",
+              "ToolTip": "D:\\Bioskopina\\backend\\Bioskopina.Services\\PostService.cs",
+              "RelativeToolTip": "Bioskopina.Services\\PostService.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAB0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-14T16:29:01.678Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "Post.cs",
               "DocumentMoniker": "D:\\Bioskopina\\backend\\Bioskopina.Model\\Post.cs",
               "RelativeDocumentMoniker": "Bioskopina.Model\\Post.cs",
@@ -30,12 +47,11 @@
               "RelativeToolTip": "Bioskopina.Model\\Post.cs",
               "ViewState": "AgIAABEAAAAAAAAAAAAAABUAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-14T16:26:57.929Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-14T16:26:57.929Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Dockerfile",
               "DocumentMoniker": "D:\\Bioskopina\\backend\\Dockerfile",
               "RelativeDocumentMoniker": "Dockerfile",
@@ -43,8 +59,7 @@
               "RelativeToolTip": "Dockerfile",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-06-14T12:52:47.945Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-14T12:52:47.945Z"
             }
           ]
         }

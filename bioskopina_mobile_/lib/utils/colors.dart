@@ -44,8 +44,9 @@ class Palette {
   ]);
 
   static const LinearGradient buttonGradient = LinearGradient(colors: [
-    Color.fromRGBO(163, 212, 255, 1.0),  // Burgundy red (adjusted to blue-ish from first)
-          Color.fromRGBO(7, 44, 109, 1.0),   // Muted dark maroon (blue shade from first)
+  Color.fromRGBO(120, 185, 240, 1.0),  // Slightly deeper, richer light blue (less washed out)
+  Color.fromRGBO(10, 35, 90, 1.0),     // Darker, richer navy blue for stronger contrast
+
   ]);
 
   static const LinearGradient buttonGradientReverse = LinearGradient(colors: [
@@ -187,8 +188,8 @@ static const LinearGradient navGradient3 = LinearGradient(
 
 static const LinearGradient navGradient4 = LinearGradient(
   colors: [
-        Color.fromRGBO(140, 180, 220, 1.0), // Brighter soft blue
-         Color.fromRGBO(100, 140, 180, 1.0),
+         Color(0xFF5A5A5A), // medium dark gray
+           Color(0xFF3C3C3C), // darker gray
   ],
   begin: Alignment.bottomCenter,
   end: Alignment.topCenter,

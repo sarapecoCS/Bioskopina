@@ -12,6 +12,7 @@ import '../widgets/master_screen.dart';
 import '../providers/genre_provider.dart';
 import '../widgets/chip_indicator.dart';
 import '../widgets/form_builder_filter_chip.dart';
+import '../widgets/add_review.dart';
 
 class ExploreScreen extends StatefulWidget {
   final int selectedIndex;
@@ -50,7 +51,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
   }
 
   void _search() {
-    // Reset to first page on new search/filter
     setState(() {
       page = 0;
     });
@@ -98,117 +98,116 @@ class _ExploreScreenState extends State<ExploreScreen> {
     return MasterScreenWidget(
       selectedIndex: widget.selectedIndex,
       showNavBar: true,
-
       showHelpIcon: true,
       showProfileIcon: true,
       controller: _searchController,
-      showSearch: false, // using our custom search field below
+      showSearch: false,
       onCleared: _updateFilter,
       title: "Explore",
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // Search bar with icon buttons
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: 'Search movies...',
-                hintStyle: TextStyle(color: Colors.grey.shade500),
-                prefixIcon: IconButton(
-                  icon: const Icon(Icons.search, color: Colors.blueAccent),
-                  onPressed: _search,
-                  tooltip: "Search",
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Search bar
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: TextField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: 'Search movies...',
+                  hintStyle: TextStyle(color: Colors.grey.shade500),
+                  prefixIcon: IconButton(
+                    icon: const Icon(Icons.search, color: Colors.white),
+                    onPressed: _search,
+                    tooltip: "Search",
+                  ),
+                  suffixIcon: _searchController.text.isNotEmpty
+                      ? IconButton(
+                          icon: const Icon(Icons.clear, color: Colors.grey),
+                          onPressed: () {
+                            _searchController.clear();
+                            _updateFilter();
+                          },
+                          tooltip: "Clear search",
+                        )
+                      : null,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.grey.shade700),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
-                suffixIcon: _searchController.text.isNotEmpty
-                    ? IconButton(
-                        icon: const Icon(Icons.clear, color: Colors.grey),
-                        onPressed: () {
-                          _searchController.clear();
-                          _updateFilter();
-                        },
-                        tooltip: "Clear search",
-                      )
-                    : null,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: Colors.grey.shade700),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Colors.blueAccent, width: 2),
-                ),
+                textInputAction: TextInputAction.search,
+                onSubmitted: (_) => _search(),
+                style: const TextStyle(color: Colors.white),
+                cursorColor: Colors.blueAccent,
               ),
-              textInputAction: TextInputAction.search,
-              onSubmitted: (_) => _search(),
-              style: const TextStyle(color: Colors.white),
-              cursorColor: Colors.blueAccent,
             ),
-          ),
 
-          // Genres filter chips
-          _buildGenres(),
+            // Genres filter chips
+            _buildGenres(),
 
-          // Results list
-          Expanded(
-            child: BioskopinaCards(
-              selectedIndex: widget.selectedIndex,
-              page: page,
-              pageSize: pageSize,
-              fetchMovie: fetchMovie,
-              fetchPage: fetchPage,
-              filter: _filter,
+            // Results list (wrapped in SizedBox to limit height)
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.6,
+              child: BioskopinaCards(
+                selectedIndex: widget.selectedIndex,
+                page: page,
+                pageSize: pageSize,
+                fetchMovie: fetchMovie,
+                fetchPage: fetchPage,
+                filter: _filter,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-Widget _buildGenres() {
-  return FutureBuilder<SearchResult<Genre>>(
-    future: _genreFuture,
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return Center(
-          child: Wrap(
-            spacing: 8,
-            runSpacing: 6,
-            children: List.generate(12, (_) => const ChipIndicator()),
-          ),
-        );
-      } else if (snapshot.hasError) {
-        return Padding(
-          padding: const EdgeInsets.all(8),
-          child: Text('Error: ${snapshot.error}', style: const TextStyle(color: Colors.redAccent)),
-        );
-      } else {
-        var genres = snapshot.data!.result;
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-          child: FormBuilder(
-            key: _exploreFormKey,
-            child: MyFormBuilderFilterChip(
-              name: 'genres',
-              options: genres.map((genre) {
-                return FormBuilderChipOption(
-                  value: genre.id.toString(),
-                  // Here we add style to text and chips inside chip options
-                  child: Text(
-                    genre.name ?? '',
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                );
-              }).toList(),
-              showCheckmark: false,
-              onChanged: (_) => _updateFilter(),
-              // No selectedColor, backgroundColor, labelStyle, etc. here
+  Widget _buildGenres() {
+    return FutureBuilder<SearchResult<Genre>>(
+      future: _genreFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: Wrap(
+              spacing: 8,
+              runSpacing: 6,
+              children: List.generate(12, (_) => const ChipIndicator()),
             ),
-          ),
-        );
-      }
-    },
-  );
-}
+          );
+        } else if (snapshot.hasError) {
+          return Padding(
+            padding: const EdgeInsets.all(8),
+            child: Text('Error: ${snapshot.error}', style: const TextStyle(color: Colors.redAccent)),
+          );
+        } else {
+          var genres = snapshot.data!.result;
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+            child: FormBuilder(
+              key: _exploreFormKey,
+              child: MyFormBuilderFilterChip(
+                name: 'genres',
+                options: genres.map((genre) {
+                  return FormBuilderChipOption(
+                    value: genre.id.toString(),
+                    child: Text(
+                      genre.name ?? '',
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  );
+                }).toList(),
+                showCheckmark: false,
+                onChanged: (_) => _updateFilter(),
+              ),
+            ),
+          );
+        }
+      },
+    );
+  }
 }
