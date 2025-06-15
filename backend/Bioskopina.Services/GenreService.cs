@@ -46,5 +46,8 @@ namespace Bioskopina.Services
 
              return popularGenres;
         }
+   
+
+
     }
 }

@@ -92,7 +92,7 @@ void showDeletedSuccessDialog(BuildContext context) {
     return MasterScreenWidget(
       titleWidget: Row(
         children: [
-          const Icon(Icons.movie, size: 28, color: Palette.lightPurple),
+         const Icon(Icons.theater_comedy, size: 28, color: Palette.lightPurple),
           const SizedBox(width: 5),
           const Text("Bioskopina", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
         ],

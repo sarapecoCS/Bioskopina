@@ -184,8 +184,12 @@ namespace Bioskopina.Services.Database
 
     
                 }
+                    
+
+
          );
         }
+
 
 
 
@@ -239,7 +243,7 @@ namespace Bioskopina.Services.Database
                         PasswordHash = hash,
                         PasswordSalt = salt,
                         Email = "spiridon@outlook.com",
-                        ProfilePictureId = 1,
+                        ProfilePictureId = 4,
                         DateJoined = new DateTime(2025, 3, 31),
                         Username = "spiridon_music",
                     },

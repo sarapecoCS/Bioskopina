@@ -8,6 +8,7 @@ import '../screens/profile_screen.dart';
 import '../screens/reports_screen.dart';
 import '../screens/users_screen.dart';
 import '../screens/login_screen.dart';
+import '../screens/genres_screen.dart';
 import '../utils/colors.dart';
 import '../utils/util.dart';
 import 'gradient_button.dart';
@@ -59,11 +60,12 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
 
   Map<String, bool> hoverStates = {
     'Login': false,
-    'Anime': false,
+    'Bioskopina': false,
     'Users': false,
     'Analytics': false,
-    'Clubs': false,
-    'Help': false
+
+    'Help': false,
+    'Genres': false,  // <-- Add hover state for Genres
   };
 
   @override
@@ -115,9 +117,10 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
                         context, 'Users', Icons.people_rounded, const UsersScreen()),
                     buildListTile(
                         context, 'Reports', Icons.analytics_rounded, const ReportsScreen()),
-
                     buildListTile(
                         context, 'Help', Icons.help_rounded, const HelpScreen()),
+                    buildListTile(
+                        context, 'Genres', Icons.category_rounded, const GenresScreen()),  // <-- Add Genres Screen
                   ],
                 ),
                 Padding(
@@ -181,7 +184,6 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
     actions.add(const SizedBox(width: 40));
     return actions;
   }
-
 
   Widget _buildLeading(BuildContext context) {
     if (widget.showBackArrow == true) {

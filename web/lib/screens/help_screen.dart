@@ -171,7 +171,7 @@ class _HelpScreenState extends State<HelpScreen> {
           children: [
             Icon(
               Icons.help_outline,
-              color:Color.fromRGBO(153, 255, 255, 1),
+              color:Colors.white,
               size: 21,  // Icon size
             ),
             const SizedBox(width: 5),

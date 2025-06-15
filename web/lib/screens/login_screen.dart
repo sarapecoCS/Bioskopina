@@ -41,21 +41,55 @@ class _LoginScreenState extends State<LoginScreen> {
     Authorization.password = password;
 
     try {
+      // Debug: Trying to get movies
+      print("DEBUG: Trying to get movies...");
       await _movieProvider.get();
+      print("DEBUG: Movies fetched successfully.");
 
+      // Debug: Sending GET request to fetch user data
+      print("DEBUG: Sending GET request to fetch user data...");
       var admin = await _userProvider.get(filter: {
         "RolesIncluded": "true",
         "ProfilePictureIncluded": "true",
         "Username": username,
       });
+      print("DEBUG: GET request completed. Result count: ${admin.count}");
+
+      if (admin.result.isEmpty) {
+        print("DEBUG WARNING: No user found with this username.");
+      }
+
+      // Debug: Checking user object and roles
+      for (var user in admin.result) {
+        print("DEBUG: Checking user object...");
+        print("User ID: ${user.id}");
+        print("Username: ${user.username}");
+
+        if (user.userRoles == null) {
+          print("DEBUG WARNING: userRoles is NULL for this user.");
+        } else {
+          print("DEBUG: userRoles length: ${user.userRoles!.length}");
+          for (var role in user.userRoles!) {
+            print("Role ID: ${role.roleId}");
+            print("Role Object: $role");
+            if (role.roleId == null) {
+              print("DEBUG ERROR: roleId is NULL in UserRole.");
+            }
+          }
+        }
+      }
 
       if (admin.count == 1) {
         LoggedUser.user = admin.result.single;
+      } else {
+        print("DEBUG WARNING: Unexpected user count: ${admin.count}");
       }
 
+      // Debug: Handling user roles
       List<UserRole> userRoles = admin.result.first.userRoles ?? [];
 
       if (userRoles.any((userRole) => userRole.roleId == 1)) {
+        print("DEBUG: User has admin role.");
         if (!mounted) return;
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
@@ -63,6 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         );
       } else {
+        print("DEBUG: User does NOT have admin role.");
         if (!mounted) return;
         showInfoDialog(
           context,
@@ -76,7 +111,10 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         );
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      // Debug: Handle any exceptions
+      print("DEBUG ERROR: Exception occurred - $e");
+      print("DEBUG STACKTRACE: $stackTrace");
       if (!mounted) return;
       showInfoDialog(
         context,
@@ -120,7 +158,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     const SizedBox(height: 30),
                     Image.asset("assets/images/try.png", width: 220),
-
                     const SizedBox(height: 10),
                     MyTextField(
                       hintText: "Username",

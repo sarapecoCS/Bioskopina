@@ -21,5 +21,8 @@ namespace Bioskopina.Controllers
         {
             return await _genreService.GetMostPopularGenres();
         }
+        
+
+
     }
 }

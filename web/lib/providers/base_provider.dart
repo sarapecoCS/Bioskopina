@@ -40,21 +40,32 @@ abstract class BaseProvider<T> with ChangeNotifier {
       var response = await http!.get(uri, headers: headers);
 
       if (isValidResponse(response)) {
-        var data = jsonDecode(response.body); // Returns data in JSON format
+        var data = jsonDecode(response.body);
 
         var result = SearchResult<T>();
-        result.count = data['count'];
 
-        for (var item in data['result']) {
-          result.result.add(fromJson(item));
+        // Support both "count" or "totalCount"
+        result.count = data['count'] ?? data['totalCount'] ?? 0;
+
+        // Support both "result" or "items"
+        List<dynamic>? items = data['result'] ?? data['items'];
+
+        if (items != null) {
+          for (var item in items) {
+            result.result.add(fromJson(item));
+          }
+        } else {
+          // No results found, just return empty list with count = 0
+          result.count = 0;
         }
+
         return result;
       } else {
         throw Exception("Unknown error");
       }
     } catch (e) {
       print("Error in GET request: $e");
-      rethrow; // Rethrow the exception for further debugging
+      rethrow;
     }
   }
 

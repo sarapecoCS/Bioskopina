@@ -1342,7 +1342,7 @@ namespace Bioskopina.Services.Migrations
                             LastName = "Kopici",
                             PasswordHash = "my/ELwTcrvtQ7tlVYibJNnISjtw=",
                             PasswordSalt = "u9Rht8UH9bvKrDQnbeNh7A==",
-                            ProfilePictureId = 1,
+                            ProfilePictureId = 4,
                             Username = "spiridon_music"
                         },
                         new
@@ -1710,7 +1710,7 @@ namespace Bioskopina.Services.Migrations
                     b.HasOne("Bioskopina.Services.Database.Genre", "Genre")
                         .WithMany("GenreMovies")
                         .HasForeignKey("GenreId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_Genre_Movie_Genre");
 
@@ -1753,7 +1753,7 @@ namespace Bioskopina.Services.Migrations
                     b.HasOne("Bioskopina.Services.Database.Genre", "Genre")
                         .WithMany("PreferredGenres")
                         .HasForeignKey("GenreId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_PreferredGenre_Genre");
 

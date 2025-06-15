@@ -12,5 +12,9 @@ namespace Bioskopina.Services
     public interface IGenreService : ICRUDService<Model.Genre, GenreSearchObject, GenreInsertRequest, GenreUpdateRequest>
     {
         Task<List<PopularGenresData>> GetMostPopularGenres();
+
+    
+
+
     }
 }

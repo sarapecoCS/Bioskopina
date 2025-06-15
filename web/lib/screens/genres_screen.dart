@@ -59,18 +59,26 @@ class _GenresScreenState extends State<GenresScreen> {
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return MasterScreenWidget(
-      titleWidget: const Text("Genres"),
-      showBackArrow: true,
-      child: Stack(
-        children: [
-          _buildGenresForm(context),
-        ],
-      ),
-    );
-  }
+ @override
+ Widget build(BuildContext context) {
+   return MasterScreenWidget(
+     titleWidget: Row(
+       mainAxisSize: MainAxisSize.min,
+       children: const [
+         Icon(Icons.category, color: Colors.white), // or any icon you like
+         SizedBox(width: 8),
+         Text("Genres"),
+       ],
+     ),
+     showBackArrow: false,
+     child: Stack(
+       children: [
+         _buildGenresForm(context),
+       ],
+     ),
+   );
+ }
+
 
   Widget _buildGenresForm(BuildContext context) {
     return Positioned.fill(
@@ -233,7 +241,8 @@ class _GenresScreenState extends State<GenresScreen> {
         if (context.mounted) {
           showInfoDialog(
               context,
-              const Icon(Icons.task_alt, color: Palette.lightPurple, size: 50),
+              const Icon(Icons.task_alt,
+                                                    color: Color.fromRGBO(102, 204, 204, 1), size: 50),
               const Text(
                 "Added successfully!",
                 textAlign: TextAlign.center,
@@ -256,7 +265,8 @@ class _GenresScreenState extends State<GenresScreen> {
         if (context.mounted) {
           showInfoDialog(
               context,
-              const Icon(Icons.task_alt, color: Palette.lightPurple, size: 50),
+             const Icon(Icons.task_alt,
+              color: Color.fromRGBO(102, 204, 204, 1), size: 50),
               const Text(
                 "Saved successfully!",
                 textAlign: TextAlign.center,
@@ -280,7 +290,7 @@ class _GenresScreenState extends State<GenresScreen> {
       icon: const Icon(Icons.more_vert_rounded),
       splashRadius: 1,
       padding: EdgeInsets.zero,
-      color: const Color.fromRGBO(50, 48, 90, 1),
+      color: const Color(0xFF18171B),
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
         PopupMenuItem<String>(
           child: ListTile(
@@ -289,12 +299,11 @@ class _GenresScreenState extends State<GenresScreen> {
             ),
             visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
             hoverColor: Palette.lightPurple.withOpacity(0.1),
-            leading: Icon(
+            leading: const Icon(
               Icons.edit,
               size: 24,
-              color: Colors.yellow,
+              color: Colors.white,
             ),
-
             title: const Text('Edit',
                 style: TextStyle(color: Palette.lightPurple)),
             onTap: () {
@@ -315,7 +324,7 @@ class _GenresScreenState extends State<GenresScreen> {
             ),
             visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
             hoverColor: Palette.lightRed.withOpacity(0.1),
-            leading: Icon(
+            leading: const Icon(
               Icons.delete, // Built-in Flutter trash icon
               size: 24,
               color: Colors.red,
@@ -323,24 +332,47 @@ class _GenresScreenState extends State<GenresScreen> {
             title:
                 const Text('Delete', style: TextStyle(color: Palette.lightRed)),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.pop(context); // close popup menu first
               showConfirmationDialog(
-                  context,
-                  const Icon(Icons.warning_rounded,
-                      color: Palette.lightRed, size: 55),
-                  const SizedBox(
-                    width: 300,
-                    child: Text(
-                      "Are you sure you want to delete this genre?",
-                      textAlign: TextAlign.center,
-                    ),
-                  ), () async {
-                _genreProvider.delete(genre.id!);
-              });
+                context,
+                const Icon(Icons.warning_rounded,
+                    color: Palette.lightRed, size: 55),
+                const SizedBox(
+                  width: 300,
+                  child: Text(
+                    "Are you sure you want to delete this genre?",
+                    textAlign: TextAlign.center,
+                  ),
+                ), () async {
+                  await _genreProvider.delete(genre.id!);
+                  if (mounted) {
+                    showDeletedDialog(context); // show success dialog here
+                  }
+                },
+              );
             },
           ),
         ),
       ],
     );
   }
+
+
+void showDeletedDialog(BuildContext context) {
+  showInfoDialog(
+    context,
+    const Icon(
+      Icons.task_alt,
+      color: Color.fromRGBO(102, 204, 204, 1),
+      size: 50,
+    ),
+    const Text(
+      "Deleted successfully!",
+      textAlign: TextAlign.center,
+    ),
+  );
+}
+
+
+
 }

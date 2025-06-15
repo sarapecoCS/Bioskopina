@@ -33,12 +33,13 @@ namespace Bioskopina.Services.Database
         public virtual DbSet<Rating> Ratings { get; set; }
         public virtual DbSet<Recommender> Recommenders { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
+    
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserCommentAction> UserCommentActions { get; set; }
         public virtual DbSet<UserPostAction> UserPostActions { get; set; }
-        public virtual DbSet<UserProfilePicture> UserProfilePictures { get; set; }
+    
         public virtual DbSet<UserRole> UserRoles { get; set; }
-      
+        public virtual DbSet<UserProfilePicture> UserProfilePictures { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -239,11 +240,12 @@ namespace Bioskopina.Services.Database
 
                 entity.HasOne(d => d.Movies).WithMany(p => p.GenreMovies)
                     .HasForeignKey(d => d.MovieId)
-                    .OnDelete(DeleteBehavior.Cascade)  // Add this line
+                    .OnDelete(DeleteBehavior.Cascade)  
                     .HasConstraintName("FK_Genre_Bioskopina_Movies");
 
                 entity.HasOne(d => d.Genre).WithMany(p => p.GenreMovies)
                     .HasForeignKey(d => d.GenreId)
+                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_Genre_Movie_Genre");
             });
 
@@ -297,7 +299,9 @@ namespace Bioskopina.Services.Database
 
                 entity.HasOne(d => d.Genre).WithMany(p => p.PreferredGenres)
                     .HasForeignKey(d => d.GenreId)
+                        .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_PreferredGenre_Genre");
+                    
 
                 entity.HasOne(d => d.User).WithMany(p => p.PreferredGenres)
                     .HasForeignKey(d => d.UserId)
