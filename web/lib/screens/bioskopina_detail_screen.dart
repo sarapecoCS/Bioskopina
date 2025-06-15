@@ -376,7 +376,7 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
           ),
           const SizedBox(height: 16),
           MyFormBuilderTextField(
-            name: 'trailerUrl',
+            name:  'trailerUrl',
             labelText: 'Trailer URL',
             keyboardType: TextInputType.url,
             validator: FormBuilderValidators.compose([
@@ -440,4 +440,5 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
       ),
     );
   }
+
 }

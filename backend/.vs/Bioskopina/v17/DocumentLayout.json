@@ -1,12 +1,71 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "D:\\Bioskopina\\backend\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{0A72776C-6061-4189-8DBC-07D00634F706}|Bioskopina\\BioskopinaAPI.csproj|d:\\bioskopina\\backend\\bioskopina\\controllers\\genrebioskopinacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0A72776C-6061-4189-8DBC-07D00634F706}|Bioskopina\\BioskopinaAPI.csproj|solutionrelative:bioskopina\\controllers\\genrebioskopinacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EAFDF74C-8FDC-49A3-BF34-D0D8A7A4B518}|Bioskopina.Services\\Bioskopina.Services.csproj|d:\\bioskopina\\backend\\bioskopina.services\\igenrebioskopinaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EAFDF74C-8FDC-49A3-BF34-D0D8A7A4B518}|Bioskopina.Services\\Bioskopina.Services.csproj|solutionrelative:bioskopina.services\\igenrebioskopinaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0A72776C-6061-4189-8DBC-07D00634F706}|Bioskopina\\BioskopinaAPI.csproj|d:\\bioskopina\\backend\\bioskopina\\controllers\\genrecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0A72776C-6061-4189-8DBC-07D00634F706}|Bioskopina\\BioskopinaAPI.csproj|solutionrelative:bioskopina\\controllers\\genrecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "IGenreBioskopinaService.cs",
+              "DocumentMoniker": "D:\\Bioskopina\\backend\\Bioskopina.Services\\IGenreBioskopinaService.cs",
+              "RelativeDocumentMoniker": "Bioskopina.Services\\IGenreBioskopinaService.cs",
+              "ToolTip": "D:\\Bioskopina\\backend\\Bioskopina.Services\\IGenreBioskopinaService.cs",
+              "RelativeToolTip": "Bioskopina.Services\\IGenreBioskopinaService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-15T11:52:33.223Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "GenreBioskopinaController.cs",
+              "DocumentMoniker": "D:\\Bioskopina\\backend\\Bioskopina\\Controllers\\GenreBioskopinaController.cs",
+              "RelativeDocumentMoniker": "Bioskopina\\Controllers\\GenreBioskopinaController.cs",
+              "ToolTip": "D:\\Bioskopina\\backend\\Bioskopina\\Controllers\\GenreBioskopinaController.cs",
+              "RelativeToolTip": "Bioskopina\\Controllers\\GenreBioskopinaController.cs",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAAAAcAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-15T11:51:44.083Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "GenreController.cs",
+              "DocumentMoniker": "D:\\Bioskopina\\backend\\Bioskopina\\Controllers\\GenreController.cs",
+              "RelativeDocumentMoniker": "Bioskopina\\Controllers\\GenreController.cs",
+              "ToolTip": "D:\\Bioskopina\\backend\\Bioskopina\\Controllers\\GenreController.cs",
+              "RelativeToolTip": "Bioskopina\\Controllers\\GenreController.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAAABMAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-15T11:07:49.366Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }
