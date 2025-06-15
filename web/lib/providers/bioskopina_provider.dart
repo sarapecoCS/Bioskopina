@@ -110,29 +110,37 @@ class MovieProvider extends BaseProvider<Bioskopina> {
       rethrow;
     }
   }
+Future<Bioskopina?> updateMovie(Bioskopina movie) async {
+  try {
+    final url = "${BaseProvider.baseUrl}$_endpoint/${movie.id}";
+    final uri = Uri.parse(url);
+    final headers = createHeaders();
+    final body = jsonEncode(movie.toJson());
 
-  Future<void> updateMovie(Bioskopina movie) async {
-    try {
-      var url = "${BaseProvider.baseUrl}$_endpoint/${movie.id}";
-      debugPrint('Updating movie at: $url');
-      debugPrint('Updated movie data: ${movie.toJson()}');
+    debugPrint('Updating movie at: $url');
+    debugPrint('Request body: ${const JsonEncoder.withIndent('  ').convert(movie.toJson())}');
 
-      var uri = Uri.parse(url);
-      var headers = createHeaders();
-      var body = jsonEncode(movie.toJson());
+    final response = await http.put(uri, headers: headers, body: body);
 
-      var response = await http.put(uri, headers: headers, body: body);
+    debugPrint('Response status: ${response.statusCode}');
+    debugPrint('Response body: ${response.body}');
 
-      if (!isValidResponse(response)) {
-        debugPrint('Error response: ${response.body}');
-        throw Exception('Failed to update movie: ${response.statusCode}');
+    if (response.statusCode == 200) {
+      try {
+        final responseData = jsonDecode(response.body);
+        return Bioskopina.fromJson(responseData);
+      } catch (e) {
+        debugPrint('Error parsing response: $e');
+        return movie; // Return original movie if parsing fails but status was 200
       }
-    } catch (e) {
-      debugPrint('Error in updateMovie: $e');
-      rethrow;
     }
-  }
 
+    throw Exception('Failed to update movie. Status: ${response.statusCode}');
+  } catch (e) {
+    debugPrint('Error in updateMovie: $e');
+    rethrow;
+  }
+}
   @override
   bool isValidResponse(http.Response response) {
     debugPrint('Response status: ${response.statusCode}');

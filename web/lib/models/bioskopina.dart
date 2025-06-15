@@ -27,15 +27,12 @@ class Bioskopina {
   Bioskopina({
     required this.id,
     required this.titleEn,
-
     required this.synopsis,
     required this.director,
     required this.score,
     required this.genreMovies,
     required this.runtime,
     required this.yearRelease,
-
-
     this.imageUrl,
     this.trailerUrl,
   });
@@ -43,5 +40,19 @@ class Bioskopina {
   factory Bioskopina.fromJson(Map<String, dynamic> json) =>
       _$BioskopinaFromJson(json);
 
-  Map<String, dynamic> toJson() => _$BioskopinaToJson(this);
+  // Manual override to fix the genreIds problem
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'titleEn': titleEn,
+      'synopsis': synopsis,
+      'director': director,
+      'score': score,
+      'runtime': runtime,
+      'yearRelease': yearRelease,
+      'imageUrl': imageUrl,
+      'trailerUrl': trailerUrl,
+      'genreIds': genreMovies.map((gm) => gm.genreId).toList(),
+    };
+  }
 }
