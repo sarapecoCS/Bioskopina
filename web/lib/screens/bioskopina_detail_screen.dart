@@ -31,7 +31,7 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
   late GenreProvider _genreProviderAll;
 
   List<Genre> _allGenres = [];
-  List<Genre> _selectedGenres = [];
+  List<GenreBioskopina> _selectedGenreMovies = [];
   bool _loadingGenres = true;
 
   String imageUrlValue = "";
@@ -55,13 +55,12 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
 
   Future<void> _loadGenres() async {
     try {
+      // Load all available genres
       _allGenres = await _genreProviderAll.fetchAll();
 
-      if (widget.movie != null) {
-        _selectedGenres = widget.movie!.genreMovies
-            .map((gb) => gb.genre)
-            .whereType<Genre>()
-            .toList();
+      if (isEditing && widget.movie != null) {
+        // Load the movie's current genres from the provider
+        _selectedGenreMovies = await _genreBioskopinaProvider.fetchGenresForMovie(widget.movie!.id);
       }
     } catch (e) {
       print("Error loading genres: $e");
@@ -90,79 +89,93 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-Future<void> _showSuccessDialog(String message) async {
-  await showDialog(
-    context: context,
-    barrierDismissible: true, // user can tap outside to close
-    builder: (context) {
-      return Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        backgroundColor: Colors.black,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.task_alt_rounded, color: Color.fromRGBO(102, 204, 204, 1), size: 64),
-              const SizedBox(height: 16),
-              Text(
-                message, // display the passed message
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                ),
-              ),
-            ],
+  Future<void> _showSuccessDialog(String message) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
           ),
-        ),
-      );
-    },
-  );
-}
-
+          backgroundColor: Colors.black,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.task_alt_rounded,
+                  color: Color.fromRGBO(102, 204, 204, 1),
+                  size: 64),
+                const SizedBox(height: 16),
+                Text(
+                  message,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   Future<void> _saveMovieData() async {
     if (_formKey.currentState?.saveAndValidate() ?? false) {
       final formData = _formKey.currentState!.value;
 
-      if (!isEditing && _selectedGenres.isEmpty) {
+      if (_selectedGenreMovies.isEmpty) {
         _showSnackbar("Please select at least one genre.", error: true);
         return;
       }
 
-      List<GenreBioskopina> genreBioskopinaList = _selectedGenres.map((genre) {
-        return GenreBioskopina(
-          null,
-          genre.id,
-          widget.movie?.id ?? 0,
-          null,
-          genre,
-        );
-      }).toList();
-
-      final newMovie = Bioskopina(
-        id: widget.movie?.id ?? 0,
-        titleEn: formData['titleEn'] ?? "",
-        synopsis: formData['synopsis'] ?? "",
-        director: formData['director'] ?? "",
-        score: double.tryParse(formData['score'] ?? "0") ?? 0,
-        genreMovies: genreBioskopinaList,
-        runtime: int.tryParse(formData['runtime'] ?? "0") ?? 0,
-        yearRelease: int.tryParse(formData['yearRelease'] ?? "0") ?? 0,
-        imageUrl: formData['imageUrl'] ?? "",
-        trailerUrl: formData['trailerUrl'] ?? "",
-      );
-
       try {
-        if (newMovie.id == 0) {
+        if (isEditing) {
+          // For editing, first update the movie details
+          final updatedMovie = Bioskopina(
+            id: widget.movie!.id,
+            titleEn: formData['titleEn'] ?? "",
+            synopsis: formData['synopsis'] ?? "",
+            director: formData['director'] ?? "",
+            score: double.tryParse(formData['score'] ?? "0") ?? 0,
+            genreMovies: _selectedGenreMovies,
+            runtime: int.tryParse(formData['runtime'] ?? "0") ?? 0,
+            yearRelease: int.tryParse(formData['yearRelease'] ?? "0") ?? 0,
+            imageUrl: formData['imageUrl'] ?? "",
+            trailerUrl: formData['trailerUrl'] ?? "",
+          );
+
+          await _bioskopinaProvider.updateMovie(updatedMovie);
+
+          // Then update the genres separately
+          await _genreBioskopinaProvider.updateGenresForMovie(
+            widget.movie!.id,
+            _selectedGenreMovies,
+          );
+
+          await _showSuccessDialog("Movie edited successfully!");
+        } else {
+          // For new movies
+          final newMovie = Bioskopina(
+            id: 0,
+            titleEn: formData['titleEn'] ?? "",
+            synopsis: formData['synopsis'] ?? "",
+            director: formData['director'] ?? "",
+            score: double.tryParse(formData['score'] ?? "0") ?? 0,
+            genreMovies: _selectedGenreMovies,
+            runtime: int.tryParse(formData['runtime'] ?? "0") ?? 0,
+            yearRelease: int.tryParse(formData['yearRelease'] ?? "0") ?? 0,
+            imageUrl: formData['imageUrl'] ?? "",
+            trailerUrl: formData['trailerUrl'] ?? "",
+          );
+
           await _bioskopinaProvider.addMovie(newMovie);
           await _showSuccessDialog("Movie added successfully!");
-        } else {
-          await _bioskopinaProvider.updateMovie(newMovie);
-          await _showSuccessDialog("Movie edited successfully!");
         }
+
         Navigator.of(context).pop(true);
       } catch (e) {
         _showSnackbar("Failed to save: $e", error: true);
@@ -181,84 +194,62 @@ Future<void> _showSuccessDialog(String message) async {
       return const Text("No genres available");
     }
 
-    return Wrap(
-      spacing: 8,
-      children: _allGenres.map((genre) {
-        final isSelected = _selectedGenres.any((g) => g.id == genre.id);
-
-        return FilterChip(
-          label: Text(genre.name ?? 'Unknown'),
-          selected: isSelected,
-          selectedColor:  Color.fromRGBO(102, 204, 204, 1),
-          checkmarkColor: Colors.white,
-          backgroundColor: Colors.grey.shade300,
-          onSelected: (selected) {
-            setState(() {
-              if (selected) {
-                if (!_selectedGenres.any((g) => g.id == genre.id)) {
-                  _selectedGenres.add(genre);
-                }
-              } else {
-                _selectedGenres.removeWhere((g) => g.id == genre.id);
-              }
-            });
-          },
-          labelStyle: TextStyle(
-            color: isSelected ? Colors.white : Colors.black87,
-            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-          ),
-        );
-      }).toList(),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MasterScreenWidget(
-      showBackArrow: true,
-      titleWidget: Text(isEditing ? "Edit Bioskopina" : "Add Bioskopina"),
-      floatingButtonOnPressed: _saveMovieData,
-      showFloatingActionButton: true,
-      floatingActionButtonIcon: const Icon(
-        Icons.save,
-        size: 32,
-        color: Palette.lightPurple,
-      ),
-      child: Scrollbar(
-        thumbVisibility: true,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              if (constraints.maxWidth < 600) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildPoster(),
-                    const SizedBox(height: 24),
-                    _buildForm(context),
-                  ],
-                );
-              } else {
-                return Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ConstrainedBox(
-                      constraints: const BoxConstraints(
-                        maxWidth: 220,
-                        minWidth: 150,
-                      ),
-                      child: _buildPoster(),
-                    ),
-                    const SizedBox(width: 24),
-                    Expanded(child: _buildForm(context)),
-                  ],
-                );
-              }
-            },
-          ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "Genres",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
-      ),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 8,
+          children: _allGenres.map((genre) {
+            final isSelected = _selectedGenreMovies.any((gm) => gm.genre?.id == genre.id);
+            final wasOriginallySelected = isEditing &&
+                _selectedGenreMovies.any((gm) => gm.genre?.id == genre.id);
+
+            return FilterChip(
+              label: Text(genre.name ?? 'Unknown'),
+              selected: isSelected,
+              selectedColor: wasOriginallySelected
+                  ? Colors.blue[800]
+                  : Color.fromRGBO(102, 204, 204, 1),
+              checkmarkColor: Colors.white,
+              backgroundColor: Colors.grey.shade300,
+              onSelected: (selected) {
+                setState(() {
+                  if (selected) {
+                    if (!_selectedGenreMovies.any((gm) => gm.genre?.id == genre.id)) {
+                      _selectedGenreMovies.add(GenreBioskopina(
+                        null,
+                        genre.id,
+                        widget.movie?.id ?? 0,
+                        null,
+                        genre,
+                      ));
+                    }
+                  } else {
+                    _selectedGenreMovies.removeWhere((gm) => gm.genre?.id == genre.id);
+                  }
+                });
+              },
+              labelStyle: TextStyle(
+                color: isSelected ? Colors.white : Colors.black87,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              ),
+            );
+          }).toList(),
+        ),
+        if (_selectedGenreMovies.isEmpty)
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Text(
+              "Please select at least one genre.",
+              style: TextStyle(color: Colors.red.shade700, fontSize: 12),
+            ),
+          ),
+      ],
     );
   }
 
@@ -370,8 +361,7 @@ Future<void> _showSuccessDialog(String message) async {
             labelText: 'This value is system-generated and cannot be modified',
             enabled: false,
             keyboardType: TextInputType.number,
-             disabledStyle: TextStyle(color: Colors.grey.shade600),
-
+            disabledStyle: TextStyle(color: Colors.grey.shade600),
           ),
           const SizedBox(height: 16),
           MyFormBuilderTextField(
@@ -395,23 +385,58 @@ Future<void> _showSuccessDialog(String message) async {
             ]),
           ),
           const SizedBox(height: 16),
-          if (!isEditing) ...[
-            const Text(
-              "Genres",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            const SizedBox(height: 8),
-            _buildGenreSelector(),
-            if (_selectedGenres.isEmpty)
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Text(
-                  "Please select at least one genre.",
-                  style: TextStyle(color: Colors.red.shade700, fontSize: 12),
-                ),
-              ),
-          ],
+          _buildGenreSelector(),
         ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MasterScreenWidget(
+      showBackArrow: true,
+      titleWidget: Text(isEditing ? "Edit Bioskopina" : "Add Bioskopina"),
+      floatingButtonOnPressed: _saveMovieData,
+      showFloatingActionButton: true,
+      floatingActionButtonIcon: const Icon(
+        Icons.save,
+        size: 32,
+        color: Palette.lightPurple,
+      ),
+      child: Scrollbar(
+        thumbVisibility: true,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              if (constraints.maxWidth < 600) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildPoster(),
+                    const SizedBox(height: 24),
+                    _buildForm(context),
+                  ],
+                );
+              } else {
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        maxWidth: 220,
+                        minWidth: 150,
+                      ),
+                      child: _buildPoster(),
+                    ),
+                    const SizedBox(width: 24),
+                    Expanded(child: _buildForm(context)),
+                  ],
+                );
+              }
+            },
+          ),
+        ),
       ),
     );
   }
