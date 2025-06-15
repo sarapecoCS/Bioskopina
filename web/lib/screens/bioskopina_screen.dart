@@ -27,6 +27,7 @@ class _BioskopinaScreenState extends State<BioskopinaScreen> {
   final TextEditingController _bioskopinaController = TextEditingController();
 
   final ScrollController _scrollController = ScrollController();
+
   bool isSearching = false;
 
   int? _hoveredCardIndex;
@@ -457,136 +458,158 @@ void showDeleteConfirmationDialog(BuildContext context, Bioskopina bioskopina) {
     );
   }
 
-  Widget _buildBioskopinaCard(Bioskopina bioskopina, int index) {
-    bool isHovered = _hoveredCardIndex == index;
-    return MouseRegion(
-      onEnter: (_) => setState(() => _hoveredCardIndex = index),
-      onExit: (_) => setState(() => _hoveredCardIndex = null),
-      child: GestureDetector(
-        onTap: () async {
-          await Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => BioskopinaDetailScreen(),
-            ),
-          );
-          if (mounted) _reloadBioskopinaList();
-        },
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          curve: Curves.easeInOut,
-          width: 320,
-          height: 480,
-          decoration: BoxDecoration(
-            color: const Color(0xFF18171B),
-            borderRadius: BorderRadius.circular(15),
-            border: Border.all(color: Palette.lightPurple.withOpacity(isHovered ? 1.0 : 0.3), width: 2),
-            boxShadow: isHovered
-                ? [
-                    BoxShadow(
-                      color: Palette.lightPurple.withOpacity(0.5),
-                      offset: const Offset(0, 0),
-                      blurRadius: 12,
-                      spreadRadius: 1,
-                    )
-                  ]
-                : null,
+Widget _buildBioskopinaCard(Bioskopina bioskopina, int index) {
+  bool isHovered = _hoveredCardIndex == index;
+  return MouseRegion(
+    onEnter: (_) => setState(() => _hoveredCardIndex = index),
+    onExit: (_) => setState(() => _hoveredCardIndex = null),
+    child: GestureDetector(
+      onTap: () async {
+        await Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => BioskopinaDetailScreen(),
           ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(15),
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        );
+        if (mounted) _reloadBioskopinaList();
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeInOut,
+        width: 320,
+        height: 480, // Fixed card height
+        decoration: BoxDecoration(
+          color: const Color(0xFF18171B),
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(
+            color: Palette.lightPurple.withOpacity(isHovered ? 1.0 : 0.3),
+            width: 2,
+          ),
+          boxShadow: isHovered
+              ? [
+                  BoxShadow(
+                    color: Palette.lightPurple.withOpacity(0.5),
+                    offset: const Offset(0, 0),
+                    blurRadius: 12,
+                    spreadRadius: 1,
+                  )
+                ]
+              : null,
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Image section (fixed height)
+              Stack(
                 children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 240,
-                      child: bioskopina.imageUrl != null
-                          ? Image.network(
-                              bioskopina.imageUrl!,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) => Container(
-                                color: Colors.grey[900],
-                                child: const Center(
-                                  child: Icon(Icons.broken_image, color: Colors.grey),
-                                ),
-                              ),
-                            )
-                          : Container(
+                  SizedBox(
+                    width: double.infinity,
+                    height: 240,
+                    child: bioskopina.imageUrl != null
+                        ? Image.network(
+                            bioskopina.imageUrl!,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) => Container(
                               color: Colors.grey[900],
                               child: const Center(
-                                child: Icon(Icons.movie, size: 80, color: Colors.grey),
+                                child: Icon(Icons.broken_image, color: Colors.grey),
                               ),
                             ),
-                    ),
+                          )
+                        : Container(
+                            color: Colors.grey[900],
+                            child: const Center(
+                              child: Icon(Icons.movie, size: 80, color: Colors.grey),
+                            ),
+                          ),
                   ),
-                  const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: Text(
-                      bioskopina.titleEn,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.6),
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
-                    child: Text(
-                      'Director: ${bioskopina.director}',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.star_rounded, color: Palette.starYellow, size: 18),
-                        const SizedBox(width: 4),
-                        Text(
-                          bioskopina.score.toStringAsFixed(1),
-                          style: const TextStyle(color: Colors.white70, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: Text(
-                      bioskopina.synopsis,
-                      maxLines: 6,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(color: Colors.white54, fontSize: 14),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        _buildPopupMenu(bioskopina),
-                      ],
+                      child: _buildPopupMenu(bioskopina),
                     ),
                   ),
                 ],
               ),
-            ),
+              // Content section (scrollable if needed)
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        bioskopina.titleEn,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Director: ${bioskopina.director}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          const Icon(Icons.star_rounded,
+                              color: Palette.starYellow, size: 18),
+                          const SizedBox(width: 4),
+                          Text(
+                            bioskopina.score.toStringAsFixed(1),
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      // Scrollable synopsis section
+                      Expanded(
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            return SingleChildScrollView(
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  minHeight: constraints.maxHeight,
+                                ),
+                                child: Text(
+                                  bioskopina.synopsis,
+                                  style: const TextStyle(
+                                    color: Colors.white54,
+                                    fontSize: 14
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }
