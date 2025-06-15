@@ -81,18 +81,207 @@ class _BioskopinaScreenState extends State<BioskopinaScreen> {
     super.dispose();
   }
 
-void showDeletedSuccessDialog(BuildContext context) {
-  showCustomSuccessDialog(context);
-}
+  void showDeletedSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          backgroundColor: Colors.black,
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.task_alt,
+                  color: Color.fromRGBO(102, 204, 204, 1),
+                  size: 50,
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  "Deleted successfully!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                InkWell(
+                  borderRadius: BorderRadius.circular(30),
+                  onTap: () => Navigator.of(context).pop(),
+                  child: Container(
+                    width: 80,
+                    height: 30,
+                    decoration: BoxDecoration(
+                      gradient: Palette.buttonGradient,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    alignment: Alignment.center,
+                    child: const Text(
+                      "OK",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
+  void showDeleteConfirmationDialog(BuildContext context, Bioskopina bioskopina) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.black,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          elevation: 8,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 320),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  // Warning Icon with subtle background
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Palette.lightRed.withOpacity(0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    padding: const EdgeInsets.all(12),
+                    child: Icon(
+                      Icons.delete_rounded,
+                      color: Palette.lightRed,
+                      size: 32,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
 
-  @override
+                  // Title
+                  const Text(
+                    "Are you sure you want to delete?",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+
+                  // Movie Title
+                  Text(
+                    '"${bioskopina.titleEn}"',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.8),
+                      fontSize: 14,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+
+                  // Warning Message
+                  Text(
+                    "This action cannot be undone",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Palette.lightRed.withOpacity(0.8),
+                      fontSize: 12,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Action Buttons
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Cancel Button
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.grey[800],
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 24,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6.0),
+                          ),
+                        ),
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text(
+                          "Cancel",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+
+                      // Delete Button
+                      Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Palette.lightRed,
+                              Palette.lightRed.withOpacity(0.7),
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(6.0),
+                        ),
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 10,
+                              horizontal: 24,
+                            ),
+                          ),
+                          onPressed: () async {
+                            Navigator.pop(context);
+                            await _bioskopinaProvider.delete(bioskopina.id);
+                            if (mounted) {
+                              showDeletedSuccessDialog(context);
+                              _reloadBioskopinaList();
+                            }
+                          },
+                          child: const Text(
+                            "Delete",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return MasterScreenWidget(
       titleWidget: Row(
         children: [
-         const Icon(Icons.theater_comedy, size: 28, color: Palette.lightPurple),
+          const Icon(Icons.theater_comedy, size: 28, color: Palette.lightPurple),
           const SizedBox(width: 5),
           const Text("Bioskopina", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
         ],
@@ -110,7 +299,6 @@ void showDeletedSuccessDialog(BuildContext context) {
       controller: _bioskopinaController,
       child: Column(
         children: [
-          // Beautiful Black Wave Movie Quote Header
           Padding(
             padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
             child: Center(
@@ -120,9 +308,7 @@ void showDeletedSuccessDialog(BuildContext context) {
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 18,
-
                   fontFamily: 'PlayfairDisplay',
-                  // Or replace with your custom font if desired
                   shadows: [
                     Shadow(
                       offset: Offset(1.5, 1.5),
@@ -134,8 +320,6 @@ void showDeletedSuccessDialog(BuildContext context) {
               ),
             ),
           ),
-
-          // The FutureBuilder below displays your movies
           Expanded(
             child: FutureBuilder<SearchResult<Bioskopina>>(
               future: _bioskopinaFuture,
@@ -279,11 +463,7 @@ void showDeletedSuccessDialog(BuildContext context) {
               ),
               onTap: () async {
                 Navigator.pop(context);
-                await _bioskopinaProvider.delete(bioskopina.id);
-                if (mounted) {
-                  showDeletedSuccessDialog(context);
-                  _reloadBioskopinaList();
-                }
+                showDeleteConfirmationDialog(context, bioskopina);
               },
             ),
           ),

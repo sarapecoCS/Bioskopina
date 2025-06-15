@@ -38,7 +38,7 @@ class GenreProvider extends BaseProvider<Genre> {
   }
 
   Future<List<PopularGenresData>> getMostPopularGenres() async {
-    var url = "${BaseProvider.baseUrl}$_endpoint/Popular";  // Adjusted to your actual endpoint for popular genres
+    var url = "${BaseProvider.baseUrl}$_endpoint/Popular";
     var uri = Uri.parse(url);
     var headers = createHeaders();
 
@@ -47,16 +47,22 @@ class GenreProvider extends BaseProvider<Genre> {
     if (isValidResponse(response)) {
       var data = jsonDecode(response.body);
 
+      // Expecting the response to be an object with an 'items' list:
+      List<dynamic> popularList = data['items'] ?? [];
+
       List<PopularGenresData> result = [];
 
-      // Assuming `data` here is a List<dynamic>
-      for (var item in data) {
-        result.add(PopularGenresData(item["genreName"], item["usersWhoLikeIt"]));
+      for (var item in popularList) {
+        // Defensive: Check if keys exist
+        var genreName = item["genreName"] ?? '';
+        var usersCount = item["usersWhoLikeIt"] ?? 0;
+
+        result.add(PopularGenresData(genreName, usersCount));
       }
 
       return result;
     } else {
-      throw Exception("Unknown error");
+      throw Exception("Failed to load popular genres");
     }
   }
 }
