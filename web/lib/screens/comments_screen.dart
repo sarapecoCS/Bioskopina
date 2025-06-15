@@ -345,7 +345,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
    return ConstrainedBox(
      constraints: const BoxConstraints(maxWidth: 100),
      child: PopupMenuButton<String>(
-       color: const Color.fromRGBO(10, 10, 10, 1),
+       color: Palette.darkPurple,
        itemBuilder: (BuildContext context) => [
          PopupMenuItem<String>(
            padding: EdgeInsets.zero,
@@ -354,14 +354,14 @@ class _CommentsScreenState extends State<CommentsScreen> {
                borderRadius: BorderRadius.circular(10.0),
                side: BorderSide.none,
              ),
-             leading: const Icon(Icons.delete, size: 24, color: Colors.white),
+             leading: const Icon(Icons.delete, size: 24, color: Colors.red),
              title: const Text(
                'Delete',
-               style: TextStyle(color: Colors.white),
+               style: TextStyle(color: Colors.red),
              ),
              subtitle: Text(
                'Delete permanently',
-               style: TextStyle(color: Colors.white70),
+               style: TextStyle(color: Colors.red),
              ),
              onTap: () {
                Navigator.pop(context); // Close the menu first
@@ -373,7 +373,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                    size: 55,
                  ),
                  const Text(
-                   "Are you sure you want to delete this comment?",
+                   "Are you sure you want to this delete comment?",
                    style: TextStyle(color: Colors.white),
                    textAlign: TextAlign.center,
                  ),
@@ -396,7 +396,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                  },
                );
              },
-             tileColor: const Color.fromRGBO(18, 18, 18, 1),
+
            ),
          ),
        ],
@@ -441,90 +441,124 @@ class _CommentsScreenState extends State<CommentsScreen> {
    );
  }
 
- void showConfirmationDialog(
-   BuildContext context,
-   Widget icon,
-   Widget text,
-   VoidCallback onConfirm,
- ) {
-   showDialog(
-     context: context,
-     barrierDismissible: false,
-     builder: (BuildContext context) {
-       return Dialog(
-         backgroundColor: Colors.black,
-         shape: RoundedRectangleBorder(
-           borderRadius: BorderRadius.circular(10),
-         ),
-         elevation: 8,
-         child: ConstrainedBox(
-           constraints: const BoxConstraints(maxWidth: 320),
-           child: Padding(
-             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
-             child: Column(
-               mainAxisSize: MainAxisSize.min,
-               children: <Widget>[
-                 icon,
-                 const SizedBox(height: 10),
-                 text,
-                 const SizedBox(height: 20),
-                 Row(
-                   mainAxisAlignment: MainAxisAlignment.center,
-                   children: [
-                     // No Button
-                     TextButton(
-                       style: TextButton.styleFrom(
-                         backgroundColor: const Color(0xFF15543F),
-                         foregroundColor: Colors.white,
-                         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                         shape: RoundedRectangleBorder(
-                           borderRadius: BorderRadius.circular(6.0),
-                         ),
-                       ),
-                       onPressed: () {
-                         Navigator.pop(context);
-                       },
-                       child: const Text(
-                         "No",
-                         style: TextStyle(
-                           color: Colors.white,
-                           fontWeight: FontWeight.bold,
-                         ),
-                       ),
-                     ),
-                     const SizedBox(width: 16),
-                     // Yes Button
-                     Container(
-                       decoration: BoxDecoration(
-                         gradient: Palette.buttonGradient,
-                         borderRadius: BorderRadius.circular(6.0),
-                       ),
-                       child: TextButton(
-                         style: TextButton.styleFrom(
-                           foregroundColor: Colors.white,
-                           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                         ),
-                         onPressed: () {
-                           Navigator.pop(context); // Close confirmation first
-                           onConfirm(); // Then perform delete & show success
-                         },
-                         child: const Text(
-                           "Yes",
-                           style: TextStyle(
-                             color: Colors.white,
-                             fontWeight: FontWeight.bold,
-                           ),
-                         ),
-                       ),
-                     ),
-                   ],
-                 ),
-               ],
-             ),
-           ),
-         ),
-       );
-     },
-   );
- }
+void showConfirmationDialog(
+  BuildContext context,
+  Widget icon,
+  Widget text,
+  VoidCallback onConfirm,
+) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return Dialog(
+        backgroundColor: Palette.darkPurple,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: BorderSide(
+            color: Colors.grey,
+            width: 1.0,
+          ),
+        ),
+        elevation: 30,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            maxWidth: 380,
+            minHeight: 200,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 30.0,
+              vertical: 28.0
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Center(child: icon),
+                const SizedBox(height: 16),
+                DefaultTextStyle.merge(
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.white,
+                  ),
+                  child: Center(child: text),
+                ),
+                const SizedBox(height: 28),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // No Button with updated color (#264640)
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        border: Border.all(
+                          color: Colors.grey,
+                          width: 1.0,
+                        ),
+                      ),
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          backgroundColor: const Color(0xFF264640), // Updated color
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 36
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          "Cancel",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 90),
+                    // Yes Button remains unchanged
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: Palette.buttonGradient,
+                        borderRadius: BorderRadius.circular(30),
+                        border: Border.all(
+                          color: Colors.grey,
+                          width: 1.0,
+                        ),
+                      ),
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 12,
+                            horizontal: 36
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          onConfirm();
+                        },
+                        child: const Text(
+                          "Delete",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
 }

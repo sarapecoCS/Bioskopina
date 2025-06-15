@@ -1,63 +1,80 @@
 import 'package:flutter/material.dart';
 import '../utils/colors.dart';
+import '../widgets/gradient_button.dart';
 
-void showCustomSuccessDialog(BuildContext context) {
-  showDialog(
+Future<void> showConfirmationDialog(
+    BuildContext context,
+    Widget? dialogTitle,
+    Widget? content,
+    VoidCallback onPressedYes) async {
+  return showDialog<void>(
     context: context,
-    builder: (context) {
+    barrierDismissible: false, // Cannot dismiss by tapping outside
+    builder: (BuildContext context) {
       return Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        backgroundColor: Colors.black,
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(
-                Icons.task_alt,
-                color: Color.fromRGBO(102, 204, 204, 1),
-                size: 50,
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                "Deleted successfully!",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                ),
-              ),
-              const SizedBox(height: 24),
-              InkWell(
-                borderRadius: BorderRadius.circular(30),
-                onTap: () => Navigator.of(context).pop(),
-                child: Container(
-                  width: 80,
-                  height: 30,
-                  decoration: BoxDecoration(
-                    gradient: Palette.buttonGradient,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  alignment: Alignment.center,
-                  child: const Text(
-                    "OK",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
+        backgroundColor: Colors.transparent, // Make Dialog itself transparent
+        child: Container(
+          decoration: BoxDecoration(
+            color: Palette.darkPurple, // Your dark background
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(
+              color: Colors.grey.withOpacity(0.5), // Gray border with opacity
+              width: 1.5,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: AlertDialog(
+              backgroundColor: Colors.transparent, // Transparent to show Container color
+              elevation: 0,
+              title: dialogTitle,
+              content: content,
+              actionsAlignment: MainAxisAlignment.spaceBetween,
+              actions: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(left: 16, bottom: 10, top: 10),
+                  child: GradientButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    width: 85,
+                    height: 28,
+                    borderRadius: 15,
+                    gradient: Palette.buttonGradient2,
+                    child: const Text(
+                      "Cancel",
+                      style: TextStyle(color: Palette.white),
                     ),
                   ),
                 ),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.only(right: 16, bottom: 10, top: 10),
+                  child: GradientButton(
+                    onPressed: () {
+                      onPressedYes();
+                      Navigator.of(context).pop();
+                    },
+                    width: 85,
+                    height: 28,
+                    borderRadius: 15,
+                    gradient: Palette.buttonGradient,
+                    child: const Text(
+                      "Delete",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: Palette.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       );
     },
   );
 }
-
 
 void showCustomConfirmationDialog({
   required BuildContext context,

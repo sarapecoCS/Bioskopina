@@ -59,113 +59,147 @@ class _ReportsScreenState extends State<ReportsScreen> {
     setState(() => isLoading = false);
   }
 
- Future<void> _exportPdf() async {
-   double pixelRatio = MediaQuery.of(context).devicePixelRatio;
+  Future<void> _exportPdf() async {
+    double pixelRatio = MediaQuery.of(context).devicePixelRatio;
 
-   ui.Image? chartImage = await _screenshotController.captureAsUiImage(pixelRatio: pixelRatio);
-   if (chartImage == null) return;
+    ui.Image? chartImage = await _screenshotController.captureAsUiImage(pixelRatio: pixelRatio);
+    if (chartImage == null) return;
 
-   ByteData? byteData = await chartImage.toByteData(format: ui.ImageByteFormat.png);
-   if (byteData == null) return;
+    ByteData? byteData = await chartImage.toByteData(format: ui.ImageByteFormat.png);
+    if (byteData == null) return;
 
-   Uint8List chartBytes = byteData.buffer.asUint8List();
+    Uint8List chartBytes = byteData.buffer.asUint8List();
 
-   final ByteData logoData = await rootBundle.load("assets/images/logoFilled.png");
-   final Uint8List logoBytes = logoData.buffer.asUint8List();
+    final ByteData logoData = await rootBundle.load("assets/images/logoFilled.png");
+    final Uint8List logoBytes = logoData.buffer.asUint8List();
 
-   final pdf = pw.Document();
+    final pdf = pw.Document();
 
-   // Get Top 2 movies
-   final topMovies = popularBioskopinaData.take(2).toList();
+    // Get Top 2 movies
+    final topMovies = popularBioskopinaData.take(2).toList();
 
-   pdf.addPage(
-     pw.Page(
-       build: (context) {
-         return pw.Column(
-           crossAxisAlignment: pw.CrossAxisAlignment.center,
-           children: [
-             pw.Row(
-               mainAxisAlignment: pw.MainAxisAlignment.center,
-               children: [
-                 pw.Image(pw.MemoryImage(logoBytes), width: 80),
-                 pw.SizedBox(width: 20),
-                 pw.Text(
-                   'Top 5 Black Wave Movies Report',
-                   style: pw.TextStyle(fontSize: 22, color: PdfColor.fromHex("#0C0B1E")),
-                 ),
-               ],
-             ),
-             pw.Divider(),
-             if (includeTopBioskopinaInPdf)
-               pw.Image(pw.MemoryImage(chartBytes), width: 500),
-             pw.SizedBox(height: 10),
-             pw.Text(
-               'Top 2 Movies Details',
-               style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold),
-             ),
-             pw.SizedBox(height: 10),
-             // Movie details
-             pw.Column(
-               crossAxisAlignment: pw.CrossAxisAlignment.start,
-               children: topMovies.map((movie) {
-                 return pw.Container(
-                   margin: const pw.EdgeInsets.only(bottom: 8),
-                   child: pw.Bullet(
-                     text:
-                         '${movie.bioskopinaTitleEN ?? "Unknown"} - Score: ${movie.score?.toStringAsFixed(1) ?? "N/A"}',
-                     style: pw.TextStyle(fontSize: 12),
-                   ),
-                 );
-               }).toList(),
-             ),
-           ],
-         );
-       },
-     ),
-   );
+    pdf.addPage(
+      pw.Page(
+        build: (context) {
+          return pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.center,
+            children: [
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.center,
+                children: [
+                  pw.Image(pw.MemoryImage(logoBytes), width: 80),
+                  pw.SizedBox(width: 20),
+                  pw.Text(
+                    'Top 5 Black Wave Movies Report',
+                    style: pw.TextStyle(fontSize: 22, color: PdfColor.fromHex("#0C0B1E")),
+                  ),
+                ],
+              ),
+              pw.Divider(),
+              if (includeTopBioskopinaInPdf)
+                pw.Image(pw.MemoryImage(chartBytes), width: 500),
+              pw.SizedBox(height: 10),
+              pw.Text(
+                'Top 2 Movies Details',
+                style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold),
+              ),
+              pw.SizedBox(height: 10),
+              // Movie details
+              pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: topMovies.map((movie) {
+                  return pw.Container(
+                    margin: const pw.EdgeInsets.only(bottom: 8),
+                    child: pw.Bullet(
+                      text:
+                          '${movie.bioskopinaTitleEN ?? "Unknown"} - Score: ${movie.score?.toStringAsFixed(1) ?? "N/A"}',
+                      style: pw.TextStyle(fontSize: 12),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ],
+          );
+        },
+      ),
+    );
 
-   final filePath = await FilePicker.platform.saveFile(
-     dialogTitle: "Save PDF Report",
-     fileName: 'Top_Black_Wave_Movies_Report_${DateFormat('yyyyMMdd').format(DateTime.now())}.pdf',
-     type: FileType.custom,
-     allowedExtensions: ['pdf'],
-   );
+    final filePath = await FilePicker.platform.saveFile(
+      dialogTitle: "Save PDF Report",
+      fileName: 'Top_Black_Wave_Movies_Report_${DateFormat('yyyyMMdd').format(DateTime.now())}.pdf',
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
 
-   if (filePath != null) {
-     final file = File(filePath);
-     if (!filePath.endsWith('.pdf')) {
-       await File('$filePath.pdf').writeAsBytes(await pdf.save());
-     } else {
-       await file.writeAsBytes(await pdf.save());
-     }
-     if (!mounted) return;
+    if (filePath != null) {
+      final file = File(filePath);
+      if (!filePath.endsWith('.pdf')) {
+        await File('$filePath.pdf').writeAsBytes(await pdf.save());
+      } else {
+        await file.writeAsBytes(await pdf.save());
+      }
+      if (!mounted) return;
 
-     showDialog(
-       context: context,
-       builder: (ctx) {
-         return AlertDialog(
-           backgroundColor: Colors.black,
-           contentPadding: const EdgeInsets.all(20),
-           content: Column(
-             mainAxisSize: MainAxisSize.min,
-             children: const [
-               const Icon(Icons.task_alt_rounded, color: Color.fromRGBO(102, 204, 204, 1), size: 64),
-               SizedBox(height: 10),
-               Text(
-                 'Success',
-                 style: TextStyle(
-                   color: Colors.white,
-                   fontSize: 18,
-                 ),
-               ),
-             ],
-           ),
-         );
-       },
-     );
-   }
- }
-
+      showDialog(
+        context: context,
+        builder: (ctx) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+              side: BorderSide(
+                color: Colors.grey.withOpacity(0.5),
+                width: 1.5,
+              ),
+            ),
+            backgroundColor: Colors.black,
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.task_alt,
+                    color: Color.fromRGBO(102, 204, 204, 1),
+                    size: 50,
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    "Successfully exported!",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  InkWell(
+                    borderRadius: BorderRadius.circular(30),
+                    onTap: () => Navigator.of(context).pop(),
+                    child: Container(
+                      width: 80,
+                      height: 30,
+                      decoration: BoxDecoration(
+                        gradient: Palette.buttonGradient,
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      alignment: Alignment.center,
+                      child: const Text(
+                        "OK",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -259,102 +293,100 @@ class _ReportsScreenState extends State<ReportsScreen> {
             ),
     );
   }
- Widget _buildPopularMoviesChart() {
-   if (popularBioskopinaData.isEmpty) {
-     return const Center(child: Text("No data available"));
-   }
 
-   final maxScore = popularBioskopinaData
-           .map((e) => e.score ?? 0)
-           .fold<double>(0, (previousValue, element) =>
-               element > previousValue ? element.toDouble() : previousValue) + 1;
+  Widget _buildPopularMoviesChart() {
+    if (popularBioskopinaData.isEmpty) {
+      return const Center(child: Text("No data available"));
+    }
 
-   return SizedBox(
-     height: 300,
-     child: BarChart(
-       BarChartData(
-         alignment: BarChartAlignment.spaceAround,
-         maxY: maxScore,
-         barTouchData: BarTouchData(enabled: true),
-         titlesData: FlTitlesData(
-           bottomTitles: AxisTitles(
-             sideTitles: SideTitles(
-               showTitles: true,
-               interval: 1,
-               reservedSize: 70,
-               getTitlesWidget: (value, meta) {
-                 int index = value.toInt();
-                 if (index < 0 || index >= popularBioskopinaData.length) return const SizedBox();
+    final maxScore = popularBioskopinaData
+            .map((e) => e.score ?? 0)
+            .fold<double>(0, (previousValue, element) =>
+                element > previousValue ? element.toDouble() : previousValue) + 1;
 
-                 String title = popularBioskopinaData[index].bioskopinaTitleEN ?? '';
+    return SizedBox(
+      height: 300,
+      child: BarChart(
+        BarChartData(
+          alignment: BarChartAlignment.spaceAround,
+          maxY: maxScore,
+          barTouchData: BarTouchData(enabled: true),
+          titlesData: FlTitlesData(
+            bottomTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                interval: 1,
+                reservedSize: 70,
+                getTitlesWidget: (value, meta) {
+                  int index = value.toInt();
+                  if (index < 0 || index >= popularBioskopinaData.length) return const SizedBox();
 
-                 // Shorten if too long
-                 if (title.length > 10) {
-                   title = '${title.substring(0, 10)}...';
-                 }
+                  String title = popularBioskopinaData[index].bioskopinaTitleEN ?? '';
 
-                 return SideTitleWidget(
-                   axisSide: meta.axisSide,
-                   child: Transform.rotate(
-                     angle: -0.26,
-                     child: Text(
-                       title,
-                       style: const TextStyle(
-                         fontSize: 10,
-                         color: Color(0xFFF07FFF),
-                       ),
-                       overflow: TextOverflow.ellipsis,
-                       maxLines: 2,
-                       textAlign: TextAlign.center,
-                     ),
-                   ),
-                 );
-               },
-             ),
-           ),
-           leftTitles: AxisTitles(
-             sideTitles: SideTitles(
-               showTitles: true,
-               getTitlesWidget: (value, meta) {
-                 return Text(
-                   value.toInt().toString(),
-                   style: const TextStyle(
-                     color: Colors.white70,
-                     fontSize: 10,
-                   ),
-                 );
-               },
-               reservedSize: 30,
-             ),
-           ),
-           topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-           rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-         ),
-         gridData: FlGridData(show: true),
-         borderData: FlBorderData(show: false),
-         barGroups: List.generate(popularBioskopinaData.length, (index) {
-           final movie = popularBioskopinaData[index];
-           final score = movie.score?.toDouble() ?? 0;
-           return BarChartGroupData(
-             x: index,
-             barRods: [
-               BarChartRodData(
-                 toY: score,
-                 color: Palette.teal,
-                 width: 18,
-                 borderRadius: BorderRadius.circular(6),
-               ),
-             ],
-             showingTooltipIndicators: [0],
-           );
-         }),
-       ),
-     ),
-   );
- }
+                  // Shorten if too long
+                  if (title.length > 10) {
+                    title = '${title.substring(0, 10)}...';
+                  }
 
-
-
+                  return SideTitleWidget(
+                    axisSide: meta.axisSide,
+                    child: Transform.rotate(
+                      angle: -0.26,
+                      child: Text(
+                        title,
+                        style: const TextStyle(
+                          fontSize: 10,
+                          color: Color(0xFFF07FFF),
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            leftTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                getTitlesWidget: (value, meta) {
+                  return Text(
+                    value.toInt().toString(),
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 10,
+                    ),
+                  );
+                },
+                reservedSize: 30,
+              ),
+            ),
+            topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          ),
+          gridData: FlGridData(show: true),
+          borderData: FlBorderData(show: false),
+          barGroups: List.generate(popularBioskopinaData.length, (index) {
+            final movie = popularBioskopinaData[index];
+            final score = movie.score?.toDouble() ?? 0;
+            return BarChartGroupData(
+              x: index,
+              barRods: [
+                BarChartRodData(
+                  toY: score,
+                  color: Palette.teal,
+                  width: 18,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+              ],
+              showingTooltipIndicators: [0],
+            );
+          }),
+        ),
+      ),
+    );
+  }
 
   Widget _buildMovieList() {
     return ListView.separated(
@@ -410,4 +442,3 @@ class _ReportsScreenState extends State<ReportsScreen> {
     );
   }
 }
-
