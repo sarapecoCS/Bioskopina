@@ -11,6 +11,7 @@ class Palette {
    // #00BCD4
   static const Color white = Color.fromRGBO(255, 255, 255, 1);
   static const Color black = Color.fromRGBO(0, 0, 0, 1);
+  static const Color buttonPurple = Color.fromRGBO(13, 38, 79, 1); // #0D264F
   static const Color lightRed = Color.fromRGBO(255, 80, 80, 1.0); // Softer red
   static const Color textFieldPurple = Color.fromRGBO(100, 100, 100, 1); // Muted gray
   static const Color searchBar = Color.fromRGBO(35, 35, 35, 1); // Neutral dark gray

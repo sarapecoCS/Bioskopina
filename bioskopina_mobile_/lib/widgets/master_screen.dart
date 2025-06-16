@@ -6,6 +6,7 @@ import '../screens/help_screen.dart';
 import '../screens/constellation_screen.dart';
 import '../screens/explore_screen.dart';
 import '../screens/home_screen.dart';
+import '../screens/cinema_screen.dart';
 import '../widgets/user_profile_dialog.dart';
 
 import '../screens/all_posts_screen.dart';
@@ -224,7 +225,7 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
                   break;
                 case 3:
                   Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (_) => ConstellationScreen(selectedIndex: index)));
+                      MaterialPageRoute(builder: (_) => CinemaScreen(selectedIndex: index)));
                   break;
               }
             },
