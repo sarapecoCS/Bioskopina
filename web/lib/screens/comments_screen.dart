@@ -163,6 +163,10 @@ class _CommentsScreenState extends State<CommentsScreen> {
       if (mounted) {
         showErrorDialog(context, e);
       }
+    } catch (e) {
+      if (mounted) {
+        showErrorDialog(context, Exception(e.toString()));
+      }
     }
   }
 
@@ -242,9 +246,9 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                           MaterialPageRoute(
                                             builder: (context) =>
                                                 PostDetailScreen(
-                                                  post: postObj,
-                                                  ownerId: postObj.userId!,
-                                                ),
+                                              post: postObj,
+                                              ownerId: postObj.userId!,
+                                            ),
                                           ),
                                         );
                                       },
@@ -341,110 +345,78 @@ class _CommentsScreenState extends State<CommentsScreen> {
     );
   }
 
-ConstrainedBox _buildPopupMenu(Comment comment) {
-  return ConstrainedBox(
-    constraints: const BoxConstraints(maxWidth: 200),
-    child: PopupMenuButton<String>(
-      color: Colors.black,
-      itemBuilder: (BuildContext context) => [
-        PopupMenuItem<String>(
-          padding: EdgeInsets.zero,
-          child: MouseRegion(
-            cursor: SystemMouseCursors.click,
-            child: Builder(
-              builder: (context) {
-                bool isHovered = false;
-                return StatefulBuilder(
-                  builder: (context, setState) {
-                    return MouseRegion(
-                      onEnter: (_) => setState(() => isHovered = true),
-                      onExit: (_) => setState(() => isHovered = false),
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 150),
-                        decoration: BoxDecoration(
-                          color: isHovered
-                              ? Colors.red[800]?.withOpacity(0.2)
-                              : Colors.transparent,
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: ListTile(
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 12.0, vertical: 6.0),
-                          leading: Icon(
-                            Icons.delete,
-                            size: 24,
+  ConstrainedBox _buildPopupMenu(Comment comment) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 200),
+      child: PopupMenuButton<String>(
+        color: Colors.black,
+        itemBuilder: (BuildContext context) => [
+          PopupMenuItem<String>(
+            padding: EdgeInsets.zero,
+            child: MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: Builder(
+                builder: (context) {
+                  bool isHovered = false;
+                  return StatefulBuilder(
+                    builder: (context, setState) {
+                      return MouseRegion(
+                        onEnter: (_) => setState(() => isHovered = true),
+                        onExit: (_) => setState(() => isHovered = false),
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 150),
+                          decoration: BoxDecoration(
                             color: isHovered
-                                ? Colors.red[300]
-                                : Colors.red[400],
+                                ? Colors.red[800]?.withOpacity(0.2)
+                                : Colors.transparent,
+                            borderRadius: BorderRadius.circular(6),
                           ),
-                          title: Text(
-                            'Delete',
-                            style: TextStyle(
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 12.0, vertical: 6.0),
+                            leading: Icon(
+                              Icons.delete,
+                              size: 24,
                               color: isHovered
                                   ? Colors.red[300]
                                   : Colors.red[400],
                             ),
-                          ),
-                          subtitle: Text(
-                            'Delete permanently',
-                            style: TextStyle(
-                              color: isHovered
-                                  ? Colors.red[300]
-                                  : Colors.red[400],
-                              fontSize: 12,
+                            title: Text(
+                              'Delete',
+                              style: TextStyle(
+                                color: isHovered
+                                    ? Colors.red[300]
+                                    : Colors.red[400],
+                              ),
                             ),
+                            subtitle: Text(
+                              'Delete permanently',
+                              style: TextStyle(
+                                color: isHovered
+                                    ? Colors.red[300]
+                                    : Colors.red[400],
+                                fontSize: 12,
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.pop(context);
+                              _showDeleteConfirmationDialog(comment);
+                            },
                           ),
-                          onTap: () {
-                            Navigator.pop(context);
-                            showConfirmationDialog(
-                              context,
-                              const Icon(
-                                Icons.warning_rounded,
-                                color: Palette.lightRed,
-                                size: 55,
-                              ),
-                              const Text(
-                                "Are you sure you want to this delete comment?",
-                                style: TextStyle(color: Colors.white),
-                                textAlign: TextAlign.center,
-                              ),
-                              () async {
-                                await _commentProvider.delete(comment.id!);
-                                if (mounted) {
-                                  setState(() {
-                                    _commentFuture = _commentProvider.get(
-                                      filter: {
-                                        "UserId": "${widget.user.id}",
-                                        "NewestFirst": "true",
-                                        "Page": "$page",
-                                        "PageSize": "$pageSize",
-                                      },
-                                    );
-                                  });
-                                }
-                                showDeletedSuccessDialog(context);
-                              },
-                            );
-                          },
                         ),
-                      ),
-                    );
-                  },
-                );
-              },
+                      );
+                    },
+                  );
+                },
+              ),
             ),
           ),
-        ),
-      ],
-    ),
-  );
-}
-  void showConfirmationDialog(
-    BuildContext context,
-    Widget icon,
-    Widget text,
-    VoidCallback onConfirm,
-  ) {
+        ],
+      ),
+    );
+  }
+
+  void _showDeleteConfirmationDialog(Comment comment) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -473,20 +445,21 @@ ConstrainedBox _buildPopupMenu(Comment comment) {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Center(child: icon),
+                  const Icon(
+                    Icons.warning_rounded,
+                    color: Palette.lightRed,
+                    size: 55,
+                  ),
                   const SizedBox(height: 16),
-                  DefaultTextStyle.merge(
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.white,
-                    ),
-                    child: Center(child: text),
+                  const Text(
+                    "Are you sure you want to delete this comment?",
+                    style: TextStyle(color: Colors.white),
+                    textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 28),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // No Button with updated color (#264640)
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
@@ -497,7 +470,7 @@ ConstrainedBox _buildPopupMenu(Comment comment) {
                         ),
                         child: TextButton(
                           style: TextButton.styleFrom(
-                            backgroundColor: const Color(0xFF264640), // Updated color
+                            backgroundColor: const Color(0xFF264640),
                             foregroundColor: Colors.white,
                             padding: const EdgeInsets.symmetric(
                               vertical: 10,
@@ -517,7 +490,6 @@ ConstrainedBox _buildPopupMenu(Comment comment) {
                         ),
                       ),
                       const SizedBox(width: 90),
-                      // Yes Button remains unchanged
                       Container(
                         decoration: BoxDecoration(
                           gradient: Palette.buttonGradient,
@@ -535,9 +507,23 @@ ConstrainedBox _buildPopupMenu(Comment comment) {
                               horizontal: 36
                             ),
                           ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                            onConfirm();
+                          onPressed: () async {
+                            Navigator.pop(context); // Close confirmation dialog
+                            try {
+                              await _commentProvider.delete(comment.id!);
+                              if (mounted) {
+                                _showDeleteSuccessDialog();
+                              }
+                              _reloadData();
+                            } on Exception catch (e) {
+                              if (mounted) {
+                                showErrorDialog(context, e);
+                              }
+                            } catch (e) {
+                              if (mounted) {
+                                showErrorDialog(context, Exception(e.toString()));
+                              }
+                            }
                           },
                           child: const Text(
                             "Delete",
@@ -550,7 +536,6 @@ ConstrainedBox _buildPopupMenu(Comment comment) {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
                 ],
               ),
             ),
@@ -560,15 +545,16 @@ ConstrainedBox _buildPopupMenu(Comment comment) {
     );
   }
 
-  void showDeletedSuccessDialog(BuildContext context) {
+  void _showDeleteSuccessDialog() {
     showDialog(
       context: context,
-      builder: (context) {
+      barrierDismissible: false,
+      builder: (BuildContext context) {
         return Dialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
             side: BorderSide(
-              color: Colors.grey.withOpacity(0.5), // light grey border
+              color: Colors.grey.withOpacity(0.5),
               width: 1.5,
             ),
           ),
@@ -585,7 +571,7 @@ ConstrainedBox _buildPopupMenu(Comment comment) {
                 ),
                 const SizedBox(height: 20),
                 const Text(
-                  "Deleted successfully!",
+                  "Comment deleted successfully!",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
