@@ -45,15 +45,20 @@ namespace Bioskopina.Services
 
         public override IQueryable<BioskopinaWatchlist> AddInclude(IQueryable<BioskopinaWatchlist> query, BioskopinaWatchlistSearchObject? search = null)
         {
-            if(search?.MovieIncluded== true)
-            {
-                query = query.Include(mWatchlist => mWatchlist.MovieId);
-            }
+            // Always include related data
+            query = query
+                .Include(x => x.Movie)      // Will map to Bioskopina
+                .Include(x => x.Watchlist);
+
+            // Optional: Include genres if requested
             if (search?.GenresIncluded == true)
             {
-                query = query.Include(mWatchlist => mWatchlist.Movie.GenreMovies);
+                query = query.Include(x => x.Movie)
+                             .ThenInclude(m => m.GenreMovies)
+                             .ThenInclude(gm => gm.Genre);
             }
-            return base.AddInclude(query, search);
+
+            return query;
         }
     }
 }

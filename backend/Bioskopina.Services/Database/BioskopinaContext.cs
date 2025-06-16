@@ -175,7 +175,7 @@ namespace Bioskopina.Services.Database
                 entity.HasOne(d => d.Movie)
                     .WithMany(p => p.BioskopinaWatchlists)
                     .HasForeignKey(d => d.MovieId)
-                    .OnDelete(DeleteBehavior.Cascade)  // <-- set cascade here
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_Bioskopina_Watchlist_Bioskopina");
 
                 entity.HasOne(d => d.Watchlist)
@@ -183,8 +183,10 @@ namespace Bioskopina.Services.Database
                     .HasForeignKey(d => d.WatchlistId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Bioskopina_Watchlist_Watchlist");
-            });
 
+         
+                entity.Navigation(e => e.Movie).AutoInclude();
+            });
 
 
             modelBuilder.Entity<Comment>(entity =>

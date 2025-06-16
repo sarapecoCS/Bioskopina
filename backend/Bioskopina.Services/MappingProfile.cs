@@ -11,7 +11,7 @@ namespace Bioskopina.Services
     public class MappingProfile : Profile
     {
         public MappingProfile()
-        { 
+        {
             CreateMap<Database.Bioskopina, Model.Bioskopina>();
             CreateMap<BioskopinaInsertRequest, Database.Bioskopina>();
             CreateMap<BioskopinaUpdateRequest, Database.Bioskopina>();
@@ -39,8 +39,6 @@ namespace Bioskopina.Services
             CreateMap<Database.Watchlist, Model.Watchlist>();
             CreateMap<WatchlistInsertRequest, Database.Watchlist>();
             CreateMap<WatchlistUpdateRequest, Database.Watchlist>();
-
-           
 
             CreateMap<Database.BioskopinaList, Model.BioskopinaList>();
             CreateMap<BioskopinaListInsertRequest, Database.BioskopinaList>();
@@ -82,8 +80,14 @@ namespace Bioskopina.Services
             CreateMap<UserProfilePictureInsertRequest, Database.UserProfilePicture>();
             CreateMap<UserProfilePictureUpdateRequest, Database.UserProfilePicture>();
 
-           
-            CreateMap<Database.BioskopinaWatchlist, Model.BWatchlist>();
+            // Updated BioskopinaWatchlist mapping with navigation property resolution
+            CreateMap<Database.BioskopinaWatchlist, Model.BWatchlist>()
+                .ForMember(dest => dest.Bioskopina, opt => opt.MapFrom(src => src.Movie))
+                .ForMember(dest => dest.Watchlist, opt => opt.MapFrom(src => src.Watchlist))
+                .ReverseMap()
+                .ForMember(dest => dest.Movie, opt => opt.MapFrom(src => src.Bioskopina))
+                .ForMember(dest => dest.Watchlist, opt => opt.MapFrom(src => src.Watchlist));
+
             CreateMap<BioskopinaWatchlistInsertRequest, Database.BioskopinaWatchlist>();
             CreateMap<BioskopinaWatchlistUpdateRequest, Database.BioskopinaWatchlist>();
 
@@ -98,8 +102,6 @@ namespace Bioskopina.Services
             CreateMap<Database.Recommender, Model.Recommender>();
             CreateMap<RecommenderInsertRequest, Database.Recommender>();
             CreateMap<RecommenderUpdateRequest, Database.Recommender>();
-
-
         }
     }
 }
