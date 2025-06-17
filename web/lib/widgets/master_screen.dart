@@ -9,6 +9,7 @@ import '../screens/reports_screen.dart';
 import '../screens/users_screen.dart';
 import '../screens/login_screen.dart';
 import '../screens/genres_screen.dart';
+import '../screens/admin_report_screen.dart';
 import '../utils/colors.dart';
 import '../utils/util.dart';
 import 'gradient_button.dart';
@@ -32,23 +33,23 @@ class MasterScreenWidget extends StatefulWidget {
   String? floatingButtonTooltip;
 
   MasterScreenWidget({
-  super.key,
-  required this.child,
-  this.title,
-  this.titleWidget,
-  this.controller,
-  this.onSubmitted,
-  this.onClosed,
-  this.onChanged,
-  this.onCleared,
-  this.showBackArrow,
-  this.showSearch,
-  this.showFloatingActionButton = false,
-  this.floatingActionButtonIcon,
-  this.gradientButton,
-  this.floatingButtonOnPressed,
-  this.showProfileIcon = true,
-  this.floatingButtonTooltip,
+    super.key,
+    required this.child,
+    this.title,
+    this.titleWidget,
+    this.controller,
+    this.onSubmitted,
+    this.onClosed,
+    this.onChanged,
+    this.onCleared,
+    this.showBackArrow,
+    this.showSearch,
+    this.showFloatingActionButton = false,
+    this.floatingActionButtonIcon,
+    this.gradientButton,
+    this.floatingButtonOnPressed,
+    this.showProfileIcon = true,
+    this.floatingButtonTooltip,
   });
 
   @override
@@ -63,9 +64,9 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
     'Bioskopina': false,
     'Users': false,
     'Analytics': false,
-
     'Help': false,
-    'Genres': false,  // <-- Add hover state for Genres
+    'Genres': false,
+    'Admin Report': false, // ✅ Added hover state for Admin Report
   };
 
   @override
@@ -112,7 +113,7 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
                       child: Image.asset('assets/images/logo.png', width: 220),
                     ),
                     buildListTile(
-                        context, 'Biskopina', Icons.tv_rounded, const BioskopinaScreen()),
+                        context, 'Biskopina',Icons.local_movies , const BioskopinaScreen()),
                     buildListTile(
                         context, 'Users', Icons.people_rounded, const UsersScreen()),
                     buildListTile(
@@ -120,7 +121,9 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
                     buildListTile(
                         context, 'Help', Icons.help_rounded, const HelpScreen()),
                     buildListTile(
-                        context, 'Genres', Icons.category_rounded, const GenresScreen()),  // <-- Add Genres Screen
+                        context, 'Genres', Icons.category_rounded, const GenresScreen()),
+                    buildListTile(
+                        context, 'Admin Report', Icons.archive, const AdminReportScreen()),
                   ],
                 ),
                 Padding(
@@ -172,7 +175,7 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
     if (widget.showSearch == true) {
       actions.add(AppBarSearchButton(
         searchIcon: Icons.search_rounded,
-        searchActiveButtonColor: Palette.lightRed,
+        searchActiveButtonColor: Colors.blue,
         searchActiveIcon: Icons.search_rounded,
       ));
     }

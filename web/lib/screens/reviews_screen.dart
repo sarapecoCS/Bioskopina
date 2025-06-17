@@ -20,12 +20,12 @@ class ReviewsScreen extends StatefulWidget {
   User user;
 
   ReviewsScreen({
-  required this.user,
-  super.key,
-});
+    required this.user,
+    super.key,
+  });
 
-@override
-State<ReviewsScreen> createState() => _ReviewsScreenState();
+  @override
+  State<ReviewsScreen> createState() => _ReviewsScreenState();
 }
 
 class _ReviewsScreenState extends State<ReviewsScreen> {
@@ -92,15 +92,15 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
         children: [
           widget.user.profilePicture!.profilePicture != null
               ? ClipRRect(
-            borderRadius: BorderRadius.circular(100),
-            child: Image.memory(
-              imageFromBase64String(
-                  widget.user.profilePicture!.profilePicture!),
-              width: 25,
-              height: 25,
-              fit: BoxFit.cover,
-            ),
-          )
+                  borderRadius: BorderRadius.circular(100),
+                  child: Image.memory(
+                    imageFromBase64String(
+                        widget.user.profilePicture!.profilePicture!),
+                    width: 25,
+                    height: 25,
+                    fit: BoxFit.cover,
+                  ),
+                )
               : const Text(""),
           const SizedBox(width: 5),
           Text("${widget.user.username}: "),
@@ -170,7 +170,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
   List<Widget> _buildReviewCards(List<Rating> ratingList) {
     return List.generate(
       ratingList.length,
-          (index) => _buildReviewCard(ratingList[index]),
+      (index) => _buildReviewCard(ratingList[index]),
     );
   }
 
@@ -296,7 +296,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
               child: Container(
                 alignment: Alignment.topLeft,
                 constraints:
-                const BoxConstraints(minHeight: 30, maxHeight: 100),
+                    const BoxConstraints(minHeight: 30, maxHeight: 100),
                 //height: 100,
                 child: SingleChildScrollView(
                   controller: ScrollController(),
@@ -304,16 +304,16 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                     children: [
                       (rating.reviewText != null && rating.reviewText != "")
                           ? Text(
-                        "${rating.reviewText}",
-                        style: const TextStyle(fontSize: 15),
-                      )
+                              "${rating.reviewText}",
+                              style: const TextStyle(fontSize: 15),
+                            )
                           : Text(
-                        "User left no review text...",
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: Palette.lightPurple.withOpacity(0.5),
-                            fontStyle: FontStyle.italic),
-                      ),
+                              "User left no review text...",
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  color: Palette.lightPurple.withOpacity(0.5),
+                                  fontStyle: FontStyle.italic),
+                            ),
                     ],
                   ),
                 ),
@@ -342,7 +342,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
               icon: const Icon(Icons.more_vert_rounded),
               splashRadius: 1,
               padding: EdgeInsets.zero,
-              color: const Color.fromRGBO(50, 48, 90, 1),
+              color:  Colors.black,
               itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                 PopupMenuItem<String>(
                   child: ListTile(
@@ -366,6 +366,9 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                               "Are you sure you want to delete this review?"),
                               () async {
                             await _ratingProvider.delete(rating.id!);
+                            if (mounted) {
+                              showDeletedSuccessDialog(context);
+                            }
                           });
                     },
                   ),
@@ -375,6 +378,67 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  void showDeletedSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            side: BorderSide(
+              color: Colors.grey.withOpacity(0.5), // light grey border
+              width: 1.5,
+            ),
+          ),
+          backgroundColor: Colors.black,
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.task_alt,
+                  color: Color.fromRGBO(102, 204, 204, 1),
+                  size: 50,
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  "Deleted successfully!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                InkWell(
+                  borderRadius: BorderRadius.circular(30),
+                  onTap: () => Navigator.of(context).pop(),
+                  child: Container(
+                    width: 80,
+                    height: 30,
+                    decoration: BoxDecoration(
+                      gradient: Palette.buttonGradient,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    alignment: Alignment.center,
+                    child: const Text(
+                      "OK",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

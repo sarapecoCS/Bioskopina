@@ -214,7 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           );
                         },
                         child: const Text(
-                          "Not registered?",
+                          "Do not have an account? Sign up",
                           style: TextStyle(
                             color: Palette.lightPurple,
                             fontWeight: FontWeight.normal,

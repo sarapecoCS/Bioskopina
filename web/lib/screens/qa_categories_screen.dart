@@ -54,39 +54,6 @@ class _QACategoriesScreenState extends State<QACategoriesScreen> {
     }
   }
 
-  Future<void> showSuccessDialog(BuildContext context, String message) async {
-    return await showDialog(
-      context: context,
-      barrierDismissible: true, // user can tap outside to close
-      builder: (context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          backgroundColor: Colors.black,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.task_alt_rounded, color: Color.fromRGBO(102, 204, 204, 1), size: 64),
-                const SizedBox(height: 16),
-                Text(
-                  message, // display the passed message
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-
   @override
   Widget build(BuildContext context) {
     return MasterScreenWidget(
@@ -262,13 +229,13 @@ class _QACategoriesScreenState extends State<QACategoriesScreen> {
         if (context.mounted) {
           showInfoDialog(
               context,
-              const Icon(Icons.task_alt,
-                  color: Color.fromRGBO(102, 204, 204, 1), size: 50),
+              const Icon(Icons.task_alt, color: Color.fromRGBO(102, 204, 204, 1), size: 50),
               const Text(
                 "Added successfully!",
                 textAlign: TextAlign.center,
               ));
           _reloadData();
+          _qaCategoryFormKey.currentState?.reset();
         }
       }
     } on Exception catch (e) {
@@ -287,13 +254,16 @@ class _QACategoriesScreenState extends State<QACategoriesScreen> {
         if (context.mounted) {
           showInfoDialog(
               context,
-              const Icon(Icons.task_alt,
-                  color: Color.fromRGBO(102, 204, 204, 1), size: 50),
+              const Icon(Icons.task_alt, color: Color.fromRGBO(102, 204, 204, 1), size: 50),
               const Text(
                 "Saved successfully!",
                 textAlign: TextAlign.center,
               ));
           _reloadData();
+          setState(() {
+            categoryId = null;
+          });
+          _qaCategoryFormKey.currentState?.reset();
         }
       }
     } on Exception catch (e) {
@@ -302,77 +272,134 @@ class _QACategoriesScreenState extends State<QACategoriesScreen> {
       }
     }
   }
-Widget _buildPopupMenu(QAcategory category) {
-  return PopupMenuButton<String>(
-    tooltip: "Actions",
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(10.0),
-      side: BorderSide(color: Palette.lightPurple.withOpacity(0.3)),
-    ),
-    icon: const Icon(Icons.more_vert_rounded, color: Palette.white), // White icon
-    splashRadius: 1,
-    padding: EdgeInsets.zero,
-    color: Colors.black, // Set the background color of the menu to black
-    onSelected: (value) async {
-      if (value == 'edit') {
-        if (mounted) {
-          setState(() {
-            categoryId = category.id;
-            _qaCategoryFormKey.currentState?.fields["name"]?.didChange(category.name);
-          });
-        }
-      } else if (value == 'delete') {
-        await showConfirmationDialog(
-          context,
-          const Icon(Icons.warning_rounded, color: Palette.lightRed, size: 55),
-          const SizedBox(
-            width: 300,
-            child: Text(
-              "Are you sure you want to delete this category? This will delete any questions associated with it.",
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Palette.white),
+
+  Widget _buildPopupMenu(QAcategory category) {
+    return PopupMenuButton<String>(
+      tooltip: "Actions",
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+        side: BorderSide(color: Palette.lightPurple.withOpacity(0.3)),
+      ),
+      icon: const Icon(Icons.more_vert_rounded),
+      splashRadius: 1,
+      padding: EdgeInsets.zero,
+      color: Colors.black,
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+        PopupMenuItem<String>(
+          child: ListTile(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
+            hoverColor: Palette.lightPurple.withOpacity(0.1),
+            leading: const Icon(Icons.edit, size: 24, color: Palette.lightPurple),
+            title: const Text('Edit',
+                style: TextStyle(color: Palette.lightPurple)),
+            onTap: () {
+              if (mounted) {
+                setState(() {
+                  categoryId = category.id;
+                  _qaCategoryFormKey.currentState?.fields["name"]
+                      ?.didChange(category.name);
+                });
+              }
+            },
+          ),
+        ),
+        PopupMenuItem<String>(
+          child: ListTile(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
+            hoverColor: Palette.lightRed.withOpacity(0.1),
+            leading: const Icon(Icons.delete, size: 24, color: Palette.lightRed),
+            title:
+                const Text('Delete', style: TextStyle(color: Palette.lightRed)),
+            onTap: () {
+              Navigator.pop(context);
+              showConfirmationDialog(
+                  context,
+                  const Icon(Icons.warning_rounded,
+                      color: Palette.lightRed, size: 55),
+                  const SizedBox(
+                    width: 300,
+                    child: Text(
+                      "Are you sure you want to delete this category?",
+                      textAlign: TextAlign.center,
+                    ),
+                  ), () async {
+                await _qaCategoryProvider.delete(category.id!);
+                if (context.mounted) {
+                  _reloadData();
+                  showDeletedSuccessDialog(context);
+                }
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  void showDeletedSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            side: BorderSide(
+              color: Colors.grey.withOpacity(0.5),
+              width: 1.5,
             ),
           ),
-          () async {
-            await _qaCategoryProvider.delete(category.id!);
-            await showSuccessDialog(context, "Category deleted successfully!");
-            _reloadData();
-          },
+          backgroundColor: Colors.black,
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.task_alt,
+                  color: Color.fromRGBO(102, 204, 204, 1),
+                  size: 50,
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  "Deleted successfully!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                InkWell(
+                  borderRadius: BorderRadius.circular(30),
+                  onTap: () => Navigator.of(context).pop(),
+                  child: Container(
+                    width: 80,
+                    height: 30,
+                    decoration: BoxDecoration(
+                      gradient: Palette.buttonGradient,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    alignment: Alignment.center,
+                    child: const Text(
+                      "OK",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         );
-      }
-    },
-    itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-      PopupMenuItem<String>(
-        value: 'edit',
-        child: ListTile(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
-          hoverColor: Palette.lightPurple.withOpacity(0.1),
-          leading: Icon(Icons.edit, size: 24, color: Palette.white),
-          title: const Text(
-            'Edit',
-            style: TextStyle(color: Palette.white),
-          ),
-        ),
-      ),
-      PopupMenuItem<String>(
-        value: 'delete',
-        child: ListTile(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
-          hoverColor: Palette.lightRed.withOpacity(0.1),
-          leading: Icon(Icons.delete, size: 24, color: Palette.white),
-          title: const Text(
-            'Delete',
-            style: TextStyle(color: Palette.white),
-          ),
-        ),
-      ),
-    ],
-  );
-}
+      },
+    );
+  }
 }

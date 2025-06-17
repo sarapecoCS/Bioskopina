@@ -350,6 +350,10 @@ class _CommentsScreenState extends State<CommentsScreen> {
       constraints: const BoxConstraints(maxWidth: 200),
       child: PopupMenuButton<String>(
         color: Colors.black,
+         shape: RoundedRectangleBorder( // Add border to the PopupMenuButton itself
+                 side: BorderSide(color: Colors.grey, width: 0.5), // Thin gray border
+                 borderRadius: BorderRadius.circular(8.0),
+               ),
         itemBuilder: (BuildContext context) => [
           PopupMenuItem<String>(
             padding: EdgeInsets.zero,
@@ -369,7 +373,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                             color: isHovered
                                 ? Colors.red[800]?.withOpacity(0.2)
                                 : Colors.transparent,
-                            borderRadius: BorderRadius.circular(6),
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
                           child: ListTile(
                             contentPadding: const EdgeInsets.symmetric(

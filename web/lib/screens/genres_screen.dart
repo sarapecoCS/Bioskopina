@@ -238,6 +238,11 @@ class _GenresScreenState extends State<GenresScreen> {
         var request = Map.from(_genreFormKey.currentState!.value);
         await _genreProvider.insert(request);
 
+        // Clear the form after successful addition
+        if (mounted) {
+          _genreFormKey.currentState?.reset();
+        }
+
         if (context.mounted) {
           showInfoDialog(
               context,
@@ -255,31 +260,36 @@ class _GenresScreenState extends State<GenresScreen> {
       }
     }
   }
+Future<void> _saveGenre(BuildContext context) async {
+  try {
+    if (_genreFormKey.currentState?.saveAndValidate() == true) {
+      var request = Map.from(_genreFormKey.currentState!.value);
+      await _genreProvider.update(genreId!, request: request);
 
-  Future<void> _saveGenre(BuildContext context) async {
-    try {
-      if (_genreFormKey.currentState?.saveAndValidate() == true) {
-        var request = Map.from(_genreFormKey.currentState!.value);
-        await _genreProvider.update(genreId!, request: request);
-
-        if (context.mounted) {
-          showInfoDialog(
-              context,
-             const Icon(Icons.task_alt,
-              color: Color.fromRGBO(102, 204, 204, 1), size: 50),
-              const Text(
-                "Saved successfully!",
-                textAlign: TextAlign.center,
-              ));
-        }
+      // Clear the edit state after successful save
+      if (mounted) {
+        setState(() {
+          genreId = null;
+          _genreFormKey.currentState?.reset();
+        });
       }
-    } on Exception catch (e) {
+
       if (context.mounted) {
-        showErrorDialog(context, e);
+        showInfoDialog(
+          context,
+          const Icon(Icons.task_alt, color: Color.fromRGBO(102, 204, 204, 1), size: 50),
+          const Text(
+            "Saved successfully!",
+            textAlign: TextAlign.center,
+          ));
       }
     }
+  } on Exception catch (e) {
+    if (context.mounted) {
+      showErrorDialog(context, e);
+    }
   }
-
+}
   Widget _buildPopupMenu(Genre genre) {
     return PopupMenuButton<String>(
       tooltip: "Actions",
@@ -359,20 +369,64 @@ class _GenresScreenState extends State<GenresScreen> {
 
 
 void showDeletedDialog(BuildContext context) {
-  showInfoDialog(
-    context,
-    const Icon(
-      Icons.task_alt,
-      color: Color.fromRGBO(102, 204, 204, 1),
-      size: 50,
-    ),
-    const Text(
-      "Deleted successfully!",
-      textAlign: TextAlign.center,
-    ),
-  );
-}
 
-
-
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            side: BorderSide(
+              color: Colors.grey.withOpacity(0.5), // light grey border
+              width: 1.5,
+            ),
+          ),
+          backgroundColor: Colors.black,
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.task_alt,
+                  color: Color.fromRGBO(102, 204, 204, 1),
+                  size: 50,
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  "Deleted successfully!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                InkWell(
+                  borderRadius: BorderRadius.circular(30),
+                  onTap: () => Navigator.of(context).pop(),
+                  child: Container(
+                    width: 80,
+                    height: 30,
+                    decoration: BoxDecoration(
+                      gradient: Palette.buttonGradient,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    alignment: Alignment.center,
+                    child: const Text(
+                      "OK",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 }

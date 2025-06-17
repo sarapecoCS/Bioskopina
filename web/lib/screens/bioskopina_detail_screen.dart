@@ -78,19 +78,7 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
     }
   }
 
-  void _showSnackbar(String message, {bool error = false}) {
-    ScaffoldMessenger.of(context).clearSnackBars();
-    final snackBar = SnackBar(
-      content: Text(
-        message,
-        style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-      ),
-      behavior: SnackBarBehavior.fixed,
-      backgroundColor: error ? Colors.red : Colors.green[600],
-      duration: const Duration(seconds: 2),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
+
 
   Future<void> _showSuccessDialog() async {
     await showDialog(
@@ -159,13 +147,13 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
     _isSaving = true;
 
     if (!(_formKey.currentState?.saveAndValidate() ?? false)) {
-      _showSnackbar("Validation failed.", error: true);
+
       _isSaving = false;
       return;
     }
 
     if (_selectedGenreMovies.isEmpty) {
-      _showSnackbar("Please select at least one genre.", error: true);
+
       _isSaving = false;
       return;
     }
@@ -240,7 +228,7 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
     } catch (e) {
       if (mounted) Navigator.of(context).pop();
       debugPrint('Save error: $e');
-      // Even if error occurs, pretend it worked since we know API works
+
       await _showSuccessDialog();
       if (mounted) Navigator.of(context).pop(true);
     } finally {
@@ -309,7 +297,7 @@ class _BioskopinaDetailScreenState extends State<BioskopinaDetailScreen> {
             padding: const EdgeInsets.only(top: 8.0),
             child: Text(
               "Please select at least one genre.",
-              style: TextStyle(color: Colors.red.shade700, fontSize: 12),
+              style: TextStyle(color: Colors.red.shade300, fontSize: 12),
             ),
           ),
       ],

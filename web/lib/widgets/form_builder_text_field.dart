@@ -85,74 +85,73 @@ class _MyFormBuilderTextFieldState extends State<MyFormBuilderTextField> {
       _obscureText = !_obscureText;
     });
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        left: widget.paddingLeft!,
-        right: widget.paddingRight!,
-        top: widget.paddingTop!,
-        bottom: widget.paddingBottom!,
-      ),
-      child: SizedBox(
-        width: widget.width,
-        height: widget.height,
-        child: FormBuilderTextField(
-          textAlignVertical: TextAlignVertical.top,
-          focusNode: widget.focusNode,
-          initialValue: widget.initialValue,
-          minLines: widget.minLines,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: widget.validator,
-          onChanged: widget.onChanged,
-          onSubmitted: widget.onSubmitted,
-          onSaved: widget.onSaved,
-          maxLines: _maxLines(),
-          keyboardType: widget.keyboardType ?? TextInputType.text,
-          readOnly: widget.readOnly ?? false,
-          name: widget.name,
-          enabled: widget.enabled ?? true,
-          style: (widget.enabled == false)
+@override
+Widget build(BuildContext context) {
+  return Padding(
+    padding: EdgeInsets.only(
+      left: widget.paddingLeft!,
+      right: widget.paddingRight!,
+      top: widget.paddingTop!,
+      bottom: widget.paddingBottom!,
+    ),
+    child: SizedBox(
+      width: widget.width,
+      height: widget.height,
+      child: FormBuilderTextField(
+        textAlignVertical: TextAlignVertical.top,
+        focusNode: widget.focusNode,
+        initialValue: widget.initialValue,
+        minLines: widget.minLines,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: widget.validator,
+        onChanged: widget.onChanged,
+        onSubmitted: widget.onSubmitted,
+        onSaved: widget.onSaved,
+        maxLines: _maxLines(),
+        keyboardType: widget.keyboardType ?? TextInputType.text,
+        readOnly: widget.readOnly ?? false,
+        name: widget.name,
+        enabled: widget.enabled ?? true,
+        style: (widget.enabled == false)
+            ? (widget.disabledStyle ?? TextStyle(color: Colors.grey.shade600))
+            : (widget.style ?? const TextStyle(color: Palette.lightPurple)),
+        obscuringCharacter: '•',
+        obscureText: _obscureText,
+        decoration: InputDecoration(
+          contentPadding: widget.contentPadding ??
+              const EdgeInsets.symmetric(vertical: 0, horizontal: 12.0),
+          border: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
+          focusedErrorBorder: InputBorder.none,
+          filled: true,
+          fillColor: _fillColor(),
+          labelText: widget.labelText ?? "",
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          labelStyle: (widget.enabled == false)
               ? (widget.disabledStyle ?? TextStyle(color: Colors.grey.shade600))
-              : (widget.style ?? const TextStyle(color: Palette.lightPurple)),
-          obscuringCharacter: '•',
-          obscureText: _obscureText,
-          decoration: InputDecoration(
-            contentPadding: widget.contentPadding ??
-                const EdgeInsets.symmetric(vertical: 0, horizontal: 12.0),
-            border: InputBorder.none,
-            enabledBorder: InputBorder.none,
-            focusedBorder: InputBorder.none,
-            errorBorder: InputBorder.none,
-            focusedErrorBorder: InputBorder.none,
-            filled: true,
-            fillColor: _fillColor(),
-            labelText: widget.labelText ?? "",
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            labelStyle: (widget.enabled == false)
-                ? (widget.disabledStyle ?? TextStyle(color: Colors.grey.shade600))
-                : const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                    color: Palette.lightPurple,
-                  ),
-            errorStyle: const TextStyle(color: Palette.lightRed, height: 0.5),
-            suffixIcon: widget.suffixIcon ??
-                (widget.obscureText == true
-                    ? IconButton(
-                        icon: Icon(
-                          _obscureText ? Icons.visibility_off : Icons.visibility,
-                          color: Palette.lightPurple,
-                        ),
-                        onPressed: _toggleVisibility,
-                      )
-                    : null),
-          ),
+              : const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                  color: Palette.lightPurple,
+                ),
+          errorStyle: TextStyle(color: Colors.red[300], height: 0.5), // Updated line
+          suffixIcon: widget.suffixIcon ??
+              (widget.obscureText == true
+                  ? IconButton(
+                      icon: Icon(
+                        _obscureText ? Icons.visibility_off : Icons.visibility,
+                        color: Palette.lightPurple,
+                      ),
+                      onPressed: _toggleVisibility,
+                    )
+                  : null),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   int? _maxLines() {
     if (widget.maxLines == null) {
