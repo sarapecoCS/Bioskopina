@@ -575,7 +575,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                 ),
                 const SizedBox(height: 20),
                 const Text(
-                  "Comment deleted successfully!",
+                  "Deleted successfully!",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,

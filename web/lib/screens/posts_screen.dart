@@ -19,10 +19,9 @@ Uint8List imageFromBase64String(String base64String) {
   return base64Decode(base64String);
 }
 
-// ignore: must_be_immutable
 class PostsScreen extends StatefulWidget {
-  User user;
-  PostsScreen({super.key, required this.user});
+  final User user;
+  const PostsScreen({super.key, required this.user});
 
   @override
   State<PostsScreen> createState() => _PostsScreenState();
@@ -39,7 +38,13 @@ class _PostsScreenState extends State<PostsScreen> {
 
   @override
   void initState() {
+    super.initState();
     _postProvider = context.read<PostProvider>();
+    _loadPosts();
+    _postProvider.addListener(_onPostProviderChanged);
+  }
+
+  void _loadPosts() {
     _postFuture = _postProvider.get(filter: {
       "UserId": "${widget.user.id}",
       "NewestFirst": "true",
@@ -47,39 +52,43 @@ class _PostsScreenState extends State<PostsScreen> {
       "Page": "$page",
       "PageSize": "$pageSize"
     });
-
-    _postProvider.addListener(() {
-      _reloadData();
-      setTotalItems();
+    _postFuture.then((result) {
+      if (mounted) {
+        setState(() {
+          totalItems = result.count;
+        });
+      }
     });
+  }
 
-    setTotalItems();
+  void _onPostProviderChanged() {
+    if (mounted) {
+      _loadPosts();
+    }
+  }
 
-    super.initState();
+  @override
+  void dispose() {
+    _postProvider.removeListener(_onPostProviderChanged);
+    super.dispose();
+  }
+
+  void _confirmDeletePost(Post post) {
+    showConfirmationDialog(
+      context,
+      const Icon(Icons.warning_rounded, color: Palette.lightRed, size: 55),
+      const Text("Are you sure you want to delete this post?"),
+      () async {
+        await _postProvider.delete(post.id!);
+        Navigator.pop(context);
+        showDeletedSuccessDialog(context);
+        _loadPosts();
+      },
+    );
   }
 
   void _reloadData() {
-    if (mounted) {
-      setState(() {
-        _postFuture = _postProvider.get(filter: {
-          "UserId": "${widget.user.id}",
-          "NewestFirst": "true",
-          "CommentsIncluded": "true",
-          "Page": "$page",
-          "PageSize": "$pageSize"
-        });
-      });
-    }
-  }
-
-  void setTotalItems() async {
-    var postResult = await _postFuture;
-
-    if (mounted) {
-      setState(() {
-        totalItems = postResult.count;
-      });
-    }
+    _loadPosts();
   }
 
   @override
@@ -88,24 +97,22 @@ class _PostsScreenState extends State<PostsScreen> {
       titleWidget: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          widget.user.profilePicture!.profilePicture != null
-              ? ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: Image.memory(
-                    imageFromBase64String(
-                        widget.user.profilePicture!.profilePicture!),
-                    width: 25,
-                    height: 25,
-                    fit: BoxFit.cover,
-                  ),
-                )
-              : const Text(""),
+          if (widget.user.profilePicture?.profilePicture != null)
+            ClipRRect(
+              borderRadius: BorderRadius.circular(100),
+              child: Image.memory(
+                imageFromBase64String(widget.user.profilePicture!.profilePicture!),
+                width: 25,
+                height: 25,
+                fit: BoxFit.cover,
+              ),
+            ),
           const SizedBox(width: 5),
           Text("${widget.user.username}: "),
           const SizedBox(width: 5),
           const Text("Posts"),
           const SizedBox(width: 5),
-          Icon(Icons.post_add, size: 24),
+          const Icon(Icons.post_add, size: 24),
         ],
       ),
       showBackArrow: true,
@@ -113,24 +120,24 @@ class _PostsScreenState extends State<PostsScreen> {
         future: _postFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const MyProgressIndicator(); // Loading state
+            return const MyProgressIndicator();
           } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}'); // Error state
+            return Text('Error: ${snapshot.error}');
           } else {
-            // Data loaded successfully
-            var postList = snapshot.data!.result;
+            final postList = snapshot.data!.result;
             return SingleChildScrollView(
               child: Center(
                 child: Column(
                   children: [
                     Wrap(
-                      children: _buildPostCards(postList),
+                      children: postList.map((post) => _buildPostCard(post)).toList(),
                     ),
                     MyPaginationButtons(
-                        page: page,
-                        pageSize: pageSize,
-                        totalItems: totalItems,
-                        fetchPage: fetchPage),
+                      page: page,
+                      pageSize: pageSize,
+                      totalItems: totalItems,
+                      fetchPage: _fetchPage,
+                    ),
                   ],
                 ),
               ),
@@ -141,17 +148,15 @@ class _PostsScreenState extends State<PostsScreen> {
     );
   }
 
-  Future<void> fetchPage(int requestedPage) async {
+  Future<void> _fetchPage(int requestedPage) async {
     try {
-      var result = await _postProvider.get(
-        filter: {
-          "UserId": "${widget.user.id}",
-          "NewestFirst": "true",
-          "CommentsIncluded": "true",
-          "Page": "$requestedPage",
-          "PageSize": "$pageSize",
-        },
-      );
+      final result = await _postProvider.get(filter: {
+        "UserId": "${widget.user.id}",
+        "NewestFirst": "true",
+        "CommentsIncluded": "true",
+        "Page": "$requestedPage",
+        "PageSize": "$pageSize",
+      });
 
       if (mounted) {
         setState(() {
@@ -166,138 +171,138 @@ class _PostsScreenState extends State<PostsScreen> {
     }
   }
 
-  List<Widget> _buildPostCards(List<Post> postList) {
-    return List.generate(
-      postList.length,
-      (index) => _buildPostCard(postList[index]),
-    );
-  }
-
   Widget _buildPostCard(Post post) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 0, right: 20, top: 20),
-      child: Container(
-        constraints: const BoxConstraints(minHeight: 100, maxHeight: 300),
-        height: 215,
-        width: 600,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15), color: Palette.darkPurple),
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Image.memory(
-                            imageFromBase64String(
-                                widget.user.profilePicture!.profilePicture!),
-                            width: 43,
-                            height: 43,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            constraints: const BoxConstraints(maxWidth: 350),
-                            child: Text(
-                              "${widget.user.firstName} ${widget.user.lastName}",
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                  fontSize: 17, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Text(
-                            DateFormat('MMM d, y').format(post.datePosted!),
-                            style: const TextStyle(fontSize: 13),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                _buildPopupMenu(post)
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: Container(
-                alignment: Alignment.topLeft,
-                constraints: const BoxConstraints(minHeight: 30, maxHeight: 100),
-                child: SingleChildScrollView(
-                  controller: ScrollController(),
-                  child: Column(
-                    children: [
-                      Text(
-                        "${post.content}",
-                        style: const TextStyle(fontSize: 15),
-                      ),
-                    ],
-                  ),
+    final isHighlyDisliked = (post.dislikesCount ?? 0) >= 5;
+    final hasNegativeFeedback = (post.dislikesCount ?? 0) >= 3;
+
+    return Container(
+      width: 600,
+      margin: const EdgeInsets.only(top: 20, right: 20),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: Palette.darkPurple,
+        border: hasNegativeFeedback
+            ? Border.all(
+                color: isHighlyDisliked ? Colors.red : Colors.orange,
+                width: 1)
+            : null,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(100),
+                child: Image.memory(
+                  imageFromBase64String(widget.user.profilePicture!.profilePicture!),
+                  width: 40,
+                  height: 40,
+                  fit: BoxFit.cover,
                 ),
               ),
-            ),
-            Container(
-              constraints: const BoxConstraints(maxHeight: 30),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Row(
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 20),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.thumb_up_rounded),
-                          const SizedBox(width: 5),
-                          Text("${post.likesCount}")
-                        ],
+                    Text(
+                      "${widget.user.firstName} ${widget.user.lastName}",
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 20),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.thumb_down_rounded),
-                          const SizedBox(width: 5),
-                          Text("${post.dislikesCount}")
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () async {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => PostDetailScreen(
-                                        post: post,
-                                        ownerId: ownerId!,
-                                      )));
-                            },
-                            child: MouseRegion(
-                                cursor: SystemMouseCursors.click,
-                                child: Text("${post.comments?.length} replies")),
-                          )
-                        ],
-                      ),
+                    Text(
+                      DateFormat('MMM d, y').format(post.datePosted!),
+                      style: const TextStyle(fontSize: 12),
                     ),
                   ],
                 ),
               ),
-            )
-          ]),
+              _buildPopupMenu(post),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            post.content ?? '',
+            style: const TextStyle(fontSize: 14),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              _buildReactionCount(Icons.thumb_up, post.likesCount ?? 0),
+              const SizedBox(width: 16),
+              _buildReactionCount(
+                Icons.thumb_down,
+                post.dislikesCount ?? 0,
+                isNegative: hasNegativeFeedback,
+                isCritical: isHighlyDisliked,
+              ),
+              const SizedBox(width: 16),
+              Text(
+                "${post.comments?.length ?? 0} replies",
+                style: const TextStyle(fontSize: 13),
+              ),
+            ],
+          ),
+          if (hasNegativeFeedback) _buildDislikeWarning(post),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildReactionCount(IconData icon, int count, {
+    bool isNegative = false,
+    bool isCritical = false,
+  }) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          icon,
+          size: 16,
+          color: isNegative ? (isCritical ? Colors.red : Colors.orange) : null,
         ),
+        const SizedBox(width: 4),
+        Text(
+          '$count',
+          style: TextStyle(
+            fontSize: 13,
+            color: isNegative ? (isCritical ? Colors.red : Colors.orange) : null,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDislikeWarning(Post post) {
+    final isHighlyDisliked = (post.dislikesCount ?? 0) >= 5;
+    final color = isHighlyDisliked ? Colors.red : Colors.orange;
+
+    return Container(
+      margin: const EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.warning, size: 16, color: color),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              'Negative feedback: ${post.dislikesCount} dislikes',
+              style: TextStyle(fontSize: 12, color: color),
+            ),
+          ),
+
+
+        ],
       ),
     );
   }
@@ -344,8 +349,6 @@ class _PostsScreenState extends State<PostsScreen> {
                       ),
                     ),
                     onTap: () async {
-
-
                       // Show confirmation dialog
                       showConfirmationDialog(
                         context,

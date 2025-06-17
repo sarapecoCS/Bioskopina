@@ -287,7 +287,7 @@ Future<void> _exportPdf(String filePath) async {
             labelText: label,
             labelStyle: const TextStyle(color: Colors.white),
             filled: true,
-            fillColor: Colors.white.withOpacity(0.1), // Darker background
+            fillColor: Colors.grey.withOpacity(0.3), // Darker background
             contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),

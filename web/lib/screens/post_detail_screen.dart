@@ -83,17 +83,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
             children: [
 
 
-              // Movie Icon
-              ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: Image.asset(
-                  'assets/images/movie_icon.png',
-                  width: double.infinity,
-                  height: 200,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(height: 15),
+
 
               // Single Caption (Post Content)
               Text(
