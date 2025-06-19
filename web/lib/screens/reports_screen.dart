@@ -35,7 +35,8 @@ class _ReportsScreenState extends State<ReportsScreen> {
 
   List<PopularBioskopinaData> popularBioskopinaData = [];
   bool isLoading = true;
-  final ScreenshotController _screenshotController = ScreenshotController();
+  final ScreenshotController _registrationScreenshotController = ScreenshotController();
+  final ScreenshotController _moviesScreenshotController = ScreenshotController();
   String pdfFileName = 'Black_Wave_Report';
 
   // User registration data
@@ -89,347 +90,394 @@ class _ReportsScreenState extends State<ReportsScreen> {
     });
   }
 
-
-    Future<void> _exportPdf() async {
-      final shouldExport = await showDialog<bool>(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          backgroundColor: Colors.black,
-          title: const Text(
-            'Export Report',
-            style: TextStyle(color: Colors.white),
-          ),
-          content: Text(
-            'Export ${selectedIndex == 0 ? 'User Registration' : 'Top Movies'} data to PDF?',
-            style: const TextStyle(color: Colors.white70),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(ctx).pop(false),
-              child: const Text('Cancel'),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.teal,
-              ),
-              onPressed: () => Navigator.of(ctx).pop(true),
-              child: const Text('Export'),
-            ),
-          ],
+  Future<void> _exportPdf() async {
+    final shouldExport = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Palette.lightPurple.withOpacity(0.3)),
+          borderRadius: BorderRadius.circular(15),
         ),
-      );
+        actionsAlignment: MainAxisAlignment.spaceBetween,
+        backgroundColor: Colors.black,
+       title: Center(
+         child: Container(
+           width: 60,
+           height: 60,
+           decoration: BoxDecoration(
+             color: Colors.blueGrey[800]!.withOpacity(0.5),
+             shape: BoxShape.circle,
+           ),
+           child: Icon(
+             Icons.file_download_rounded,  // Icon of your choice
+             color: Color.fromRGBO(153, 255, 255, 1),
+             size: 30,  // Icon size (smaller than container)
+           ),
+         ),
 
-      if (shouldExport != true) return;
-
-      final pdf = pw.Document();
-      final ByteData logoData = await rootBundle.load("assets/images/logoFilled.png");
-      final Uint8List logoBytes = logoData.buffer.asUint8List();
-
-      // PDF Theme
-      final headerStyle = pw.TextStyle(
-        color: PdfColors.white,
-        fontSize: 18,
-        fontWeight: pw.FontWeight.bold,
-      );
-
-      final contentStyle = pw.TextStyle(
-        color: PdfColors.white,
-        fontSize: 12,
-      );
-
-      if (selectedIndex == 0) {
-        // User Registration PDF
-        final registrationData = await userRegistrationDataFuture;
-        final mostRegistrationsDay = registrationData.isEmpty
-            ? UserRegistrationData(date: DateTime.now(), numberOfUsers: 0)
-            : registrationData.reduce(
-                (a, b) => a.numberOfUsers! > b.numberOfUsers! ? a : b);
-        final averageRegistrations = registrationData.isEmpty
-            ? 0.0
-            : registrationData
-                    .map((data) => data.numberOfUsers!)
-                    .reduce((a, b) => a + b) /
-                registrationData.length;
-
-        pdf.addPage(
-          pw.Page(
-            pageFormat: PdfPageFormat.a4,
-            build: (context) => pw.Container(
-              color: PdfColors.black,
-              padding: const pw.EdgeInsets.all(30),
-              child: pw.Column(
-                crossAxisAlignment: pw.CrossAxisAlignment.start,
-                children: [
-                  // Header with logo
-                  pw.Row(
-                    children: [
-                      pw.Image(
-                        pw.MemoryImage(logoBytes),
-                        width: 40,
-                        height: 40,
-                      ),
-                      pw.SizedBox(width: 15),
-                      pw.Text(
-                        'User Registration Report',
-                        style: pw.TextStyle(
-                          color: PdfColors.white,
-                          fontSize: 20,
-                          fontWeight: pw.FontWeight.bold,
-                        ),
-                      ),
-                      pw.Spacer(),
-                      pw.Text(
-                        DateFormat('MMM d, y').format(DateTime.now()),
-                        style: contentStyle,
-                      ),
-                    ],
-                  ),
-                  pw.SizedBox(height: 30),
-                  pw.Divider(color: PdfColors.white),
-                  pw.SizedBox(height: 30),
-
-                  // Summary Stats
-                  pw.Text('Total Registered Users: $totalUsers', style: headerStyle),
-                  pw.SizedBox(height: 15),
-                  _buildRegistrationStats(mostRegistrationsDay, averageRegistrations),
-                  pw.SizedBox(height: 30),
-
-                  // Chart Data Table
-                  pw.Text('Daily Registration Data', style: headerStyle),
-                  pw.SizedBox(height: 15),
-                  pw.Table(
-                    border: pw.TableBorder.all(color: PdfColors.white),
-                    columnWidths: {
-                      0: const pw.FlexColumnWidth(2),
-                      1: const pw.FlexColumnWidth(1),
-                    },
-                    children: [
-                      pw.TableRow(
-                        decoration: pw.BoxDecoration(color: PdfColors.grey800),
-                        children: [
-                          pw.Padding(
-                            padding: const pw.EdgeInsets.all(8.0),
-                            child: pw.Text('Date', style: headerStyle),
-                          ),
-                          pw.Padding(
-                            padding: const pw.EdgeInsets.all(8.0),
-                            child: pw.Text('Registrations', style: headerStyle),
-                          ),
-                        ],
-                      ),
-                      ...registrationData.map((data) => pw.TableRow(
-                        decoration: pw.BoxDecoration(color: PdfColors.grey900),
-                        children: [
-                          pw.Padding(
-                            padding: const pw.EdgeInsets.all(8.0),
-                            child: pw.Text(
-                              DateFormat('MMM d, y').format(data.date!),
-                              style: contentStyle,
-                            ),
-                          ),
-                          pw.Padding(
-                            padding: const pw.EdgeInsets.all(8.0),
-                            child: pw.Text(
-                              data.numberOfUsers.toString(),
-                              style: contentStyle,
-                            ),
-                          ),
-                        ],
-                      )).toList(),
-                    ],
-                  ),
-                ],
+        ),
+        content: Text(
+          'Export ${selectedIndex == 0 ? 'User Registration' : 'Top Movies'} data to PDF?',
+          style: TextStyle(
+            color: Colors.white.withOpacity(0.8),
+          ),
+        ),
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(left: 16, bottom: 10, top: 10),
+            child: GradientButton(
+              onPressed: () => Navigator.of(ctx).pop(false),
+              width: 85,
+              height: 28,
+              borderRadius: 15,
+              gradient: Palette.buttonGradient2,
+              child: const Text(
+                "Cancel",
+                style: TextStyle(color: Palette.white),
               ),
             ),
           ),
-        );
-      } else {
-        // Top Movies PDF
-        final topMovies = popularBioskopinaData.take(5).toList();
-
-        pdf.addPage(
-          pw.Page(
-            pageFormat: PdfPageFormat.a4,
-            build: (context) => pw.Container(
-              color: PdfColors.black,
-              padding: const pw.EdgeInsets.all(30),
-              child: pw.Column(
-                crossAxisAlignment: pw.CrossAxisAlignment.start,
-                children: [
-                  // Header with logo
-                  pw.Row(
-                    children: [
-                      pw.Image(
-                        pw.MemoryImage(logoBytes),
-                        width: 40,
-                        height: 40,
-                      ),
-                      pw.SizedBox(width: 15),
-                      pw.Text(
-                        'Top 5 Movies Report',
-                        style: pw.TextStyle(
-                          color: PdfColors.white,
-                          fontSize: 20,
-                          fontWeight: pw.FontWeight.bold,
-                        ),
-                      ),
-                      pw.Spacer(),
-                      pw.Text(
-                        DateFormat('MMM d, y').format(DateTime.now()),
-                        style: contentStyle,
-                      ),
-                    ],
-                  ),
-                  pw.SizedBox(height: 30),
-                  pw.Divider(color: PdfColors.white),
-                  pw.SizedBox(height: 30),
-
-                  // Movies Table
-                  pw.Table(
-                    border: pw.TableBorder.all(color: PdfColors.white),
-                    columnWidths: {
-                      0: const pw.FlexColumnWidth(3),
-                      1: const pw.FlexColumnWidth(2),
-                      2: const pw.FlexColumnWidth(2),
-                      3: const pw.FlexColumnWidth(1),
-                    },
-                    children: [
-                      pw.TableRow(
-                        decoration: pw.BoxDecoration(color: PdfColors.grey800),
-                        children: [
-                          pw.Padding(
-                            padding: const pw.EdgeInsets.all(8.0),
-                            child: pw.Text('Title', style: headerStyle),
-                          ),
-                          pw.Padding(
-                            padding: const pw.EdgeInsets.all(8.0),
-                            child: pw.Text('Director', style: headerStyle),
-                          ),
-                          pw.Padding(
-                            padding: const pw.EdgeInsets.all(8.0),
-                            child: pw.Text('Genre', style: headerStyle),
-                          ),
-                          pw.Padding(
-                            padding: const pw.EdgeInsets.all(8.0),
-                            child: pw.Text('Score', style: headerStyle),
-                          ),
-                        ],
-                      ),
-                      ...topMovies.map((movie) => pw.TableRow(
-                        decoration: pw.BoxDecoration(color: PdfColors.grey900),
-                        children: [
-                          pw.Padding(
-                            padding: const pw.EdgeInsets.all(8.0),
-                            child: pw.Text(
-                              movie.bioskopinaTitleEN ?? 'Unknown',
-                              style: contentStyle,
-                            ),
-                          ),
-                          pw.Padding(
-                            padding: const pw.EdgeInsets.all(8.0),
-                            child: pw.Text(
-                              movie.director ?? 'Unknown',
-                              style: contentStyle,
-                            ),
-                          ),
-                          pw.Padding(
-                            padding: const pw.EdgeInsets.all(8.0),
-                            child: pw.Text(
-                              movie.genres?.join(', ') ?? 'Unknown',
-                              style: contentStyle,
-                            ),
-                          ),
-                          pw.Padding(
-                            padding: const pw.EdgeInsets.all(8.0),
-                            child: pw.Text(
-                              movie.score?.toStringAsFixed(1) ?? 'N/A',
-                              style: contentStyle.copyWith(
-                                color: PdfColors.teal,
-                                fontWeight: pw.FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      )).toList(),
-                    ],
-                  ),
-                  pw.SizedBox(height: 30),
-
-                  // Summary
-                  pw.Text(
-                    'Top Movie: ${topMovies.first.bioskopinaTitleEN ?? 'Unknown'} '
-                    'with score ${topMovies.first.score?.toStringAsFixed(1) ?? 'N/A'}',
-                    style: headerStyle,
-                  ),
-                ],
+          Padding(
+            padding: const EdgeInsets.only(right: 16, bottom: 10, top: 10),
+            child: GradientButton(
+              onPressed: () => Navigator.of(ctx).pop(true),
+              width: 85,
+              height: 28,
+              borderRadius: 15,
+              gradient: Palette.buttonGradient,
+              child: const Text(
+                "Export",
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Palette.white,
+                ),
               ),
             ),
-          ),
-        );
-      }
-
-      // Save PDF
-      try {
-        final filePath = await FilePicker.platform.saveFile(
-          dialogTitle: "Save PDF Report",
-          fileName: '${selectedIndex == 0 ? 'User_Report' : 'Movies_Report'}_${DateFormat('yyyyMMdd').format(DateTime.now())}.pdf',
-          type: FileType.custom,
-          allowedExtensions: ['pdf'],
-        );
-
-        if (filePath != null) {
-          final file = File(filePath.endsWith('.pdf') ? filePath : '$filePath.pdf');
-          await file.writeAsBytes(await pdf.save());
-          if (!mounted) return;
-          _showExportSuccessDialog();
-        }
-      } catch (e) {
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Export failed: ${e.toString()}')),
-        );
-      }
-    }
-
-    pw.Widget _buildRegistrationStats(
-        UserRegistrationData mostRegistrationsDay, double averageRegistrations) {
-      if (mostRegistrationsDay.numberOfUsers == 0) {
-        return pw.Text(
-          "No user registrations in selected time period.",
-          style: pw.TextStyle(color: PdfColors.white),
-        );
-      }
-
-      final dateFormat = pastYear
-        ? DateFormat('MMMM yyyy')
-        : (pastWeek ? DateFormat('EEEE, MMMM d') : DateFormat('MMMM d'));
-
-      final timePeriod = pastYear
-        ? 'past year'
-        : (pastWeek ? 'past week' : 'past month');
-
-      final avgText = pastYear
-        ? '${averageRegistrations.toStringAsFixed(2)}/month'
-        : (pastWeek ? '${averageRegistrations.toStringAsFixed(2)}/day' : '${averageRegistrations.toStringAsFixed(2)}/day');
-
-      return pw.Column(
-        crossAxisAlignment: pw.CrossAxisAlignment.start,
-        children: [
-          pw.Text(
-            'Peak registrations: ${mostRegistrationsDay.numberOfUsers} on ${dateFormat.format(mostRegistrationsDay.date!)}',
-            style: pw.TextStyle(color: PdfColors.white),
-          ),
-          pw.SizedBox(height: 8),
-          pw.Text(
-            'Average registrations: $avgText ($timePeriod)',
-            style: pw.TextStyle(color: PdfColors.white),
           ),
         ],
+      ),
+    );
+
+
+    if (shouldExport != true) return;
+
+    final pdf = pw.Document();
+    final ByteData logoData = await rootBundle.load("assets/images/logoFilled.png");
+    final Uint8List logoBytes = logoData.buffer.asUint8List();
+    PdfColor myTeal = PdfColor.fromInt(0x99FFFF);
+    // PDF Theme
+    final headerStyle = pw.TextStyle(
+      color: PdfColors.white,
+      fontSize: 18,
+      fontWeight: pw.FontWeight.bold,
+    );
+
+    final contentStyle = pw.TextStyle(
+      color: PdfColors.white,
+      fontSize: 12,
+    );
+
+    if (selectedIndex == 0) {
+      // User Registration PDF
+      final registrationData = await userRegistrationDataFuture;
+      final mostRegistrationsDay = registrationData.isEmpty
+          ? UserRegistrationData(date: DateTime.now(), numberOfUsers: 0)
+          : registrationData.reduce(
+              (a, b) => a.numberOfUsers! > b.numberOfUsers! ? a : b);
+      final averageRegistrations = registrationData.isEmpty
+          ? 0.0
+          : registrationData
+                  .map((data) => data.numberOfUsers!)
+                  .reduce((a, b) => a + b) /
+              registrationData.length;
+
+      pdf.addPage(
+        pw.Page(
+          pageFormat: PdfPageFormat.a4,
+          build: (context) => pw.Container(
+            color: PdfColors.black,
+            padding: const pw.EdgeInsets.all(30),
+            child: pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              children: [
+                // Header with logo
+                pw.Row(
+                  children: [
+                    pw.Image(
+                      pw.MemoryImage(logoBytes),
+                      width: 40,
+                      height: 40,
+                    ),
+                    pw.SizedBox(width: 15),
+                    pw.Text(
+                      'User Registration Report',
+                      style: pw.TextStyle(
+                        color: PdfColors.white,
+                        fontSize: 20,
+                        fontWeight: pw.FontWeight.bold,
+                      ),
+                    ),
+                    pw.Spacer(),
+                    pw.Text(
+                      DateFormat('MMM d, y').format(DateTime.now()),
+                      style: contentStyle,
+                    ),
+                  ],
+                ),
+                pw.SizedBox(height: 30),
+                pw.Divider(color: PdfColors.white),
+                pw.SizedBox(height: 30),
+
+                // Summary Stats
+                pw.Text('Total Registered Users: $totalUsers', style: headerStyle),
+                pw.SizedBox(height: 15),
+                _buildRegistrationStats(mostRegistrationsDay, averageRegistrations),
+                pw.SizedBox(height: 30),
+
+                // Chart Data Table
+                pw.Text('Daily Registration Data', style: headerStyle),
+                pw.SizedBox(height: 15),
+                pw.Table(
+                  border: pw.TableBorder.all(color: PdfColors.white),
+                  columnWidths: {
+                    0: const pw.FlexColumnWidth(2),
+                    1: const pw.FlexColumnWidth(1),
+                  },
+                  children: [
+                    pw.TableRow(
+                      decoration: pw.BoxDecoration(color: PdfColors.grey800),
+                      children: [
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(8.0),
+                          child: pw.Text('Date', style: headerStyle),
+                        ),
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(8.0),
+                          child: pw.Text('Registrations', style: headerStyle),
+                        ),
+                      ],
+                    ),
+                    ...registrationData.map((data) => pw.TableRow(
+                      decoration: pw.BoxDecoration(color: PdfColors.grey900),
+                      children: [
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(8.0),
+                          child: pw.Text(
+                            DateFormat('MMM d, y').format(data.date!),
+                            style: contentStyle,
+                          ),
+                        ),
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(8.0),
+                          child: pw.Text(
+                            data.numberOfUsers.toString(),
+                            style: contentStyle,
+                          ),
+                        ),
+                      ],
+                    )).toList(),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    } else {
+      // Top Movies PDF
+      final topMovies = popularBioskopinaData.take(5).toList();
+
+      pdf.addPage(
+        pw.Page(
+          pageFormat: PdfPageFormat.a4,
+          build: (context) => pw.Container(
+            color: PdfColors.black,
+            padding: const pw.EdgeInsets.all(30),
+            child: pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              children: [
+                // Header with logo
+                pw.Row(
+                  children: [
+                    pw.Image(
+                      pw.MemoryImage(logoBytes),
+                      width: 60,
+                      height: 60,
+                    ),
+                    pw.SizedBox(width: 15),
+                    pw.Text(
+                      'Top 5 Movies Report',
+                      style: pw.TextStyle(
+                        color: PdfColors.white,
+                        fontSize: 20,
+                        fontWeight: pw.FontWeight.bold,
+                      ),
+                    ),
+                    pw.Spacer(),
+                    pw.Text(
+                      DateFormat('MMM d, y').format(DateTime.now()),
+                      style: contentStyle,
+                    ),
+                  ],
+                ),
+                pw.SizedBox(height: 30),
+                pw.Divider(color: PdfColors.white),
+                pw.SizedBox(height: 30),
+
+                // Movies Table
+                pw.Table(
+                  border: pw.TableBorder.all(color: PdfColors.white),
+                  columnWidths: {
+                    0: const pw.FlexColumnWidth(3),
+                    1: const pw.FlexColumnWidth(2),
+                    2: const pw.FlexColumnWidth(2),
+                    3: const pw.FlexColumnWidth(1),
+                  },
+                  children: [
+                    pw.TableRow(
+                      decoration: pw.BoxDecoration(color: PdfColors.grey800),
+                      children: [
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(8.0),
+                          child: pw.Text('Title', style: headerStyle),
+                        ),
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(8.0),
+                          child: pw.Text('Director', style: headerStyle),
+                        ),
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(8.0),
+                          child: pw.Text('Genre', style: headerStyle),
+                        ),
+                       pw.Padding(
+                         padding: const pw.EdgeInsets.all(8.0),
+                         child: pw.SvgImage(
+                           svg: '''
+                           <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                             <path fill="#FFD700" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2L9.19 8.63L2 9.24l5.46 4.73L5.82 21z"/>
+                           </svg>
+                           ''',
+                           width: 16,
+                           height: 16,
+                         ),
+                       ),
+                      ],
+                    ),
+                    ...topMovies.map((movie) => pw.TableRow(
+                      decoration: pw.BoxDecoration(color: PdfColors.grey900),
+                      children: [
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(8.0),
+                          child: pw.Text(
+                            movie.bioskopinaTitleEN ?? 'Unknown',
+                            style: contentStyle,
+                          ),
+                        ),
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(8.0),
+                          child: pw.Text(
+                            movie.director ?? 'Unknown',
+                            style: contentStyle,
+                          ),
+                        ),
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(8.0),
+                          child: pw.Text(
+                            movie.genres?.join(', ') ?? 'Unknown',
+                            style: contentStyle,
+                          ),
+                        ),
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.all(8.0),
+                          child: pw.Text(
+                            movie.score?.toStringAsFixed(1) ?? 'N/A',
+                            style: contentStyle.copyWith(
+                              color: myTeal,
+                              fontWeight: pw.FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )).toList(),
+                  ],
+                ),
+                pw.SizedBox(height: 30),
+
+                // Summary
+                pw.Text(
+                  'Top Movie: ${topMovies.first.bioskopinaTitleEN ?? 'Unknown'} '
+                  'with score ${topMovies.first.score?.toStringAsFixed(1) ?? 'N/A'}',
+                  style: headerStyle,
+                ),
+              ],
+            ),
+          ),
+        ),
       );
     }
 
+    // Save PDF
+    try {
+      final filePath = await FilePicker.platform.saveFile(
+        dialogTitle: "Save PDF Report",
+        fileName: '${selectedIndex == 0 ? 'User_Report' : 'Movies_Report'}_${DateFormat('yyyyMMdd').format(DateTime.now())}.pdf',
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
+      );
 
- void _showExportSuccessDialog() {
+      if (filePath != null) {
+        final file = File(filePath.endsWith('.pdf') ? filePath : '$filePath.pdf');
+        await file.writeAsBytes(await pdf.save());
+        if (!mounted) return;
+        _showExportSuccessDialog();
+      }
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Export failed: ${e.toString()}')),
+      );
+    }
+  }
+
+  pw.Widget _buildRegistrationStats(
+      UserRegistrationData mostRegistrationsDay, double averageRegistrations) {
+    if (mostRegistrationsDay.numberOfUsers == 0) {
+      return pw.Text(
+        "No user registrations in selected time period.",
+        style: pw.TextStyle(color: PdfColors.white),
+      );
+    }
+
+    final dateFormat = pastYear
+      ? DateFormat('MMMM yyyy')
+      : (pastWeek ? DateFormat('EEEE, MMMM d') : DateFormat('MMMM d'));
+
+    final timePeriod = pastYear
+      ? 'past year'
+      : (pastWeek ? 'past week' : 'past month');
+
+    final avgText = pastYear
+      ? '${averageRegistrations.toStringAsFixed(2)}/month'
+      : (pastWeek ? '${averageRegistrations.toStringAsFixed(2)}/day' : '${averageRegistrations.toStringAsFixed(2)}/day');
+
+    return pw.Column(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        pw.Text(
+          'Peak registrations: ${mostRegistrationsDay.numberOfUsers} on ${dateFormat.format(mostRegistrationsDay.date!)}',
+          style: pw.TextStyle(color: PdfColors.white),
+        ),
+        pw.SizedBox(height: 8),
+        pw.Text(
+          'Average registrations: $avgText ($timePeriod)',
+          style: pw.TextStyle(color: PdfColors.white),
+        ),
+      ],
+    );
+  }
+
+  void _showExportSuccessDialog() {
     showDialog(
       context: context,
       builder: (ctx) {
@@ -490,33 +538,6 @@ class _ReportsScreenState extends State<ReportsScreen> {
     );
   }
 
-  pw.Widget _buildRegistrationPdfText(
-      UserRegistrationData mostRegistrationsDay, double averageRegistrations) {
-    if (mostRegistrationsDay.numberOfUsers == 0) {
-      return pw.Text(
-        "No user registrations in selected time period.",
-        style: pw.TextStyle(color: PdfColors.white),
-      );
-    }
-    if (pastYear) {
-      return pw.Text(
-        "Most registrations (${mostRegistrationsDay.numberOfUsers}) in past year was ${DateFormat('MMMM, yyyy').format(mostRegistrationsDay.date!)}. Avg: ${averageRegistrations.toStringAsFixed(2)}/month",
-        style: pw.TextStyle(color: PdfColors.white),
-      );
-    }
-    if (pastWeek) {
-      return pw.Text(
-        "Most registrations (${mostRegistrationsDay.numberOfUsers}) in past week was ${DateFormat('MMMM d, EEEE').format(mostRegistrationsDay.date!)}. Avg: ${averageRegistrations.toStringAsFixed(2)}/day",
-        style: pw.TextStyle(color: PdfColors.white),
-      );
-    }
-
-    return pw.Text(
-      "Most registrations (${mostRegistrationsDay.numberOfUsers}) in past month was ${DateFormat('MMMM d').format(mostRegistrationsDay.date!)}. Avg: ${averageRegistrations.toStringAsFixed(2)}/day",
-      style: pw.TextStyle(color: PdfColors.white),
-    );
-  }
-
   Widget _buildRegistrationChart() {
     return FutureBuilder<List<UserRegistrationData>>(
       future: userRegistrationDataFuture,
@@ -536,7 +557,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
           }
 
           return Screenshot(
-            controller: _screenshotController,
+            controller: _registrationScreenshotController,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -776,93 +797,98 @@ class _ReportsScreenState extends State<ReportsScreen> {
             style: TextStyle(fontSize: 14, color: Colors.white70)),
         Text("$totalUsers",
             style: const TextStyle(
-                color: Colors.teal, fontSize: 20, fontWeight: FontWeight.bold))
+                color: Color.fromRGBO(153, 255, 255, 1), fontSize: 20, fontWeight: FontWeight.bold))
       ],
     );
   }
 
-  Widget buildFilterButtons() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          GradientButton(
-            onPressed: () {
-              setState(() {
-                userRegistrationDataFuture =
-                    _userProvider.getUserRegistrations(364, groupByMonths: true);
-                days = 364;
-                pastYear = true;
-                pastWeek = false;
-                bottomInterval = 1;
-              });
-            },
-            width: 80,
-            height: 28,
-            gradient: const LinearGradient(
-              colors: [Color(0xFF8A7CFA), Color(0xFFF07FFF)],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-            ),
-            borderRadius: 50,
-            child: const Text("Year",
-                style:
-                    TextStyle(fontWeight: FontWeight.w500, color: Colors.white)),
-          ),
-          const SizedBox(width: 8),
-          GradientButton(
-            onPressed: () {
-              setState(() {
-                userRegistrationDataFuture =
-                    _userProvider.getUserRegistrations(29);
-                days = 29;
-                bottomInterval = 1;
-                pastYear = false;
-                pastWeek = false;
-              });
-            },
-            width: 80,
-            height: 28,
-            gradient: const LinearGradient(
-              colors: [Color(0xFF8A7CFA), Color(0xFFF07FFF)],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-            ),
-            borderRadius: 50,
-            child: const Text("Month",
-                style:
-                    TextStyle(fontWeight: FontWeight.w500, color: Colors.white)),
-          ),
-          const SizedBox(width: 8),
-          GradientButton(
-            onPressed: () {
-              setState(() {
-                userRegistrationDataFuture =
-                    _userProvider.getUserRegistrations(6);
-                days = 6;
-                bottomInterval = 1;
-                pastYear = false;
-                pastWeek = true;
-              });
-            },
-            width: 80,
-            height: 28,
-            gradient: const LinearGradient(
-              colors: [Color(0xFF8A7CFA), Color(0xFFF07FFF)],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-            ),
-            borderRadius: 50,
-            child: const Text("Week",
-                style:
-                    TextStyle(fontWeight: FontWeight.w500, color: Colors.white)),
-          ),
-        ],
-      ),
-    );
-  }
-
+ Widget buildFilterButtons() {
+   return SingleChildScrollView(
+     scrollDirection: Axis.horizontal,
+     child: Row(
+       mainAxisAlignment: MainAxisAlignment.center,
+       children: [
+         GradientButton(
+           onPressed: () {
+             setState(() {
+               userRegistrationDataFuture =
+                   _userProvider.getUserRegistrations(364, groupByMonths: true);
+               days = 364;
+               pastYear = true;
+               pastWeek = false;
+               bottomInterval = 1;
+             });
+           },
+           width: 80,
+           height: 28,
+           gradient: const LinearGradient(
+             colors: [
+               Color(0xFF2A52BE),  // Slightly darker blue for better contrast
+               Color(0xFF00B4D8),  // Brighter teal
+             ],
+             begin: Alignment.centerLeft,
+             end: Alignment.centerRight,
+           ),
+           borderRadius: 50,
+           child: const Text("Year",
+               style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white)),
+         ),
+         const SizedBox(width: 8),
+         GradientButton(
+           onPressed: () {
+             setState(() {
+               userRegistrationDataFuture =
+                   _userProvider.getUserRegistrations(29);
+               days = 29;
+               bottomInterval = 1;
+               pastYear = false;
+               pastWeek = false;
+             });
+           },
+           width: 80,
+           height: 28,
+           gradient: const LinearGradient(
+             colors: [
+               Color(0xFF2A52BE),
+               Color(0xFF00B4D8),
+             ],
+             begin: Alignment.centerLeft,
+             end: Alignment.centerRight,
+           ),
+           borderRadius: 50,
+           child: const Text("Month",
+               style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white)),
+         ),
+         const SizedBox(width: 8),
+         GradientButton(
+           onPressed: () {
+             setState(() {
+               userRegistrationDataFuture =
+                   _userProvider.getUserRegistrations(6);
+               days = 6;
+               bottomInterval = 1;
+               pastYear = false;
+               pastWeek = true;
+             });
+           },
+           width: 80,
+           height: 28,
+           gradient: const LinearGradient(
+             colors: [
+               Color(0xFF2A52BE),
+               Color(0xFF00B4D8),
+             ],
+             begin: Alignment.centerLeft,
+             end: Alignment.centerRight,
+           ),
+           borderRadius: 50,
+           child: const Text("Week",
+               style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white)),
+         ),
+       ],
+     ),
+   );
+ }
   Widget _buildSectionToggleButtons() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12.0),
@@ -894,8 +920,8 @@ class _ReportsScreenState extends State<ReportsScreen> {
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
                     colors: [
-                      Color.fromRGBO(153, 255, 255, 1),
-                      Color.fromRGBO(0, 102, 204, 1),
+                      Color(0xFF00B4D8),  // Brighter teal
+                      Color(0xFF2A52BE),  // Slightly darker blue
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
@@ -925,8 +951,8 @@ class _ReportsScreenState extends State<ReportsScreen> {
                           fontWeight: FontWeight.w600,
                           fontSize: 13,
                           color: selectedIndex == 0
-                              ? Colors.black
-                              : Colors.grey.shade300,
+                              ? Colors.white  // Changed to white when active
+                              : Colors.grey.shade600,  // Kept gray when inactive
                           letterSpacing: 0.4,
                         ),
                       ),
@@ -945,8 +971,8 @@ class _ReportsScreenState extends State<ReportsScreen> {
                           fontWeight: FontWeight.w600,
                           fontSize: 13,
                           color: selectedIndex == 1
-                              ? Colors.black
-                              : Colors.grey.shade300,
+                              ? Colors.white  // Changed to white when active
+                              : Colors.grey.shade600,  // Kept gray when inactive
                           letterSpacing: 0.4,
                         ),
                       ),
@@ -960,53 +986,60 @@ class _ReportsScreenState extends State<ReportsScreen> {
       ),
     );
   }
+Widget _buildPopularMoviesChart() {
+  if (popularBioskopinaData.isEmpty) {
+    return const Center(
+      child: Text(
+        "No data",
+        style: TextStyle(color: Colors.white70, fontSize: 10),
+      ),
+    );
+  }
 
-  Widget _buildPopularMoviesChart() {
-    if (popularBioskopinaData.isEmpty) {
-      return const Center(child: Text("No data available", style: TextStyle(color: Colors.white)));
-    }
+  final maxScore = (popularBioskopinaData
+          .map((e) => e.score ?? 0)
+          .reduce((a, b) => a > b ? a : b)
+          .toDouble() * 1.15)
+      .roundToDouble();
 
-    final maxScore = popularBioskopinaData
-            .map((e) => e.score ?? 0)
-            .fold<double>(0, (previousValue, element) =>
-                element > previousValue ? element.toDouble() : previousValue) + 1;
-
-    return BarChart(
+  return SizedBox(
+    height: 374, // Compact height
+    child: BarChart(
       BarChartData(
-        alignment: BarChartAlignment.spaceAround,
-        maxY: maxScore,
-        barTouchData: BarTouchData(enabled: true),
+        barTouchData: BarTouchData(
+          enabled: true,
+          touchTooltipData: BarTouchTooltipData(
+            tooltipBgColor: Colors.blueGrey[900]!,
+            getTooltipItem: (group, groupIndex, rod, rodIndex) {
+              final movie = popularBioskopinaData[groupIndex];
+              return BarTooltipItem(
+                '${movie.bioskopinaTitleEN ?? 'Untitled'}\nScore: ${rod.toY}',
+                const TextStyle(color: Color.fromRGBO(153, 255, 255, 1), fontSize: 11),
+              );
+            },
+          ),
+        ),
         titlesData: FlTitlesData(
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
               interval: 1,
-              reservedSize: 40,
+              reservedSize: 22, // Smaller title area
               getTitlesWidget: (value, meta) {
-                int index = value.toInt();
-                if (index < 0 || index >= popularBioskopinaData.length) return const SizedBox();
-
-                String title = popularBioskopinaData[index].bioskopinaTitleEN ?? '';
-
-                if (title.length > 10) {
-                  title = '${title.substring(0, 10)}...';
+                final index = value.toInt();
+                if (index < 0 || index >= popularBioskopinaData.length) {
+                  return const SizedBox();
                 }
 
-                return SideTitleWidget(
-                  axisSide: meta.axisSide,
-                  child: Transform.rotate(
-                    angle: -0.26,
-                    child: Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 10,
-                        color: Color(0xFFF07FFF),
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      textAlign: TextAlign.center,
-                    ),
+                final title = popularBioskopinaData[index].bioskopinaTitleEN ?? '';
+                return Text(
+                  title.length > 6 ? '${title.substring(0, 6)}...' : title,
+                  style: TextStyle(
+                    fontSize: 8, // Smaller font
+                    color: Color.fromRGBO(153, 255, 255, 1),
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 );
               },
             ),
@@ -1014,123 +1047,143 @@ class _ReportsScreenState extends State<ReportsScreen> {
           leftTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
+              interval: maxScore > 10 ? (maxScore / 4) : 2,
+              reservedSize: 24, // Smaller axis area
               getTitlesWidget: (value, meta) {
                 return Text(
                   value.toInt().toString(),
-                  style: const TextStyle(
-                    color: Colors.white70,
-                    fontSize: 10,
+                  style: TextStyle(
+                    color: Colors.blue[100],
+                    fontSize: 9,
                   ),
                 );
               },
-              reservedSize: 30,
             ),
           ),
           topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
           rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
         ),
-        gridData: FlGridData(show: true),
+        gridData: FlGridData(
+          show: true,
+          drawVerticalLine: false,
+          getDrawingHorizontalLine: (value) => FlLine(
+            color: Colors.blue[900]!.withOpacity(0.2),
+            strokeWidth: 0.5,
+          ),
+        ),
         borderData: FlBorderData(show: false),
-        barGroups: List.generate(popularBioskopinaData.length, (index) {
-          final movie = popularBioskopinaData[index];
-          final score = movie.score?.toDouble() ?? 0;
+        barGroups: popularBioskopinaData.asMap().entries.map((entry) {
+          final score = entry.value.score?.toDouble() ?? 0;
           return BarChartGroupData(
-            x: index,
+            x: entry.key,
             barRods: [
               BarChartRodData(
                 toY: score,
-                color: Palette.teal,
-                width: 18,
-                borderRadius: BorderRadius.circular(6),
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.blueAccent.withOpacity(0.8),
+                    Colors.lightBlue[200]!.withOpacity(0.8),
+                  ],
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                ),
+                width: 10, // Slimmer bars
+                borderRadius: BorderRadius.circular(3),
+                backDrawRodData: BackgroundBarChartRodData(
+                  show: true,
+                  toY: maxScore,
+                  color: Colors.blue[900]!.withOpacity(0.1),
+                ),
               ),
             ],
-            showingTooltipIndicators: [0],
           );
-        }),
+        }).toList(),
       ),
-    );
-  }
-
-  Widget _buildMovieList() {
-    return ListView.separated(
-      itemCount: popularBioskopinaData.take(5).length,
-      separatorBuilder: (_, __) => const SizedBox(height: 12),
-      itemBuilder: (context, index) {
-        final movie = popularBioskopinaData[index];
-        return Container(
-          decoration: BoxDecoration(
-            color: Colors.grey[900],
-            borderRadius: BorderRadius.circular(10),
-          ),
-          padding: const EdgeInsets.all(4),
-          child: ListTile(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            minVerticalPadding: 0,
-            dense: true,
-            leading: movie.imageUrl != null
-                ? ClipRRect(
-                    borderRadius: BorderRadius.circular(4),
-                    child: Image.network(
-                      movie.imageUrl!,
-                      width: 60,
-                      height: 80,
-                      fit: BoxFit.cover,
-                    ),
-                  )
-                : Container(
-                    width: 40,
-                    height: 60,
-                    color: Colors.grey[800],
-                    child: const Icon(Icons.movie, color: Colors.grey, size: 20),
+    ),
+  );
+}
+Widget _buildMovieList() {
+  return ListView.separated(
+    padding: EdgeInsets.zero, // Remove default padding
+    physics: const ClampingScrollPhysics(),
+    itemCount: popularBioskopinaData.take(5).length,
+    separatorBuilder: (_, __) => const SizedBox(height: 9),
+    itemBuilder: (context, index) {
+      final movie = popularBioskopinaData[index];
+      return Container(
+        decoration: BoxDecoration(
+          color: Palette.darkPurple,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        padding: const EdgeInsets.all(4),
+        child: ListTile(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          minVerticalPadding: 0,
+          dense: true,
+          leading: movie.imageUrl != null
+              ? ClipRRect(
+                  borderRadius: BorderRadius.circular(4),
+                  child: Image.network(
+                    movie.imageUrl!,
+                    width: 60,
+                    height: 80,
+                    fit: BoxFit.cover,
                   ),
-            title: Text(
-              movie.bioskopinaTitleEN ?? 'Unknown Title',
+                )
+              : Container(
+                  width: 40,
+                  height: 60,
+                  color: Colors.grey[800],
+                  child: const Icon(Icons.movie, color: Colors.grey, size: 20),
+                ),
+          title: Text(
+            movie.bioskopinaTitleEN ?? 'Unknown Title',
+            style: const TextStyle(
+              color: Palette.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Director: ${movie.director ?? 'Unknown'}',
+                style: const TextStyle(color: Colors.grey, fontSize: 10),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Text(
+                movie.genres?.take(2).join(', ') ?? 'Unknown',
+                style: const TextStyle(color: Palette.teal, fontSize: 10),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+          trailing: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+            decoration: BoxDecoration(
+              color: Colors.grey[800]?.withOpacity(0.8) ?? Colors.grey[800]!,
+              borderRadius: BorderRadius.circular(90),
+              border: Border.all(color: Palette.teal, width: 1),
+            ),
+            child: Text(
+              movie.score?.toStringAsFixed(1) ?? 'N/A',
               style: const TextStyle(
-                color: Palette.white,
+                color: Palette.teal,
                 fontWeight: FontWeight.bold,
                 fontSize: 12,
               ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Dir: ${movie.director ?? 'Unknown'}',
-                  style: const TextStyle(color: Colors.grey, fontSize: 10),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Text(
-                  movie.genres?.take(2).join(', ') ?? 'Unknown',
-                  style: const TextStyle(color: Colors.grey, fontSize: 10),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-            trailing: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-              decoration: BoxDecoration(
-                color: Colors.grey[800],
-                borderRadius: BorderRadius.circular(90),
-                border: Border.all(color: Palette.teal, width: 1),
-              ),
-              child: Text(
-                movie.score?.toStringAsFixed(1) ?? 'N/A',
-                style: const TextStyle(
-                  color: Palette.teal,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12,
-                ),
-              ),
             ),
           ),
-        );
-      },
-    );
-  }
+        ),
+      );
+    },
+  );
+}
 
   @override
   Widget build(BuildContext context) {
@@ -1160,7 +1213,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                       Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Screenshot(
-                          controller: _screenshotController,
+                          controller: _moviesScreenshotController,
                           child: Column(
                             children: [
                               const Text(
@@ -1192,7 +1245,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                       flex: 3,
                                       child: Container(
                                         decoration: BoxDecoration(
-                                          color: Palette.darkPurple,
+
                                           borderRadius: BorderRadius.circular(12),
                                         ),
                                         padding: const EdgeInsets.all(16),

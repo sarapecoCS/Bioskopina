@@ -32,22 +32,8 @@ class MovieProvider extends BaseProvider<Bioskopina> {
       var response = await http.get(uri, headers: headers);
 
       if (isValidResponse(response)) {
-        var data = jsonDecode(response.body);
-        List<PopularBioskopinaData> result = [];
-
-        for (var item in data) {
-          result.add(PopularBioskopinaData(
-            bioskopinaTitleEN: item["bioskopinaTitleEN"] ?? '',
-            imageUrl: item["imageUrl"] ?? '',
-            score: (item["score"] is int)
-                ? (item["score"] as int).toDouble()
-                : (item["score"] as double? ?? 0.0),
-            numberOfRatings: item["numberOfRatings"] ?? 0,
-            director: item["director"] ?? 'Unknown Director',
-          ));
-        }
-
-        return result;
+        var data = jsonDecode(response.body) as List;
+        return data.map((item) => PopularBioskopinaData.fromJson(item)).toList();
       } else {
         throw Exception("Failed to load popular movies: ${response.statusCode}");
       }
