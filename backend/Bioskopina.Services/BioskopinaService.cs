@@ -82,18 +82,15 @@ namespace Bioskopina.Services
 
         public async Task<List<PopularBioskopinaData>> GetMostPopularMovie()
         {
-            
             var movieList = await _context.Bioskopina
-                .Include(m => m.Ratings) 
+                .Include(m => m.Ratings)
+                .Include(m => m.GenreMovies)         // Include the genre relationship
+                .ThenInclude(gm => gm.Genre)         // Include the actual Genre entities
                 .ToListAsync();
 
-           
-
-           
             var sortedMovies = movieList
-                .OrderByDescending(m => m.Score)           
-                 
-                .Take(5)                                  
+                .OrderByDescending(m => m.Score)
+                .Take(5)
                 .ToList();
 
             var popularM = new List<PopularBioskopinaData>();
@@ -103,17 +100,16 @@ namespace Bioskopina.Services
                 popularM.Add(new PopularBioskopinaData()
                 {
                     BioskopinaTitleEN = m.TitleEn,
-                
                     imageUrl = m.ImageUrl,
                     Score = (decimal)m.Score,
                     Director = m.Director,
-                    NumberOfRatings = m.Ratings.Count 
+                    NumberOfRatings = m.Ratings.Count,
+                    Genres = m.GenreMovies.Select(gm => gm.Genre.Name).ToList()  
                 });
             }
 
             return popularM;
         }
-
 
         public async Task<Model.Bioskopina> Update(int id, BioskopinaUpdateRequest request)
         {

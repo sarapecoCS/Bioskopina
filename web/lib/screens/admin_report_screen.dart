@@ -388,20 +388,20 @@ Future<void> _exportPdf(String filePath) async {
             floatingActionButton: Padding(
               padding: const EdgeInsets.only(bottom: 20.0, right: 20.0),
               child: Container(
-                width: 80,
-                height: 80,
+                width: 110,
+                height: 90,
                 decoration: BoxDecoration(
                   color: Colors.black,
                   shape: BoxShape.circle,
                   border: Border.all(
                     color: Colors.grey,
-                    width: 0.5,
+                    width: 0.9,
                   ),
                 ),
                 child: IconButton(
                   icon: const Icon(
                     Icons.picture_as_pdf,
-                    size: 48,
+                    size: 40,
                     color: Colors.red,
                   ),
                   onPressed: _onExportButtonPressed,
