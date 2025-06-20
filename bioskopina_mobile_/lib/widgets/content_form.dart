@@ -11,9 +11,15 @@ import '../utils/colors.dart';
 import '../utils/util.dart';
 
 class ContentForm extends StatefulWidget {
-  final Post? post;
-  const ContentForm({super.key, this.post})
-      : assert(post != null, "Post must be provided.");
+  final Post? post; // Required for comments, null for posts
+  final bool isPost; // New flag to indicate post creation
+
+  const ContentForm({
+    super.key,
+    this.post,
+    this.isPost = false,
+  }) : assert(post != null || isPost,
+           "Either provide post for comment or set isPost for post creation");
 
   @override
   State<ContentForm> createState() => _ContentFormState();
@@ -21,7 +27,7 @@ class ContentForm extends StatefulWidget {
 
 class _ContentFormState extends State<ContentForm> {
   final GlobalKey<FormBuilderState> _contentFormKey =
-  GlobalKey<FormBuilderState>();
+      GlobalKey<FormBuilderState>();
   late final CommentProvider _commentProvider;
   late final PostProvider _postProvider;
 
@@ -75,7 +81,7 @@ class _ContentFormState extends State<ContentForm> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text("Write your comment:"), // Always "Write your comment"
+            Text(widget.isPost ? "Create your post:" : "Write your comment:"),
             const SizedBox(height: 10),
             MyFormBuilderTextField(
               name: "content",
@@ -100,17 +106,28 @@ class _ContentFormState extends State<ContentForm> {
                       _contentFormKey.currentState?.fields["content"]?.value;
 
                   try {
-                    // Handling comment insertion
-                    var comment = {
-                      "postId": widget.post!.id,
-                      "userId": LoggedUser.user!.id,
-                      "content": content,
-                      "likesCount": 0,
-                      "dislikesCount": 0,
-                      "dateCommented": DateTime.now().toIso8601String(),
-                    };
-
-                    await _commentProvider.insert(comment);
+                    if (widget.isPost) {
+                      // Handle post creation
+                      var post = {
+                        "userId": LoggedUser.user!.id,
+                        "content": content,
+                        "likesCount": 0,
+                        "dislikesCount": 0,
+                        "datePosted": DateTime.now().toIso8601String(),
+                      };
+                      await _postProvider.insert(post);
+                    } else {
+                      // Handle comment insertion
+                      var comment = {
+                        "postId": widget.post!.id,
+                        "userId": LoggedUser.user!.id,
+                        "content": content,
+                        "likesCount": 0,
+                        "dislikesCount": 0,
+                        "dateCommented": DateTime.now().toIso8601String(),
+                      };
+                      await _commentProvider.insert(comment);
+                    }
                   } on Exception catch (e) {
                     if (context.mounted) {
                       showErrorDialog(context, e);

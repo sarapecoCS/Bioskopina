@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../screens/home_screen.dart';
 import '../providers/post_provider.dart';
 import '../providers/user_provider.dart';
 import '../widgets/master_screen.dart';
@@ -9,6 +8,7 @@ import '../widgets/post_cards.dart';
 import '../models/post.dart';
 import '../models/search_result.dart';
 import '../utils/colors.dart';
+import '../widgets/content_form.dart';
 
 class PostsScreen extends StatefulWidget {
   final int selectedIndex;
@@ -41,6 +41,18 @@ class _PostsScreenState extends State<PostsScreen> {
     super.initState();
   }
 
+  void _showAddPostDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return ContentForm(isPost: true); // Using isPost: true for post creation
+      },
+    ).then((_) {
+      // Refresh posts after dialog closes
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -53,10 +65,7 @@ class _PostsScreenState extends State<PostsScreen> {
       showNavBar: true,
       showHelpIcon: true,
       showFloatingActionButton: true,
-     floatingButtonOnPressed: () {
-
-     },
-
+      floatingButtonOnPressed: _showAddPostDialog, // Connect to our dialog
       floatingActionButtonIcon: Container(
         decoration: BoxDecoration(
           shape: BoxShape.circle,
@@ -80,8 +89,6 @@ class _PostsScreenState extends State<PostsScreen> {
         child: Column(
           children: [
             const SizedBox(height: 16),
-
-            // Elegant Header
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Center(
@@ -96,19 +103,13 @@ class _PostsScreenState extends State<PostsScreen> {
                 ),
               ),
             ),
-
             const SizedBox(height: 12),
-
-            // Thin subtle separator
             Container(
               width: coverWidth * 0.7,
               height: 0.8,
               color: Colors.grey.shade800,
             ),
-
             const SizedBox(height: 12),
-
-            // Post Cards List
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               child: PostCards(
@@ -120,7 +121,6 @@ class _PostsScreenState extends State<PostsScreen> {
                 filter: _filter,
               ),
             ),
-
             const SizedBox(height: 20),
           ],
         ),

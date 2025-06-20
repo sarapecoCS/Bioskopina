@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/bioskopina.dart';
 import '../screens/bioskopina_detail_screen.dart';
+import 'cinema_form.dart';  // Import the CinemaForm
 
 class BioskopinaCard extends StatefulWidget {
   final Bioskopina bioskopina;
@@ -16,10 +17,12 @@ class BioskopinaCard extends StatefulWidget {
   State<BioskopinaCard> createState() => _BioskopinaCardState();
 }
 
-class _BioskopinaCardState extends State<BioskopinaCard> with SingleTickerProviderStateMixin {
+class _BioskopinaCardState extends State<BioskopinaCard>
+    with SingleTickerProviderStateMixin {
   bool _pressed = false;
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
+  late int _watchlistId;
 
   @override
   void initState() {
@@ -34,6 +37,7 @@ class _BioskopinaCardState extends State<BioskopinaCard> with SingleTickerProvid
     );
 
     _scaleAnimation = _controller.drive(Tween(begin: 1.0, end: 0.95));
+    _watchlistId = 0; // Initialize with 0, will be fetched later
   }
 
   @override
@@ -54,6 +58,19 @@ class _BioskopinaCardState extends State<BioskopinaCard> with SingleTickerProvid
     _controller.forward();
   }
 
+  // Add this method to show the CinemaForm
+  void _showCinemaForm(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CinemaForm(
+          bioskopina: widget.bioskopina,
+          watchlistId: _watchlistId,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double cardWidth = MediaQuery.of(context).size.width * 0.44;
@@ -68,7 +85,7 @@ class _BioskopinaCardState extends State<BioskopinaCard> with SingleTickerProvid
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: const Color.fromRGBO(120, 170, 220, 0.5), // cold blue border
+            color: const Color.fromRGBO(120, 170, 220, 0.5),
             width: 1.2,
           ),
           color: const Color.fromRGBO(20, 20, 20, 1.0),
@@ -80,82 +97,108 @@ class _BioskopinaCardState extends State<BioskopinaCard> with SingleTickerProvid
             ),
           ],
         ),
-        child: GestureDetector(
-          onTapDown: _onTapDown,
-          onTapUp: (details) {
-            _onTapUp(details);
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => BioskopinaDetailScreen(
-                bioskopina: widget.bioskopina,
-                selectedIndex: widget.selectedIndex,
-              ),
-            ));
-          },
-          onTapCancel: _onTapCancel,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Stack(
-              children: [
-                widget.bioskopina.imageUrl != null
-                    ? Image.network(
-                        widget.bioskopina.imageUrl!,
-                        width: cardWidth,
-                        height: cardHeight,
-                        fit: BoxFit.cover,
-                      )
-                    : Container(
-                        width: cardWidth,
-                        height: cardHeight,
-                        color: Colors.black12,
-                        alignment: Alignment.center,
-                        child: const Icon(
-                          Icons.image_not_supported,
-                          color: Colors.grey,
-                          size: 40,
+        child: Stack(
+          children: [
+            // Main content gesture detector
+            GestureDetector(
+              onTapDown: _onTapDown,
+              onTapUp: (details) {
+                _onTapUp(details);
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => BioskopinaDetailScreen(
+                    bioskopina: widget.bioskopina,
+                    selectedIndex: widget.selectedIndex,
+                  ),
+                ));
+              },
+              onTapCancel: _onTapCancel,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Stack(
+                  children: [
+                    widget.bioskopina.imageUrl != null
+                        ? Image.network(
+                            widget.bioskopina.imageUrl!,
+                            width: cardWidth,
+                            height: cardHeight,
+                            fit: BoxFit.cover,
+                          )
+                        : Container(
+                            width: cardWidth,
+                            height: cardHeight,
+                            color: Colors.black12,
+                            alignment: Alignment.center,
+                            child: const Icon(
+                              Icons.image_not_supported,
+                              color: Colors.grey,
+                              size: 40,
+                            ),
+                          ),
+                    // Gradient overlay at bottom for title
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      height: cardHeight * 0.6,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.transparent,
+                              Color.fromARGB(180, 0, 0, 0),
+                            ],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 8),
+                        alignment: Alignment.bottomCenter,
+                        child: Text(
+                          widget.bioskopina.titleEn ?? "No Title",
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            shadows: [
+                              Shadow(
+                                blurRadius: 8,
+                                color: Colors.black87,
+                                offset: Offset(0, 6),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                // Gradient overlay at bottom for title
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  height: cardHeight * 0.6,
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.transparent,
-                          Color.fromARGB(180, 0, 0, 0),
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                    alignment: Alignment.bottomCenter,
-                    child: Text(
-                      widget.bioskopina.titleEn ?? "No Title",
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 8,
-                            color: Colors.black87,
-                            offset: Offset(0,6),
-                          ),
-                        ],
-                      ),
-                    ),
+                  ],
+                ),
+              ),
+            ),
+            // Watchlist button in top-right corner
+            Positioned(
+              top: 8,
+              right: 8,
+              child: GestureDetector(
+                onTap: () => _showCinemaForm(context),
+                child: Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.6),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                   Icons.playlist_add_rounded,
+                    color: Colors.white,
+                    size: 20,
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

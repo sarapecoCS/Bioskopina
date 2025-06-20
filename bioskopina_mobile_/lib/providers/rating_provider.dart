@@ -7,7 +7,11 @@ class RatingProvider extends BaseProvider<Rating> {
   @override
   Rating fromJson(data) => Rating.fromJson(data);
 
+  // This is the fixed create method:
   Future<Rating> create(Rating rating) async {
-    return await insert(rating.toJson());
+    final requestBody = {
+      "insert": rating.toJson()
+    };
+    return await insert(requestBody);
   }
 }

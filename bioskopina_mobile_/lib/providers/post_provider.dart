@@ -37,7 +37,6 @@ class PostProvider extends BaseProvider<Post> {
     notifyListeners();
   }
 
-
   void updatePostLocally(Post updatedPost) {
     final index = _posts.indexWhere((post) => post.id == updatedPost.id);
     if (index != -1) {
@@ -99,9 +98,10 @@ class PostProvider extends BaseProvider<Post> {
       throw Exception('Failed to update post on server');
     }
   }
+
   Future<void> deletePost(int postId) async {
     try {
-      await delete(postId);  // <-- call inherited delete method
+      await delete(postId);
       _posts.removeWhere((post) => post.id == postId);
       notifyListeners();
     } catch (e) {
@@ -109,5 +109,29 @@ class PostProvider extends BaseProvider<Post> {
     }
   }
 
+  Future<Post> addPost({
+    required int userId,
+    required String content,
+  }) async {
+    try {
+      final postData = {
+        'userId': userId,
+        'content': content,
+        'likesCount': 0,
+        'dislikesCount': 0,
+        'datePosted': DateTime.now().toIso8601String(),
+      };
 
+      // Use the insert method instead of post
+      var response = await insert(postData);
+
+      Post newPost = fromJson(response);
+      _posts.insert(0, newPost);
+      notifyListeners();
+
+      return newPost;
+    } catch (e) {
+      throw Exception('Failed to create post: ${e.toString()}');
+    }
+  }
 }
