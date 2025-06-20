@@ -42,134 +42,112 @@ namespace Bioskopina.Services.Database
                 {
                     Id = 1,
                     TitleEn = "Three",
-                   
                     Synopsis = "Three stories are set at the beginning, middle and the end of WW2. In all three of them the hero of the movie must witness the death of people he likes.",
                     ImageUrl = "https://m.media-amazon.com/images/M/MV5BOTZiNGFmM2EtOGVhMS00YjEyLThjNzAtY2M1MGUzYTljY2JiXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
                     TrailerUrl = "https://www.youtube.com/watch?v=i4pAWKQvORM",
                     Runtime = 76,
-                    Score = 2.1,
+                    Score = 9, 
                     Director = "Aleksandar Petrović",
                     YearRelease = 1965,
-                  
                 },
                 new Bioskopina()
                 {
                     Id = 2,
                     TitleEn = "The Rats Woke up",
-                   
                     Synopsis = "A lonely man struggles to find the money for his ill sister's treatment while at the same time trying to escape his past and to make sense of the present.",
                     ImageUrl = "https://upload.wikimedia.org/wikipedia/ru/b/bd/Budjenje_pacova.jpg",
                     TrailerUrl = "https://www.youtube.com/watch?v=9RXs4tnExXM",
                     YearRelease = 1967,
                     Runtime = 79,
-                    Score = 5,
+                    Score = 3, 
                     Director = "Živojin Pavlović",
-                  
                 },
                 new Bioskopina()
                 {
                     Id = 3,
                     TitleEn = "Mysteries of the Organism",
-                   
                     Synopsis = "An homage to the work of psychologist Wilhelm Reich, matched with a story about a Yugoslavian girl's affair with a Russian skater. Sexual repression, social systems and the orgone theory are explored.",
                     ImageUrl = "https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Wr_mysteries_of_the_organism_dvd.jpg/220px-Wr_mysteries_of_the_organism_dvd.jpg",
                     TrailerUrl = "https://www.youtube.com/watch?v=-NORCsCIBak",
                     YearRelease = 1971,
                     Runtime = 85,
-                    Score = 3.1,
+                    Score = 8, 
                     Director = "Dušan Makavejev",
-                  
                 },
                 new Bioskopina()
                 {
                     Id = 4,
                     TitleEn = "It Rains in My Village",
-                   
                     Synopsis = "A bizarre and tragic love story involving swineherd, village fool, teacher and an agricultural pilot. The story unfolds in a remote village in the communist ruled Yugoslavia at the down of Soviet occupation of Czechoslovakia in 1968.",
                     ImageUrl = "https://upload.wikimedia.org/wikipedia/sh/thumb/8/84/Bice_skoro_propast_sveta.jpg/220px-Bice_skoro_propast_sveta.jpg",
                     TrailerUrl = "https://www.youtube.com/watch?v=pQ16Puo9A2Q",
                     YearRelease = 1968,
                     Runtime = 84,
                     Director = "Aleksandar Petrović",
-                   
-                    Score = 2
+                    Score = 1 ,
                 },
                 new Bioskopina()
                 {
                     Id = 5,
                     TitleEn = "When I Am Dead and Gone",
-                   
                     Synopsis = "The story about Jimmy the Dingy, a young vagabond who works as a seasonal worker. Having been sacked from the job, his dreams are to become a singer. As most of the things in the Balkans happen, he is destined to failure.",
                     ImageUrl = "https://m.media-amazon.com/images/M/MV5BNzMxOTRhNmYtYmU1Yy00NzliLTg0ZGEtM2JhNTgzNjEzYTBhXkEyXkFqcGc@._V1_QL75_UY281_CR8,0,190,281_.jpg",
                     TrailerUrl = "https://www.youtube.com/watch?app=desktop&v=YiuMux8AR14&t=128s",
                     YearRelease = 1967,
                     Runtime = 79,
-                    Score= 2.3,
+                    Score = 4, 
                     Director = "Živojin Pavlović",
-                   
                 },
                 new Bioskopina()
                 {
                     Id = 6,
                     TitleEn = "Do Not Mention the Cause of Death",
-                    
                     Synopsis = "In an atmosphere of WWII, a village dyer wants to help his folks in their sorrow and distress by supplying them with the black paint, but there is not enough black paint for all of them, because death works faster than the dyer. His wife was raped, but the naive dyer believes in straight intentions of his godfather - black marketeer, and he gives away free canvas to the people. But in all their pain, people are unable to distinguish good intentions from the evil ones.",
                     ImageUrl = "https://m.media-amazon.com/images/M/MV5BZDk2OGY4MWUtODE2My00ZjJiLThiNjYtNjg0NGQzNDFkZDRiXkEyXkFqcGc@._V1_.jpg",
                     TrailerUrl = "https://www.youtube.com/watch?v=S5hR5h1q0gA",
                     YearRelease = 1968,
                     Runtime = 92,
                     Director = "Jovan Zivanovic",
-                  
-                    Score = 3.3,
+                    Score = 0,
                 },
                 new Bioskopina()
                 {
                     Id = 7,
                     TitleEn = "I Even Met Happy Gypsies",
-                    
                     Synopsis = "Tensions arise in a Gypsy community when a local feather seller falls in love with a much younger girl.",
                     ImageUrl = "https://m.media-amazon.com/images/M/MV5BZDUwNmJlNDQtYWRhOC00NzFhLTk3NWUtM2UyNzdmNzMzYmIwXkEyXkFqcGc@._V1_.jpg",
                     TrailerUrl = "https://www.youtube.com/watch?v=Op0wuHguS4c",
                     YearRelease = 1967,
                     Runtime = 94,
-                    Score = 1.3,
+                    Score = 5, 
                     Director = "Aleksandar Petrovic",
-                   
                 },
                 new Bioskopina()
                 {
                     Id = 8,
                     TitleEn = "Early Works",
-                   
                     Synopsis = "A group of young persons are going to make a revolution, but in real life everything is not the same as in smart books.",
                     ImageUrl = "https://www.cinemaclock.com/images/posters/1000x1500/52/rani-radovi-1969-orig-poster.jpg",
                     TrailerUrl = "https://www.youtube.com/watch?v=H6Djqv0fwn4",
                     YearRelease = 1969,
                     Runtime = 87,
                     Director = "Zelimir Zilnik",
-                   
-                    Score = 3,
-                  
+                    Score = 6,
                 },
                 new Bioskopina()
                 {
                     Id = 9,
                     TitleEn = "The Ambush",
-                  
                     Synopsis = "Idealistic young man supports the party and the new Yugoslavia's communist regime, but soon gets involved in various political and criminal machinations becoming more and more confused about what's right and what's wrong.",
                     ImageUrl = "https://m.media-amazon.com/images/M/MV5BNmE0OTE1NTgtODFhYy00ZTVhLWE0MDktMDRjNjllNzVmMTFhXkEyXkFqcGc@._V1_.jpg",
                     TrailerUrl = "https://www.youtube.com/watch?v=H6Djqv0fwn4",
                     YearRelease = 1969,
                     Runtime = 87,
                     Director = "Zelimir Zilnik",
-                    
-                    Score = 4,
-                  
+                    Score = 10 ,
                 }
             );
         }
-
-      
 
 
 
@@ -214,11 +192,11 @@ namespace Bioskopina.Services.Database
                 new User()
                 {
                     Id = 2,
-                    FirstName = "Armina",
-                    LastName = "Čosić",
+                    FirstName = "Korisnik",
+                    LastName = "Korisnik",
                     PasswordHash = hash,
                     PasswordSalt = salt,
-                    Email ="armina.cosic@edu.fit.ba",
+                    Email ="korisnik@edu.fit.ba",
                     ProfilePictureId = 1,
                     DateJoined = new DateTime(2025, 3, 31),
                     Username = "korisnik",
@@ -531,42 +509,18 @@ namespace Bioskopina.Services.Database
                     Answer = "",
                     Displayed = true
                 },
+              
+              
                 new QA()
                 {
                     Id = 2,
-                    UserId = 1,
-                    CategoryId = 3,
-                    Question = "I wish there were more subtitles",
-                    Answer = "We’re planning to add support for more languages in the near future, so you can expect more subtitle options soon!",
-                    Displayed = true
-                },
-                new QA()
-                {
-                    Id = 3,
-                    UserId = 5,
-                    CategoryId = 3,
-                    Question = "Do not make design more modern please.",
-                    Answer = "Do not worry! We will be keeping design.",
-                    Displayed = true
-                },
-                new QA()
-                {
-                    Id = 4,
                     UserId = 3,
                     CategoryId = 4,
                     Question = "Can we get a forum feature in this app?",
                     Answer = "It's in progress, it will be available once it's tested and ready.",
                     Displayed = true
-                },
-                new QA()
-                {
-                    Id = 5,
-                    UserId = 4,
-                    CategoryId = 1,
-                    Question = "How long did it take you to make this app?",
-                    Answer = "At least 7 months.",
-                    Displayed = true
                 }
+              
          );
         }
 
@@ -707,15 +661,15 @@ namespace Bioskopina.Services.Database
                     Id = 2,
                     UserId = 2,
                     MovieId = 3,
-                    RatingValue = 9,
+                    RatingValue = 8,
                     ReviewText = "Interesting...",
                     DateAdded = new DateTime(2025, 7, 21)
                 },
                 new Rating()
                 {
                     Id = 3,
-                    UserId = 2,
-                    MovieId = 4,
+                    UserId = 3,
+                    MovieId = 1,
                     RatingValue = 8,
                     ReviewText = "Visually stunning and emotionally resonants truly immersive experience",
                     DateAdded = new DateTime(2025, 7, 21)
@@ -724,11 +678,49 @@ namespace Bioskopina.Services.Database
                 {
                     Id = 4,
                     UserId = 2,
-                    MovieId = 2,
+                    MovieId = 4,
                     RatingValue = 1,
                     ReviewText = "It is quite slow to be honest, not my cup of tea.",
                     DateAdded = new DateTime(2025, 7, 21)
-                }
+                },
+                   new Rating()
+                   {
+                       Id = 5,
+                       UserId = 2,
+                       MovieId = 2,
+                       RatingValue = 1,
+                       ReviewText = "It is quite slow to be honest, not my cup of tea.",
+                       DateAdded = new DateTime(2025, 7, 21)
+                   },
+                        new Rating()
+                        {
+                            Id = 6,
+                            UserId = 3,
+                            MovieId = 2,
+                            RatingValue = 10,
+                            ReviewText = "I think it is just perfect. The way tragedy can have such a deep roots it just unforgetable.",
+                            DateAdded = new DateTime(2025, 7, 21)
+                        },
+                             new Rating()
+                             {
+                                 Id = 7,
+                                 UserId = 5,
+                                 MovieId = 5,
+                                 RatingValue = 4,
+                                 ReviewText = "Jimmy is just briliant but it's slightly sad movie",
+                                 DateAdded = new DateTime(2025, 7, 21)
+                             },
+                                new Rating()
+                                {
+                                    Id = 8,
+                                    UserId = 5,
+                                    MovieId = 6,
+                                    RatingValue = 5,
+                                    ReviewText = "WW2 theme is good.",
+                                    DateAdded = new DateTime(2025, 7, 21)
+                                }
+
+
          );
         }
 
@@ -762,9 +754,9 @@ namespace Bioskopina.Services.Database
                 new Donation()
                 {
                     Id = 1,
-                    UserId = 2,
-                    Amount = 20,
-                    DateDonated = new DateTime(2025, 1, 11),
+                    UserId = 5,
+                    Amount = 2,
+                    DateDonated = new DateTime(2025, 9, 12),
                     TransactionId = "txn_3PijFYRsmg17Kngz1idOozHb"
                 },
                 new Donation()
@@ -778,7 +770,7 @@ namespace Bioskopina.Services.Database
                 new Donation()
                 {
                     Id = 3,
-                    UserId = 2,
+                    UserId = 3,
                     Amount = 8,
                     DateDonated = new DateTime(2025, 8, 15),
                     TransactionId = "txn_3PijFYRsmg17Kngz1idOozHd"
@@ -803,19 +795,19 @@ namespace Bioskopina.Services.Database
                 new Post()
                 {
                     Id = 2,
-                    UserId = 1, 
+                    UserId = 2, 
                     Content = "A raw, unsettling journey. The Rats Woke Up dives deep into the complexities of human nature. Have you ever watched a movie that just leaves you thinking for days after? This is one of those.",
-                    LikesCount = 3,
-                    DislikesCount = 1,
+                    LikesCount = 0,
+                    DislikesCount = 4,
                     DatePosted = new DateTime(2024, 7, 11),
                     VideoUrl = "https://www.youtube.com/watch?v=9RXs4tnExXM" // Video URL
                 },
                 new Post()
                 {
                     Id = 3,
-                    UserId = 1, 
+                    UserId = 2, 
                     Content = "This one’s a wild ride—part psychological, part political, and entirely bizarre. WR: Mysteries of the Organism is one for those who love films that are as confusing as they are compelling. Thoughts?",
-                    LikesCount = 7,
+                    LikesCount = 2,
                     DislikesCount = 0,
                     DatePosted = new DateTime(2024, 7, 11),
                     VideoUrl = "https://www.youtube.com/watch?v=-NORCsCIBak" // Video URL
@@ -823,7 +815,7 @@ namespace Bioskopina.Services.Database
                 new Post()
                 {
                     Id = 4,
-                    UserId = 1, 
+                    UserId = 4, 
                     Content = "Sometimes the most powerful stories are the simplest ones. It Rains in My Village captures life in its purest form. How do you feel about films that focus on the quiet moments?",
                     LikesCount = 4,
                     DislikesCount = 0,
@@ -835,8 +827,8 @@ namespace Bioskopina.Services.Database
                     Id = 5,
                     UserId = 1, 
                     Content = "A haunting meditation on life and death. When I Am Dead and Gone explores what happens when everything we know is gone. What’s your take on films that ask big questions about our existence?",
-                    LikesCount = 8,
-                    DislikesCount = 2,
+                    LikesCount = 0,
+                    DislikesCount = 3,
                     DatePosted = new DateTime(2024, 7, 11),
                     VideoUrl = "https://www.youtube.com/watch?app=desktop&v=YiuMux8AR14&t=128s" // Video URL
                 },
@@ -853,7 +845,7 @@ namespace Bioskopina.Services.Database
                 new Post()
                 {
                     Id = 7,
-                    UserId = 1, 
+                    UserId = 4, 
                     Content = "A classic! I Even Met Happy Gypsies is a poignant look at the lives of those who live on the margins of society. Have you ever seen a film that makes you rethink your perspective on the world?",
                     LikesCount = 9,
                     DislikesCount = 0,
@@ -863,7 +855,7 @@ namespace Bioskopina.Services.Database
                 new Post()
                 {
                     Id = 8,
-                    UserId = 1, 
+                    UserId = 2, 
                     Content = "Early Works is one of those films that packs a punch with its rawness. It's a perfect example of how art can push boundaries. What’s the most daring film you’ve ever seen?",
                     LikesCount = 4,
                     DislikesCount = 1,

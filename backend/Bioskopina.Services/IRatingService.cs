@@ -10,7 +10,7 @@ namespace Bioskopina.Services
 {
     public interface IRatingService : ICRUDService<Model.Rating, RatingSearchObject, RatingInsertRequest, RatingUpdateRequest>
     {
-        void UpdateMovieScore(int animeId);
-        decimal CalculateMovieScore(int animeId);
+        void UpdateMovieScore(int movieId);
+        decimal CalculateMovieScore(int movieId);
     }
 }

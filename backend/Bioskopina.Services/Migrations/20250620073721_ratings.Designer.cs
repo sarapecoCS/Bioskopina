@@ -4,6 +4,7 @@ using Bioskopina.Services.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bioskopina.Services.Migrations
 {
     [DbContext(typeof(BioskopinaContext))]
-    partial class BioskopinaContextModelSnapshot : ModelSnapshot
+    [Migration("20250620073721_ratings")]
+    partial class ratings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,7 +77,7 @@ namespace Bioskopina.Services.Migrations
                             Director = "Aleksandar Petrović",
                             ImageUrl = "https://m.media-amazon.com/images/M/MV5BOTZiNGFmM2EtOGVhMS00YjEyLThjNzAtY2M1MGUzYTljY2JiXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
                             Runtime = 76,
-                            Score = 9m,
+                            Score = 0m,
                             Synopsis = "Three stories are set at the beginning, middle and the end of WW2. In all three of them the hero of the movie must witness the death of people he likes.",
                             TitleEn = "Three",
                             TrailerUrl = "https://www.youtube.com/watch?v=i4pAWKQvORM",
@@ -86,7 +89,7 @@ namespace Bioskopina.Services.Migrations
                             Director = "Živojin Pavlović",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/ru/b/bd/Budjenje_pacova.jpg",
                             Runtime = 79,
-                            Score = 3m,
+                            Score = 0m,
                             Synopsis = "A lonely man struggles to find the money for his ill sister's treatment while at the same time trying to escape his past and to make sense of the present.",
                             TitleEn = "The Rats Woke up",
                             TrailerUrl = "https://www.youtube.com/watch?v=9RXs4tnExXM",
@@ -98,7 +101,7 @@ namespace Bioskopina.Services.Migrations
                             Director = "Dušan Makavejev",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Wr_mysteries_of_the_organism_dvd.jpg/220px-Wr_mysteries_of_the_organism_dvd.jpg",
                             Runtime = 85,
-                            Score = 8m,
+                            Score = 0m,
                             Synopsis = "An homage to the work of psychologist Wilhelm Reich, matched with a story about a Yugoslavian girl's affair with a Russian skater. Sexual repression, social systems and the orgone theory are explored.",
                             TitleEn = "Mysteries of the Organism",
                             TrailerUrl = "https://www.youtube.com/watch?v=-NORCsCIBak",
@@ -110,7 +113,7 @@ namespace Bioskopina.Services.Migrations
                             Director = "Aleksandar Petrović",
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/sh/thumb/8/84/Bice_skoro_propast_sveta.jpg/220px-Bice_skoro_propast_sveta.jpg",
                             Runtime = 84,
-                            Score = 1m,
+                            Score = 0m,
                             Synopsis = "A bizarre and tragic love story involving swineherd, village fool, teacher and an agricultural pilot. The story unfolds in a remote village in the communist ruled Yugoslavia at the down of Soviet occupation of Czechoslovakia in 1968.",
                             TitleEn = "It Rains in My Village",
                             TrailerUrl = "https://www.youtube.com/watch?v=pQ16Puo9A2Q",
@@ -122,7 +125,7 @@ namespace Bioskopina.Services.Migrations
                             Director = "Živojin Pavlović",
                             ImageUrl = "https://m.media-amazon.com/images/M/MV5BNzMxOTRhNmYtYmU1Yy00NzliLTg0ZGEtM2JhNTgzNjEzYTBhXkEyXkFqcGc@._V1_QL75_UY281_CR8,0,190,281_.jpg",
                             Runtime = 79,
-                            Score = 4m,
+                            Score = 0m,
                             Synopsis = "The story about Jimmy the Dingy, a young vagabond who works as a seasonal worker. Having been sacked from the job, his dreams are to become a singer. As most of the things in the Balkans happen, he is destined to failure.",
                             TitleEn = "When I Am Dead and Gone",
                             TrailerUrl = "https://www.youtube.com/watch?app=desktop&v=YiuMux8AR14&t=128s",
@@ -146,7 +149,7 @@ namespace Bioskopina.Services.Migrations
                             Director = "Aleksandar Petrovic",
                             ImageUrl = "https://m.media-amazon.com/images/M/MV5BZDUwNmJlNDQtYWRhOC00NzFhLTk3NWUtM2UyNzdmNzMzYmIwXkEyXkFqcGc@._V1_.jpg",
                             Runtime = 94,
-                            Score = 5m,
+                            Score = 0m,
                             Synopsis = "Tensions arise in a Gypsy community when a local feather seller falls in love with a much younger girl.",
                             TitleEn = "I Even Met Happy Gypsies",
                             TrailerUrl = "https://www.youtube.com/watch?v=Op0wuHguS4c",
@@ -158,7 +161,7 @@ namespace Bioskopina.Services.Migrations
                             Director = "Zelimir Zilnik",
                             ImageUrl = "https://www.cinemaclock.com/images/posters/1000x1500/52/rani-radovi-1969-orig-poster.jpg",
                             Runtime = 87,
-                            Score = 6m,
+                            Score = 0m,
                             Synopsis = "A group of young persons are going to make a revolution, but in real life everything is not the same as in smart books.",
                             TitleEn = "Early Works",
                             TrailerUrl = "https://www.youtube.com/watch?v=H6Djqv0fwn4",
@@ -170,7 +173,7 @@ namespace Bioskopina.Services.Migrations
                             Director = "Zelimir Zilnik",
                             ImageUrl = "https://m.media-amazon.com/images/M/MV5BNmE0OTE1NTgtODFhYy00ZTVhLWE0MDktMDRjNjllNzVmMTFhXkEyXkFqcGc@._V1_.jpg",
                             Runtime = 87,
-                            Score = 10m,
+                            Score = 0m,
                             Synopsis = "Idealistic young man supports the party and the new Yugoslavia's communist regime, but soon gets involved in various political and criminal machinations becoming more and more confused about what's right and what's wrong.",
                             TitleEn = "The Ambush",
                             TrailerUrl = "https://www.youtube.com/watch?v=H6Djqv0fwn4",
@@ -557,10 +560,10 @@ namespace Bioskopina.Services.Migrations
                         new
                         {
                             Id = 1,
-                            Amount = 2m,
-                            DateDonated = new DateTime(2025, 9, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Amount = 20m,
+                            DateDonated = new DateTime(2025, 1, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TransactionId = "txn_3PijFYRsmg17Kngz1idOozHb",
-                            UserId = 5
+                            UserId = 2
                         },
                         new
                         {
@@ -576,7 +579,7 @@ namespace Bioskopina.Services.Migrations
                             Amount = 8m,
                             DateDonated = new DateTime(2025, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TransactionId = "txn_3PijFYRsmg17Kngz1idOozHd",
-                            UserId = 3
+                            UserId = 2
                         });
                 });
 
@@ -858,7 +861,7 @@ namespace Bioskopina.Services.Migrations
                             Content = "A raw, unsettling journey. The Rats Woke Up dives deep into the complexities of human nature. Have you ever watched a movie that just leaves you thinking for days after? This is one of those.",
                             DatePosted = new DateTime(2024, 7, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DislikesCount = 4,
-                            LikesCount = 0,
+                            LikesCount = 3,
                             UserId = 2,
                             VideoUrl = "https://www.youtube.com/watch?v=9RXs4tnExXM"
                         },
@@ -868,7 +871,7 @@ namespace Bioskopina.Services.Migrations
                             Content = "This one’s a wild ride—part psychological, part political, and entirely bizarre. WR: Mysteries of the Organism is one for those who love films that are as confusing as they are compelling. Thoughts?",
                             DatePosted = new DateTime(2024, 7, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DislikesCount = 0,
-                            LikesCount = 2,
+                            LikesCount = 7,
                             UserId = 2,
                             VideoUrl = "https://www.youtube.com/watch?v=-NORCsCIBak"
                         },
@@ -1029,11 +1032,38 @@ namespace Bioskopina.Services.Migrations
                         new
                         {
                             Id = 2,
+                            Answer = "We’re planning to add support for more languages in the near future, so you can expect more subtitle options soon!",
+                            CategoryId = 3,
+                            Displayed = true,
+                            Question = "I wish there were more subtitles",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Answer = "Do not worry! We will be keeping design.",
+                            CategoryId = 3,
+                            Displayed = true,
+                            Question = "Do not make design more modern please.",
+                            UserId = 5
+                        },
+                        new
+                        {
+                            Id = 4,
                             Answer = "It's in progress, it will be available once it's tested and ready.",
                             CategoryId = 4,
                             Displayed = true,
                             Question = "Can we get a forum feature in this app?",
                             UserId = 3
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Answer = "At least 7 months.",
+                            CategoryId = 1,
+                            Displayed = true,
+                            Question = "How long did it take you to make this app?",
+                            UserId = 4
                         });
                 });
 
@@ -1128,7 +1158,7 @@ namespace Bioskopina.Services.Migrations
                             Id = 2,
                             DateAdded = new DateTime(2025, 7, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             MovieId = 3,
-                            RatingValue = 8,
+                            RatingValue = 9,
                             ReviewText = "Interesting...",
                             UserId = 2
                         },
@@ -1158,33 +1188,6 @@ namespace Bioskopina.Services.Migrations
                             RatingValue = 1,
                             ReviewText = "It is quite slow to be honest, not my cup of tea.",
                             UserId = 2
-                        },
-                        new
-                        {
-                            Id = 6,
-                            DateAdded = new DateTime(2025, 7, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            MovieId = 2,
-                            RatingValue = 10,
-                            ReviewText = "I think it is just perfect. The way tragedy can have such a deep roots it just unforgetable.",
-                            UserId = 3
-                        },
-                        new
-                        {
-                            Id = 7,
-                            DateAdded = new DateTime(2025, 7, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            MovieId = 5,
-                            RatingValue = 4,
-                            ReviewText = "Jimmy is just briliant but it's slightly sad movie",
-                            UserId = 5
-                        },
-                        new
-                        {
-                            Id = 8,
-                            DateAdded = new DateTime(2025, 7, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            MovieId = 6,
-                            RatingValue = 5,
-                            ReviewText = "WW2 theme is good.",
-                            UserId = 5
                         });
                 });
 

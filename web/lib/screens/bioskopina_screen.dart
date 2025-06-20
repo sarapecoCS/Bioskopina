@@ -147,7 +147,7 @@ void showDeleteConfirmationDialog(BuildContext context, Bioskopina bioskopina) {
     context: context,
     builder: (context) {
       return Dialog(
-        backgroundColor: Palette.darkPurple,
+        backgroundColor: Colors.black,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
           side: BorderSide(
@@ -377,7 +377,7 @@ void showDeleteConfirmationDialog(BuildContext context, Bioskopina bioskopina) {
       icon: const Icon(Icons.more_vert_rounded, color: Colors.white70),
       splashRadius: 20,
       padding: EdgeInsets.zero,
-      color: Colors.black,
+      color: const Color.fromRGBO(0, 0, 0, 1),
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
         PopupMenuItem<String>(
           child: MouseRegion(
@@ -478,7 +478,7 @@ Widget _buildBioskopinaCard(Bioskopina bioskopina, int index) {
         width: 320,
         height: 480, // Fixed card height
         decoration: BoxDecoration(
-          color: const Color(0xFF18171B),
+          color: Colors.black,
           borderRadius: BorderRadius.circular(15),
           border: Border.all(
             color: Palette.lightPurple.withOpacity(isHovered ? 1.0 : 0.3),

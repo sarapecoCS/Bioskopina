@@ -10,7 +10,7 @@ namespace Bioskopina.Model.Requests
     {
         public int UserId { get; set; }
 
-        public int AnimeId { get; set; }
+        public int MovieId { get; set; }
 
         public int? RatingValue { get; set; }
 

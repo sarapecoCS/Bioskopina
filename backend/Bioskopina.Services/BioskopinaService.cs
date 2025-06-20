@@ -84,8 +84,8 @@ namespace Bioskopina.Services
         {
             var movieList = await _context.Bioskopina
                 .Include(m => m.Ratings)
-                .Include(m => m.GenreMovies)         // Include the genre relationship
-                .ThenInclude(gm => gm.Genre)         // Include the actual Genre entities
+                .Include(m => m.GenreMovies)         
+                .ThenInclude(gm => gm.Genre)         
                 .ToListAsync();
 
             var sortedMovies = movieList

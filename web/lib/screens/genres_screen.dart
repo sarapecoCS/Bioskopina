@@ -300,7 +300,7 @@ Future<void> _saveGenre(BuildContext context) async {
       icon: const Icon(Icons.more_vert_rounded),
       splashRadius: 1,
       padding: EdgeInsets.zero,
-      color: const Color(0xFF18171B),
+      color: const Color.fromRGBO(0, 0, 0, 1),
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
         PopupMenuItem<String>(
           child: ListTile(

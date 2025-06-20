@@ -4,6 +4,7 @@ using Bioskopina.Services.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bioskopina.Services.Migrations
 {
     [DbContext(typeof(BioskopinaContext))]
-    partial class BioskopinaContextModelSnapshot : ModelSnapshot
+    [Migration("20250620081612_new")]
+    partial class @new
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -122,7 +125,7 @@ namespace Bioskopina.Services.Migrations
                             Director = "Živojin Pavlović",
                             ImageUrl = "https://m.media-amazon.com/images/M/MV5BNzMxOTRhNmYtYmU1Yy00NzliLTg0ZGEtM2JhNTgzNjEzYTBhXkEyXkFqcGc@._V1_QL75_UY281_CR8,0,190,281_.jpg",
                             Runtime = 79,
-                            Score = 4m,
+                            Score = 0m,
                             Synopsis = "The story about Jimmy the Dingy, a young vagabond who works as a seasonal worker. Having been sacked from the job, his dreams are to become a singer. As most of the things in the Balkans happen, he is destined to failure.",
                             TitleEn = "When I Am Dead and Gone",
                             TrailerUrl = "https://www.youtube.com/watch?app=desktop&v=YiuMux8AR14&t=128s",
@@ -146,7 +149,7 @@ namespace Bioskopina.Services.Migrations
                             Director = "Aleksandar Petrovic",
                             ImageUrl = "https://m.media-amazon.com/images/M/MV5BZDUwNmJlNDQtYWRhOC00NzFhLTk3NWUtM2UyNzdmNzMzYmIwXkEyXkFqcGc@._V1_.jpg",
                             Runtime = 94,
-                            Score = 5m,
+                            Score = 0m,
                             Synopsis = "Tensions arise in a Gypsy community when a local feather seller falls in love with a much younger girl.",
                             TitleEn = "I Even Met Happy Gypsies",
                             TrailerUrl = "https://www.youtube.com/watch?v=Op0wuHguS4c",
@@ -158,7 +161,7 @@ namespace Bioskopina.Services.Migrations
                             Director = "Zelimir Zilnik",
                             ImageUrl = "https://www.cinemaclock.com/images/posters/1000x1500/52/rani-radovi-1969-orig-poster.jpg",
                             Runtime = 87,
-                            Score = 6m,
+                            Score = 0m,
                             Synopsis = "A group of young persons are going to make a revolution, but in real life everything is not the same as in smart books.",
                             TitleEn = "Early Works",
                             TrailerUrl = "https://www.youtube.com/watch?v=H6Djqv0fwn4",
@@ -557,10 +560,10 @@ namespace Bioskopina.Services.Migrations
                         new
                         {
                             Id = 1,
-                            Amount = 2m,
-                            DateDonated = new DateTime(2025, 9, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Amount = 20m,
+                            DateDonated = new DateTime(2025, 1, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TransactionId = "txn_3PijFYRsmg17Kngz1idOozHb",
-                            UserId = 5
+                            UserId = 2
                         },
                         new
                         {
@@ -576,7 +579,7 @@ namespace Bioskopina.Services.Migrations
                             Amount = 8m,
                             DateDonated = new DateTime(2025, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TransactionId = "txn_3PijFYRsmg17Kngz1idOozHd",
-                            UserId = 3
+                            UserId = 2
                         });
                 });
 
@@ -1029,11 +1032,38 @@ namespace Bioskopina.Services.Migrations
                         new
                         {
                             Id = 2,
+                            Answer = "We’re planning to add support for more languages in the near future, so you can expect more subtitle options soon!",
+                            CategoryId = 3,
+                            Displayed = true,
+                            Question = "I wish there were more subtitles",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Answer = "Do not worry! We will be keeping design.",
+                            CategoryId = 3,
+                            Displayed = true,
+                            Question = "Do not make design more modern please.",
+                            UserId = 5
+                        },
+                        new
+                        {
+                            Id = 4,
                             Answer = "It's in progress, it will be available once it's tested and ready.",
                             CategoryId = 4,
                             Displayed = true,
                             Question = "Can we get a forum feature in this app?",
                             UserId = 3
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Answer = "At least 7 months.",
+                            CategoryId = 1,
+                            Displayed = true,
+                            Question = "How long did it take you to make this app?",
+                            UserId = 4
                         });
                 });
 
@@ -1167,24 +1197,6 @@ namespace Bioskopina.Services.Migrations
                             RatingValue = 10,
                             ReviewText = "I think it is just perfect. The way tragedy can have such a deep roots it just unforgetable.",
                             UserId = 3
-                        },
-                        new
-                        {
-                            Id = 7,
-                            DateAdded = new DateTime(2025, 7, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            MovieId = 5,
-                            RatingValue = 4,
-                            ReviewText = "Jimmy is just briliant but it's slightly sad movie",
-                            UserId = 5
-                        },
-                        new
-                        {
-                            Id = 8,
-                            DateAdded = new DateTime(2025, 7, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            MovieId = 6,
-                            RatingValue = 5,
-                            ReviewText = "WW2 theme is good.",
-                            UserId = 5
                         });
                 });
 

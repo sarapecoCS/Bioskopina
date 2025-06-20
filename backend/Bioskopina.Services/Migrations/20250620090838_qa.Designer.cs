@@ -4,6 +4,7 @@ using Bioskopina.Services.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bioskopina.Services.Migrations
 {
     [DbContext(typeof(BioskopinaContext))]
-    partial class BioskopinaContextModelSnapshot : ModelSnapshot
+    [Migration("20250620090838_qa")]
+    partial class qa
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -558,9 +561,9 @@ namespace Bioskopina.Services.Migrations
                         {
                             Id = 1,
                             Amount = 2m,
-                            DateDonated = new DateTime(2025, 9, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateDonated = new DateTime(2025, 1, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TransactionId = "txn_3PijFYRsmg17Kngz1idOozHb",
-                            UserId = 5
+                            UserId = 2
                         },
                         new
                         {
@@ -576,7 +579,7 @@ namespace Bioskopina.Services.Migrations
                             Amount = 8m,
                             DateDonated = new DateTime(2025, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TransactionId = "txn_3PijFYRsmg17Kngz1idOozHd",
-                            UserId = 3
+                            UserId = 2
                         });
                 });
 

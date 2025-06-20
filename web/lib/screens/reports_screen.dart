@@ -802,93 +802,108 @@ class _ReportsScreenState extends State<ReportsScreen> {
     );
   }
 
- Widget buildFilterButtons() {
-   return SingleChildScrollView(
-     scrollDirection: Axis.horizontal,
-     child: Row(
-       mainAxisAlignment: MainAxisAlignment.center,
-       children: [
-         GradientButton(
-           onPressed: () {
-             setState(() {
-               userRegistrationDataFuture =
-                   _userProvider.getUserRegistrations(364, groupByMonths: true);
-               days = 364;
-               pastYear = true;
-               pastWeek = false;
-               bottomInterval = 1;
-             });
-           },
-           width: 80,
-           height: 28,
-           gradient: const LinearGradient(
-             colors: [
-               Color(0xFF2A52BE),  // Slightly darker blue for better contrast
-               Color(0xFF00B4D8),  // Brighter teal
-             ],
-             begin: Alignment.centerLeft,
-             end: Alignment.centerRight,
-           ),
-           borderRadius: 50,
-           child: const Text("Year",
-               style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white)),
-         ),
-         const SizedBox(width: 8),
-         GradientButton(
-           onPressed: () {
-             setState(() {
-               userRegistrationDataFuture =
-                   _userProvider.getUserRegistrations(29);
-               days = 29;
-               bottomInterval = 1;
-               pastYear = false;
-               pastWeek = false;
-             });
-           },
-           width: 80,
-           height: 28,
-           gradient: const LinearGradient(
-             colors: [
-               Color(0xFF2A52BE),
-               Color(0xFF00B4D8),
-             ],
-             begin: Alignment.centerLeft,
-             end: Alignment.centerRight,
-           ),
-           borderRadius: 50,
-           child: const Text("Month",
-               style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white)),
-         ),
-         const SizedBox(width: 8),
-         GradientButton(
-           onPressed: () {
-             setState(() {
-               userRegistrationDataFuture =
-                   _userProvider.getUserRegistrations(6);
-               days = 6;
-               bottomInterval = 1;
-               pastYear = false;
-               pastWeek = true;
-             });
-           },
-           width: 80,
-           height: 28,
-           gradient: const LinearGradient(
-             colors: [
-               Color(0xFF2A52BE),
-               Color(0xFF00B4D8),
-             ],
-             begin: Alignment.centerLeft,
-             end: Alignment.centerRight,
-           ),
-           borderRadius: 50,
-           child: const Text("Week",
-               style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white)),
-         ),
-       ],
-     ),
-   );
- }
+Widget buildFilterButtons() {
+  return SingleChildScrollView(
+    scrollDirection: Axis.horizontal,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        GradientButton(
+          onPressed: () {
+            setState(() {
+              userRegistrationDataFuture =
+                  _userProvider.getUserRegistrations(364, groupByMonths: true);
+              days = 364;
+              pastYear = true;
+              pastWeek = false;
+              bottomInterval = 1;
+            });
+          },
+          width: 80,
+          height: 28,
+          gradient: const LinearGradient(
+            colors: [
+              Color(0xFF6D8BDE),  // Soft sky blue
+              Color(0xFF8BB8FF),  // Lighter pastel blue
+            ],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+          ),
+          borderRadius: 50,
+          child: const Text(
+            "Year",
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        const SizedBox(width: 8),
+        GradientButton(
+          onPressed: () {
+            setState(() {
+              userRegistrationDataFuture =
+                  _userProvider.getUserRegistrations(29);
+              days = 29;
+              bottomInterval = 1;
+              pastYear = false;
+              pastWeek = false;
+            });
+          },
+          width: 80,
+          height: 28,
+          gradient: const LinearGradient(
+            colors: [
+              Color(0xFF6D8BDE),
+              Color(0xFF8BB8FF),
+            ],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+          ),
+          borderRadius: 50,
+          child: const Text(
+            "Month",
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        const SizedBox(width: 8),
+        GradientButton(
+          onPressed: () {
+            setState(() {
+              userRegistrationDataFuture =
+                  _userProvider.getUserRegistrations(6);
+              days = 6;
+              bottomInterval = 1;
+              pastYear = false;
+              pastWeek = true;
+            });
+          },
+          width: 80,
+          height: 28,
+          gradient: const LinearGradient(
+            colors: [
+              Color(0xFF6D8BDE),
+              Color(0xFF8BB8FF),
+            ],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+          ),
+          borderRadius: 50,
+          child: const Text(
+            "Week",
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
   Widget _buildSectionToggleButtons() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12.0),
@@ -1114,6 +1129,13 @@ Widget _buildMovieList() {
         decoration: BoxDecoration(
           color: Palette.darkPurple,
           borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         padding: const EdgeInsets.all(4),
         child: ListTile(
@@ -1169,6 +1191,13 @@ Widget _buildMovieList() {
               color: Colors.grey[800]?.withOpacity(0.8) ?? Colors.grey[800]!,
               borderRadius: BorderRadius.circular(90),
               border: Border.all(color: Palette.teal, width: 1),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 2,
+                  offset: const Offset(0, 1),
+                ),
+              ],
             ),
             child: Text(
               movie.score?.toStringAsFixed(1) ?? 'N/A',
@@ -1184,7 +1213,6 @@ Widget _buildMovieList() {
     },
   );
 }
-
   @override
   Widget build(BuildContext context) {
     return MasterScreenWidget(

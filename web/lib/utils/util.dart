@@ -118,7 +118,7 @@ Future<void> showConfirmationDialog(BuildContext context, Widget? dialogTitle,
             side: BorderSide(color: Palette.lightPurple.withOpacity(0.3)),
             borderRadius: BorderRadius.circular(15)),
         actionsAlignment: MainAxisAlignment.spaceBetween,
-        backgroundColor: Palette.darkPurple,
+        backgroundColor: Colors.black,
         title: dialogTitle,
         content: content,
         actions: <Widget>[
