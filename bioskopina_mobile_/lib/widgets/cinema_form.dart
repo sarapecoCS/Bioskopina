@@ -19,7 +19,6 @@ import 'circular_progress_indicator.dart';
 import 'form_builder_choice_chip.dart';
 import 'gradient_button.dart';
 
-// ignore: must_be_immutable
 class CinemaForm extends StatefulWidget {
   final Bioskopina bioskopina;
   final int? watchlistId;
@@ -226,29 +225,22 @@ class _CinemaFormState extends State<CinemaForm> {
                           if (existingRating.count == 0) {
                             // Insert new rating
                             Rating rating = Rating(
-                              null, // id will be auto-generated
-                              LoggedUser.user!.id, // UserId
-                              widget.bioskopina.id, // BioskopinaId
+                              null,
+                              LoggedUser.user!.id,
+                              widget.bioskopina.id,
                               ratingValue,
                               _cinemaFormKey.currentState!.fields["reviewText"]?.value ?? "",
-                              DateTime.now(), // CreatedTime
-                              null, // ModifiedTime
-                              null  // DeletedTime
+                              DateTime.now(),
+                              null,
+                              null
                             );
-                            var insertedRating = await _ratingProvider.insert(rating);
-
-                            // Update the rating with the generated ID if needed
-                            if (insertedRating.id != null) {
-                              rating.id = insertedRating.id;
-                              // You can perform additional operations with the rating ID here
-                            }
+                            await _ratingProvider.insert(rating);
                           } else {
                             // Update existing rating
                             var ratingToUpdate = existingRating.result[0];
                             ratingToUpdate.ratingValue = ratingValue;
                             ratingToUpdate.reviewText =
                                 _cinemaFormKey.currentState!.fields["reviewText"]?.value ?? "";
-                            ratingToUpdate.modifiedTime = DateTime.now();
 
                             await _ratingProvider.update(
                               ratingToUpdate.id!,

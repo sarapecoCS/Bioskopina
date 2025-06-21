@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/bioskopina.dart';
 import '../screens/bioskopina_detail_screen.dart';
 import 'waves_form.dart';
+import 'cinema_form.dart';
 
 class BioskopinaCard extends StatefulWidget {
   final Bioskopina bioskopina;
@@ -63,6 +64,17 @@ class _BioskopinaCardState extends State<BioskopinaCard>
       context: context,
       builder: (BuildContext context) {
         return WavesForm(
+          bioskopina: widget.bioskopina,
+        );
+      },
+    );
+  }
+
+  void _showCinemaForm(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CinemaForm(
           bioskopina: widget.bioskopina,
         );
       },
@@ -177,20 +189,41 @@ class _BioskopinaCardState extends State<BioskopinaCard>
             Positioned(
               top: 8,
               right: 8,
-              child: GestureDetector(
-                onTap: () => _showWavesForm(context),
-                child: Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.6),
-                    shape: BoxShape.circle,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  GestureDetector(
+                    onTap: () => _showCinemaForm(context),
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      margin: const EdgeInsets.only(right: 5),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.6),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.star_rate_rounded,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
                   ),
-                  child: const Icon(
-                    Icons.playlist_add_rounded,
-                    color: Colors.white,
-                    size: 20,
+                  GestureDetector(
+                    onTap: () => _showWavesForm(context),
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.6),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.playlist_add_rounded,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
           ],
