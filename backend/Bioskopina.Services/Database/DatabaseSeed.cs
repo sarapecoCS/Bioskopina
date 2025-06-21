@@ -33,7 +33,9 @@ namespace Bioskopina.Services.Database
             SeedComments(modelBuilder);
             SeedUserPostActions(modelBuilder);
             SeedUserCommentActions(modelBuilder);
-         
+            SeedListBioskopina(modelBuilder);
+
+
         }
         private void SeedBioskopina(ModelBuilder modelBuilder)
         {
@@ -613,37 +615,76 @@ namespace Bioskopina.Services.Database
                 new List()
                 {
                     Id = 1,
+                    UserId = 3,
+                    Name = "Relax",
+                    DateCreated = new DateTime(2025, 6, 1)
+                },
+                new List()
+                {
+                    Id = 2,
+                    UserId = 3,
+                    Name = "Historical",
+                    DateCreated = new DateTime(2025, 6, 5)
+                },
+                new List()
+                {
+                    Id = 3,
                     UserId = 2,
-                    Name = "Artistic",
-                    DateCreated = new DateTime(2025, 7, 11)
+                    Name = "Artistic Films",
+                    DateCreated = new DateTime(2025, 6, 10)
+                },
+                new List()
+                {
+                    Id = 4,
+                    UserId = 3,
+                    Name = "Classic Collection",
+                    DateCreated = new DateTime(2025, 6, 15)
+                },
+                new List()
+                {
+                    Id = 5,
+                    UserId = 4,
+                    Name = "Nihilistic Night",
+                    DateCreated = new DateTime(2025, 6, 20)
                 }
-         );
+            );
         }
 
         private void SeedListBioskopina(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<BioskopinaList>().HasData(
-                new BioskopinaList()
-                {
-                    Id = 1,
-                    ListId = 1,
-                    MovieId = 3,
-                },
-                new BioskopinaList()
-                {
-                    Id = 2,
-                    ListId = 1,
-                    MovieId = 2,
-                },
-                new BioskopinaList()
-                {
-                    Id = 3,
-                    ListId = 1,
-                    MovieId = 1,
-                }
-         );
-        }
+                // List 1: Movies 1, 2, 3 (Action)
+                new BioskopinaList { Id = 1, ListId = 1, MovieId = 1 },
+                new BioskopinaList { Id = 2, ListId = 1, MovieId = 2 },
+                new BioskopinaList { Id = 3, ListId = 1, MovieId = 3 },
 
+                // List 2: Movies 4, 5, 6 (Sci-Fi)
+                new BioskopinaList { Id = 4, ListId = 2, MovieId = 4 },
+                new BioskopinaList { Id = 5, ListId = 2, MovieId = 5 },
+                new BioskopinaList { Id = 6, ListId = 2, MovieId = 6 },
+
+                // List 3: Movies 7, 8, 9 (Artistic)
+                new BioskopinaList { Id = 7, ListId = 3, MovieId = 7 },
+                new BioskopinaList { Id = 8, ListId = 3, MovieId = 8 },
+                new BioskopinaList { Id = 9, ListId = 3, MovieId = 9 },
+
+                // List 4: Movies 1, 3, 5, 7 (Classic)
+                new BioskopinaList { Id = 10, ListId = 4, MovieId = 1 },
+                new BioskopinaList { Id = 11, ListId = 4, MovieId = 3 },
+                new BioskopinaList { Id = 12, ListId = 4, MovieId = 5 },
+                new BioskopinaList { Id = 13, ListId = 4, MovieId = 7 },
+
+                // List 5: Movies 2, 4, 6, 8 (Horror)
+                new BioskopinaList { Id = 14, ListId = 5, MovieId = 2 },
+                new BioskopinaList { Id = 15, ListId = 5, MovieId = 4 },
+                new BioskopinaList { Id = 16, ListId = 5, MovieId = 6 },
+                new BioskopinaList { Id = 17, ListId = 5, MovieId = 8 },
+
+                // 🚀 Add extra overlaps (e.g., Movie 9 appears again in List 4)
+                new BioskopinaList { Id = 18, ListId = 4, MovieId = 9 },
+                new BioskopinaList { Id = 19, ListId = 2, MovieId = 9 }
+            );
+        }
         private void SeedRatings(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Rating>().HasData(

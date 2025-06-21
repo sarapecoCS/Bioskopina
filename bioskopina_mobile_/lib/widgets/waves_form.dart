@@ -28,16 +28,37 @@ class _WavesFormState extends State<WavesForm> {
   late final BioskopinaListProvider _bioskopinaListProvider;
   late Future<SearchResult<BioskopinaList>> _bioskopinaListFuture;
   final _constellationFormKey = GlobalKey<FormBuilderState>();
+  bool _isSaving = false;
+  bool _initializationError = false;
 
   @override
   void initState() {
-    _listtProvider = context.read<ListtProvider>();
-    _listtFuture = _listtProvider.get(filter: {"UserId": "${LoggedUser.user!.id}"});
-
-    _bioskopinaListProvider = context.read<BioskopinaListProvider>();
-    _bioskopinaListFuture = _bioskopinaListProvider.get(filter: {"MovieId": "${widget.bioskopina.id}"});
-
     super.initState();
+    _initializeProviders();
+  }
+
+  void _initializeProviders() {
+    try {
+      if (!mounted) return;
+
+      _listtProvider = context.read<ListtProvider>();
+      _bioskopinaListProvider = context.read<BioskopinaListProvider>();
+
+      final userId = LoggedUser.user?.id;
+      if (userId == null) {
+        throw Exception('User not logged in');
+      }
+
+      _listtFuture = _listtProvider.get(filter: {"UserId": userId.toString()});
+      _bioskopinaListFuture = _bioskopinaListProvider.get(
+        filter: {"MovieId": widget.bioskopina.id?.toString() ?? ''}
+      );
+    } catch (e) {
+      debugPrint('Initialization error: $e');
+      _initializationError = true;
+      _listtFuture = Future.error(e);
+      _bioskopinaListFuture = Future.error(e);
+    }
   }
 
   @override
@@ -61,121 +82,181 @@ class _WavesFormState extends State<WavesForm> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              RichText(
-                text: TextSpan(
-                  children: [
-                    const TextSpan(
-                        text: 'Add ',
-                        style: TextStyle(color: Palette.lightPurple)),
-                    TextSpan(
-                      text: '${widget.bioskopina.titleEn}',
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, color: Palette.rose),
-                    ),
-                    const TextSpan(
-                        text: ' to selected Stars:',
-                        style: TextStyle(color: Palette.lightPurple)),
-                  ],
-                ),
-              ),
+              _buildTitle(),
               const SizedBox(height: 20),
-              FutureBuilder<SearchResult<Listt>>(
-                  future: _listtFuture,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const MyProgressIndicator();
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      var stars = snapshot.data!.result;
-                      return FormBuilder(
-                        key: _constellationFormKey,
-                        child: FutureBuilder<SearchResult<BioskopinaList>>(
-                            future: _bioskopinaListFuture,
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                return const MyProgressIndicator();
-                              } else if (snapshot.hasError) {
-                                return Text('Error: ${snapshot.error}');
-                              } else {
-                                var selectedStars = snapshot.data!.result;
-                                return MyFormBuilderFilterChip(
-                                  labelText: "Your Stars",
-                                  name: 'stars',
-                                  fontSize: 20,
-                                  options: [
-                                    ...stars.map(
-                                      (star) => FormBuilderChipOption(
-                                        value: star.id.toString(),
-                                        child: Text(star.name!,
-                                            style: const TextStyle(
-                                                color: Palette.midnightPurple)),
-                                      ),
-                                    ),
-                                  ],
-                                  initialValue: selectedStars
-                                      .where((bioskopinaList) => stars.any(
-                                          (listItem) =>
-                                              listItem.id == bioskopinaList.listId))
-                                      .map((bioskopinaList) =>
-                                          bioskopinaList.listId.toString())
-                                      .toList(),
-                                );
-                              }
-                            }),
-                      );
-                    }
-                  }),
+              _initializationError
+                  ? _buildErrorWidget('Initialization failed. Please try again.')
+                  : _buildFormContent(),
               const SizedBox(height: 30),
-              GradientButton(
-                  onPressed: () async {
-                    try {
-                      _constellationFormKey.currentState?.saveAndValidate();
-
-                      var selectedStars = (_constellationFormKey
-                                  .currentState?.value['stars'] as List?)
-                              ?.whereType<String>()
-                              .toList() ?? [];
-
-                      List<BioskopinaList> bioskopinaListInsert = [];
-
-                      if (selectedStars.isNotEmpty) {
-                        for (var listId in selectedStars) {
-                          bioskopinaListInsert.add(BioskopinaList(
-                              null, int.parse(listId), widget.bioskopina.id, null));
-                        }
-                      }
-
-                      await _bioskopinaListProvider.updateMovieLists(
-                          widget.bioskopina.id!, bioskopinaListInsert);
-
-                      if (context.mounted) {
-                        showInfoDialog(
-                            context,
-                            const Icon(Icons.task_alt,
-                                color: Palette.lightPurple, size: 50),
-                            const Text(
-                              "Saved successfully!",
-                              textAlign: TextAlign.center,
-                            ));
-                      }
-                    } on Exception catch (e) {
-                      if (context.mounted) {
-                        showErrorDialog(context, e);
-                      }
-                    }
-                  },
-                  width: 60,
-                  height: 30,
-                  borderRadius: 50,
-                  gradient: Palette.buttonGradient,
-                  child: const Text("Save",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500, color: Palette.white)))
+              _buildSaveButton(),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Widget _buildTitle() {
+    return RichText(
+      text: TextSpan(
+        children: [
+          const TextSpan(
+            text: 'Add ',
+            style: TextStyle(color: Palette.lightPurple),
+          ),
+          TextSpan(
+            text: widget.bioskopina.titleEn ?? 'Movie',
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Palette.rose,
+            ),
+          ),
+          const TextSpan(
+            text: ' to selected Stars:',
+            style: TextStyle(color: Palette.lightPurple),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFormContent() {
+    return FutureBuilder<SearchResult<Listt>>(
+      future: _listtFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const MyProgressIndicator();
+        }
+
+        if (snapshot.hasError) {
+          return _buildErrorWidget('Failed to load stars: ${snapshot.error}');
+        }
+
+        if (!snapshot.hasData || snapshot.data!.result.isEmpty) {
+          return _buildErrorWidget('No stars available');
+        }
+
+        final stars = snapshot.data!.result;
+        return FormBuilder(
+          key: _constellationFormKey,
+          child: FutureBuilder<SearchResult<BioskopinaList>>(
+            future: _bioskopinaListFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const MyProgressIndicator();
+              }
+
+              if (snapshot.hasError) {
+                return _buildErrorWidget('Failed to load selections: ${snapshot.error}');
+              }
+
+              final selectedStars = snapshot.hasData
+                  ? snapshot.data!.result
+                  : <BioskopinaList>[];
+
+              return MyFormBuilderFilterChip(
+                labelText: "Your Stars",
+                name: 'stars',
+                fontSize: 20,
+                options: stars.map((star) => FormBuilderChipOption(
+                  value: star.id?.toString() ?? '',
+                  child: Text(
+                    star.name ?? 'Unnamed Star',
+                    style: const TextStyle(color: Palette.midnightPurple),
+                  ),
+                )).toList(),
+                initialValue: selectedStars
+                    .map((e) => e.listId?.toString())
+                    .whereType<String>()
+                    .toList(),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildErrorWidget(String message) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: Text(
+        message,
+        style: const TextStyle(
+          color: Colors.red,
+          fontSize: 16,
+        ),
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+
+  Widget _buildSaveButton() {
+    if (_isSaving) {
+      return const MyProgressIndicator();
+    }
+
+    return GradientButton(
+      onPressed: _handleSave,
+      width: 60,
+      height: 30,
+      borderRadius: 50,
+      gradient: Palette.buttonGradient,
+      child: const Text(
+        "Save",
+        style: TextStyle(
+          fontWeight: FontWeight.w500,
+          color: Palette.white,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleSave() async {
+    if (!mounted || _isSaving) return;
+
+    setState(() => _isSaving = true);
+
+    try {
+      if (_constellationFormKey.currentState?.saveAndValidate() ?? false) {
+        final formData = _constellationFormKey.currentState?.value;
+        final selectedStars = (formData?['stars'] as List?)?.whereType<String>().toList() ?? [];
+
+        final bioskopinaListInsert = selectedStars
+            .map((listId) => BioskopinaList(
+                  null,
+                  int.tryParse(listId) ?? 0,
+                  widget.bioskopina.id ?? 0,
+                  null,
+                ))
+            .toList();
+
+        await _bioskopinaListProvider.updateMovieLists(
+          widget.bioskopina.id ?? 0,
+          bioskopinaListInsert,
+        );
+
+        if (mounted) {
+          Navigator.of(context).pop(true);
+        }
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Please select at least one star')),
+          );
+        }
+      }
+    } catch (e) {
+      debugPrint('Save error: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error saving: ${e.toString()}')),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isSaving = false);
+      }
+    }
   }
 }

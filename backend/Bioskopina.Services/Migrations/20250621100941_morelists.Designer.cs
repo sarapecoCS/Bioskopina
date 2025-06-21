@@ -4,6 +4,7 @@ using Bioskopina.Services.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bioskopina.Services.Migrations
 {
     [DbContext(typeof(BioskopinaContext))]
-    partial class BioskopinaContextModelSnapshot : ModelSnapshot
+    [Migration("20250621100941_morelists")]
+    partial class morelists
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -202,122 +205,6 @@ namespace Bioskopina.Services.Migrations
                     b.HasIndex("MovieId");
 
                     b.ToTable("BioskopinaList", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ListId = 1,
-                            MovieId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ListId = 1,
-                            MovieId = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ListId = 1,
-                            MovieId = 3
-                        },
-                        new
-                        {
-                            Id = 4,
-                            ListId = 2,
-                            MovieId = 4
-                        },
-                        new
-                        {
-                            Id = 5,
-                            ListId = 2,
-                            MovieId = 5
-                        },
-                        new
-                        {
-                            Id = 6,
-                            ListId = 2,
-                            MovieId = 6
-                        },
-                        new
-                        {
-                            Id = 7,
-                            ListId = 3,
-                            MovieId = 7
-                        },
-                        new
-                        {
-                            Id = 8,
-                            ListId = 3,
-                            MovieId = 8
-                        },
-                        new
-                        {
-                            Id = 9,
-                            ListId = 3,
-                            MovieId = 9
-                        },
-                        new
-                        {
-                            Id = 10,
-                            ListId = 4,
-                            MovieId = 1
-                        },
-                        new
-                        {
-                            Id = 11,
-                            ListId = 4,
-                            MovieId = 3
-                        },
-                        new
-                        {
-                            Id = 12,
-                            ListId = 4,
-                            MovieId = 5
-                        },
-                        new
-                        {
-                            Id = 13,
-                            ListId = 4,
-                            MovieId = 7
-                        },
-                        new
-                        {
-                            Id = 14,
-                            ListId = 5,
-                            MovieId = 2
-                        },
-                        new
-                        {
-                            Id = 15,
-                            ListId = 5,
-                            MovieId = 4
-                        },
-                        new
-                        {
-                            Id = 16,
-                            ListId = 5,
-                            MovieId = 6
-                        },
-                        new
-                        {
-                            Id = 17,
-                            ListId = 5,
-                            MovieId = 8
-                        },
-                        new
-                        {
-                            Id = 18,
-                            ListId = 4,
-                            MovieId = 9
-                        },
-                        new
-                        {
-                            Id = 19,
-                            ListId = 2,
-                            MovieId = 9
-                        });
                 });
 
             modelBuilder.Entity("Bioskopina.Services.Database.BioskopinaWatchlist", b =>
@@ -854,14 +741,14 @@ namespace Bioskopina.Services.Migrations
                             Id = 1,
                             DateCreated = new DateTime(2025, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Relax",
-                            UserId = 3
+                            UserId = 1
                         },
                         new
                         {
                             Id = 2,
                             DateCreated = new DateTime(2025, 6, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Historical",
-                            UserId = 3
+                            UserId = 1
                         },
                         new
                         {
