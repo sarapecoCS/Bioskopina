@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/bioskopina.dart';
 import '../screens/bioskopina_detail_screen.dart';
-import 'cinema_form.dart';  // Import the CinemaForm
+import 'waves_form.dart';
 
 class BioskopinaCard extends StatefulWidget {
   final Bioskopina bioskopina;
@@ -37,7 +37,7 @@ class _BioskopinaCardState extends State<BioskopinaCard>
     );
 
     _scaleAnimation = _controller.drive(Tween(begin: 1.0, end: 0.95));
-    _watchlistId = 0; // Initialize with 0, will be fetched later
+    _watchlistId = 0;
   }
 
   @override
@@ -58,14 +58,12 @@ class _BioskopinaCardState extends State<BioskopinaCard>
     _controller.forward();
   }
 
-  // Add this method to show the CinemaForm
-  void _showCinemaForm(BuildContext context) {
+  void _showWavesForm(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return CinemaForm(
+        return WavesForm(
           bioskopina: widget.bioskopina,
-          watchlistId: _watchlistId,
         );
       },
     );
@@ -99,7 +97,6 @@ class _BioskopinaCardState extends State<BioskopinaCard>
         ),
         child: Stack(
           children: [
-            // Main content gesture detector
             GestureDetector(
               onTapDown: _onTapDown,
               onTapUp: (details) {
@@ -134,7 +131,6 @@ class _BioskopinaCardState extends State<BioskopinaCard>
                               size: 40,
                             ),
                           ),
-                    // Gradient overlay at bottom for title
                     Positioned(
                       left: 0,
                       right: 0,
@@ -178,12 +174,11 @@ class _BioskopinaCardState extends State<BioskopinaCard>
                 ),
               ),
             ),
-            // Watchlist button in top-right corner
             Positioned(
               top: 8,
               right: 8,
               child: GestureDetector(
-                onTap: () => _showCinemaForm(context),
+                onTap: () => _showWavesForm(context),
                 child: Container(
                   padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
@@ -191,7 +186,7 @@ class _BioskopinaCardState extends State<BioskopinaCard>
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
-                   Icons.playlist_add_rounded,
+                    Icons.playlist_add_rounded,
                     color: Colors.white,
                     size: 20,
                   ),

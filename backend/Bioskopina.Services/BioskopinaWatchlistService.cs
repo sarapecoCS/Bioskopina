@@ -30,10 +30,6 @@ namespace Bioskopina.Services
                 query = query.Where(mWatchlist => mWatchlist.WatchlistId == search.WatchlistId);
             }
 
-            if (search?.WatchStatus != null)
-            {
-                query = query.Where(mWatchlist => mWatchlist.WatchStatus == search.WatchStatus);
-            }
 
             //if (search?.NewestFirst != null)
             //{

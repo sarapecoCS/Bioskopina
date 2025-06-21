@@ -14,31 +14,28 @@ import '../utils/colors.dart';
 import 'circular_progress_indicator.dart';
 import 'form_builder_filter_chip.dart';
 
-class ConstellationForm extends StatefulWidget {
+class WavesForm extends StatefulWidget {
   final Bioskopina bioskopina;
-  const ConstellationForm({super.key, required this.bioskopina});
+  const WavesForm({super.key, required this.bioskopina});
 
   @override
-  State<ConstellationForm> createState() => _ConstellationFormState();
+  State<WavesForm> createState() => _WavesFormState();
 }
 
-class _ConstellationFormState extends State<ConstellationForm> {
+class _WavesFormState extends State<WavesForm> {
   late final ListtProvider _listtProvider;
   late Future<SearchResult<Listt>> _listtFuture;
   late final BioskopinaListProvider _bioskopinaListProvider;
-  late Future<SearchResult<BioskopinaList>> _animeListFuture;
+  late Future<SearchResult<BioskopinaList>> _bioskopinaListFuture;
   final _constellationFormKey = GlobalKey<FormBuilderState>();
 
   @override
   void initState() {
     _listtProvider = context.read<ListtProvider>();
-    _listtFuture =
-        _listtProvider.get(filter: {"UserId": "${LoggedUser.user!.id}"});
+    _listtFuture = _listtProvider.get(filter: {"UserId": "${LoggedUser.user!.id}"});
 
     _bioskopinaListProvider = context.read<BioskopinaListProvider>();
-
-    _animeListFuture =
-        _bioskopinaListProvider.get(filter: {"MovieId": "${widget.bioskopina.id}"});
+    _bioskopinaListFuture = _bioskopinaListProvider.get(filter: {"MovieId": "${widget.bioskopina.id}"});
 
     super.initState();
   }
@@ -86,27 +83,22 @@ class _ConstellationFormState extends State<ConstellationForm> {
                   future: _listtFuture,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const MyProgressIndicator(); // Loading state
+                      return const MyProgressIndicator();
                     } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}'); // Error state
+                      return Text('Error: ${snapshot.error}');
                     } else {
-                      // Data loaded successfully
                       var stars = snapshot.data!.result;
                       return FormBuilder(
                         key: _constellationFormKey,
                         child: FutureBuilder<SearchResult<BioskopinaList>>(
-                            future: _animeListFuture,
+                            future: _bioskopinaListFuture,
                             builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const MyProgressIndicator(); // Loading state
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return const MyProgressIndicator();
                               } else if (snapshot.hasError) {
-                                return Text(
-                                    'Error: ${snapshot.error}'); // Error state
+                                return Text('Error: ${snapshot.error}');
                               } else {
-                                // Data loaded successfully
                                 var selectedStars = snapshot.data!.result;
-
                                 return MyFormBuilderFilterChip(
                                   labelText: "Your Stars",
                                   name: 'stars',
@@ -122,11 +114,11 @@ class _ConstellationFormState extends State<ConstellationForm> {
                                     ),
                                   ],
                                   initialValue: selectedStars
-                                      .where((animeList) => stars.any(
+                                      .where((bioskopinaList) => stars.any(
                                           (listItem) =>
-                                              listItem.id == animeList.listId))
-                                      .map((animeList) =>
-                                          animeList.listId.toString())
+                                              listItem.id == bioskopinaList.listId))
+                                      .map((bioskopinaList) =>
+                                          bioskopinaList.listId.toString())
                                       .toList(),
                                 );
                               }
@@ -143,20 +135,19 @@ class _ConstellationFormState extends State<ConstellationForm> {
                       var selectedStars = (_constellationFormKey
                                   .currentState?.value['stars'] as List?)
                               ?.whereType<String>()
-                              .toList() ??
-                          [];
+                              .toList() ?? [];
 
-                      List<BioskopinaList> animeListInsert = [];
+                      List<BioskopinaList> bioskopinaListInsert = [];
 
                       if (selectedStars.isNotEmpty) {
                         for (var listId in selectedStars) {
-                          animeListInsert.add(BioskopinaList(
+                          bioskopinaListInsert.add(BioskopinaList(
                               null, int.parse(listId), widget.bioskopina.id, null));
                         }
                       }
 
-                      await _bioskopinaListProvider.updateListsForMovie(
-                          widget.bioskopina.id!, animeListInsert);
+                      await _bioskopinaListProvider.updateMovieLists(
+                          widget.bioskopina.id!, bioskopinaListInsert);
 
                       if (context.mounted) {
                         showInfoDialog(

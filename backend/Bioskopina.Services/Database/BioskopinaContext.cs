@@ -167,9 +167,7 @@ namespace Bioskopina.Services.Database
 
                 entity.Property(e => e.Id).HasColumnName("ID");
                 entity.Property(e => e.MovieId).HasColumnName("MovieID");
-                entity.Property(e => e.DateFinished).HasColumnType("datetime");
-                entity.Property(e => e.DateStarted).HasColumnType("datetime");
-                entity.Property(e => e.WatchStatus).HasMaxLength(30);
+           
                 entity.Property(e => e.WatchlistId).HasColumnName("WatchlistID");
 
                 entity.HasOne(d => d.Movie)

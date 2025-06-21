@@ -14,24 +14,23 @@ import '../providers/bioskopina_provider.dart';
 import '../widgets/bioskopina_cards.dart';
 import '../widgets/empty.dart';
 
-class ConstellationDetailScreen extends StatefulWidget {
+class WaveDetailScreen extends StatefulWidget {
   final int selectedIndex;
   final Listt star;
   final List<BioskopinaList> bioskopinaListRandomObj;
 
-  const ConstellationDetailScreen({
-  super.key,
-  required this.selectedIndex,
-  required this.star,
-  required this.bioskopinaListRandomObj,
+  const WaveDetailScreen({
+    super.key,
+    required this.selectedIndex,
+    required this.star,
+    required this.bioskopinaListRandomObj,
   });
 
   @override
-  State<ConstellationDetailScreen> createState() =>
-      _ConstellationDetailScreenState();
+  State<WaveDetailScreen> createState() => _WaveDetailScreenState();
 }
 
-class _ConstellationDetailScreenState extends State<ConstellationDetailScreen> {
+class _WaveDetailScreenState extends State<WaveDetailScreen> {
   late MovieProvider _bioskopinaProvider;
   late BioskopinaListProvider _bioskopinaListProvider;
   late SearchResult<BioskopinaList> _bioskopinaList;
@@ -78,7 +77,7 @@ class _ConstellationDetailScreenState extends State<ConstellationDetailScreen> {
       },
     );
 
-    List<int> animeIds = _bioskopinaList.result
+    List<int> movieIds = _bioskopinaList.result
         .map((bioskopinaList) => bioskopinaList.movieId!)
         .toList();
 
@@ -86,7 +85,7 @@ class _ConstellationDetailScreenState extends State<ConstellationDetailScreen> {
       _filter = {
         "GenresIncluded": "true",
         "NewestFirst": "true",
-        "Ids": animeIds,
+        "Ids": movieIds,
       };
       return _filter;
     }
@@ -95,8 +94,8 @@ class _ConstellationDetailScreenState extends State<ConstellationDetailScreen> {
     return {};
   }
 
-  Widget buildStarTrailIcon(double size) {
-    return Icon(Icons.auto_awesome, size: size, color: Palette.lightPurple);
+  Widget buildWaveIcon(double size) {
+    return Icon(Icons.waves, size: size, color: Palette.lightPurple);
   }
 
   @override
@@ -111,7 +110,7 @@ class _ConstellationDetailScreenState extends State<ConstellationDetailScreen> {
         children: [
           Text("${widget.star.name}"),
           const SizedBox(width: 5),
-          buildStarTrailIcon(24),
+          buildWaveIcon(24),
         ],
       ),
       child: FutureBuilder<Map<String, dynamic>>(
@@ -132,9 +131,9 @@ class _ConstellationDetailScreenState extends State<ConstellationDetailScreen> {
             Map<String, dynamic> filter = snapshot.data!;
             if (widget.bioskopinaListRandomObj.isEmpty || filter.isEmpty) {
               return const Empty(
-                text: Text("This Star is empty."),
+                text: Text("This Wave is empty."),
                 screen: HomeScreen(selectedIndex: 0),
-                child: Text("Explore Anime",
+                child: Text("Explore movies",
                     style: TextStyle(color: Palette.lightPurple)),
               );
             }
@@ -142,7 +141,7 @@ class _ConstellationDetailScreenState extends State<ConstellationDetailScreen> {
               selectedIndex: widget.selectedIndex,
               page: page,
               pageSize: pageSize,
-              fetchMovie: fetchAnime,
+              fetchMovie: fetchMovies,
               fetchPage: fetchPage,
               filter: filter,
             );
@@ -152,7 +151,7 @@ class _ConstellationDetailScreenState extends State<ConstellationDetailScreen> {
     );
   }
 
-  Future<SearchResult<Bioskopina>> fetchAnime() {
+  Future<SearchResult<Bioskopina>> fetchMovies() {
     return _bioskopinaProvider.get(filter: {
       ..._filter,
       "Page": "$page",

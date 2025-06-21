@@ -5,7 +5,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../providers/bioskopina_list_provider.dart';
 import '../providers/list_provider.dart';
-import '../screens/constellation_detail_screen.dart';
+import '../screens/waves_detail_screen.dart';
 import '../widgets/star_form.dart';
 import '../models/bioskopina_list.dart';
 import '../models/list.dart';
@@ -15,15 +15,15 @@ import '../utils/util.dart';
 import '../widgets/pagination_buttons.dart';
 import 'empty.dart';
 
-class ConstellationCards extends StatefulWidget {
+class WaveCards extends StatefulWidget {
   final int selectedIndex;
-  const ConstellationCards({super.key, required this.selectedIndex});
+  const WaveCards({super.key, required this.selectedIndex});
 
   @override
-  State<ConstellationCards> createState() => _ConstellationCardsState();
+  State<WaveCards> createState() => _WaveCardsState();
 }
 
-class _ConstellationCardsState extends State<ConstellationCards> {
+class _WaveCardsState extends State<WaveCards> {
   late Future<SearchResult<Listt>> _listFuture;
   late final ListtProvider _listProvider;
   late final BioskopinaListProvider _bioskopinaListProvider;
@@ -97,7 +97,7 @@ class _ConstellationCardsState extends State<ConstellationCards> {
               child: Center(
                 child: Wrap(
                     children:
-                        List.generate(6, (index) => _constellationIndicator())),
+                        List.generate(6, (index) => _waveIndicator())),
               ),
             ); // Loading state
           } else if (snapshot.hasError) {
@@ -108,7 +108,7 @@ class _ConstellationCardsState extends State<ConstellationCards> {
             if (lists.isEmpty) {
               return const Empty(
                 text: Text(
-                  "Your Constellation is empty.\nTry adding some Stars!",
+                  "Your Waves are empty.\nTry adding some Stars!",
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Palette.lightPurple),
                 ),
@@ -182,10 +182,9 @@ class _ConstellationCardsState extends State<ConstellationCards> {
             "GetRandom": "true",
           },
         ),
-        //  future: _loadDataForever(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return _constellationIndicator(); // Loading state
+            return _waveIndicator(); // Loading state
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}'); // Error state
           } else {
@@ -195,7 +194,7 @@ class _ConstellationCardsState extends State<ConstellationCards> {
             return GestureDetector(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ConstellationDetailScreen(
+                    builder: (context) => WaveDetailScreen(
                           selectedIndex: widget.selectedIndex,
                           star: list,
                           bioskopinaListRandomObj: bioskopinaListObject,
@@ -247,7 +246,7 @@ class _ConstellationCardsState extends State<ConstellationCards> {
         });
   }
 
-  Container _constellationIndicator() {
+  Container _waveIndicator() {
     final Size screenSize = MediaQuery.of(context).size;
     double? cardWidth = screenSize.width * 0.45;
     double? cardHeight = screenSize.height * 0.2;

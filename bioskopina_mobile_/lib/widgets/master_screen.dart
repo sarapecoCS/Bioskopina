@@ -5,6 +5,7 @@ import 'package:responsive_navigation_bar/responsive_navigation_bar.dart';
 import '../screens/help_screen.dart';
 import '../screens/constellation_screen.dart';
 import '../screens/explore_screen.dart';
+import '../screens/waves_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/cinema_screen.dart';
 import '../widgets/user_profile_dialog.dart';
@@ -225,7 +226,7 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
                   break;
                 case 3:
                   Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (_) => CinemaScreen(selectedIndex: index)));
+                      MaterialPageRoute(builder: (_) => WaveScreen(selectedIndex: index)));
                   break;
               }
             },

@@ -11,12 +11,7 @@ public partial class BioskopinaWatchlist
 
     public int WatchlistId { get; set; }
 
-    public string WatchStatus { get; set; } = null!;
 
-
-    public DateTime? DateStarted { get; set; }
-
-    public DateTime? DateFinished { get; set; }
 
     public virtual Bioskopina Movie { get; set; } = null!;
 

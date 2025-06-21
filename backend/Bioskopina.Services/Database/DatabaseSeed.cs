@@ -566,35 +566,35 @@ namespace Bioskopina.Services.Database
         {
             modelBuilder.Entity<BioskopinaWatchlist>().HasData(
                 // User 1 watchlist with 3 movies
-                new BioskopinaWatchlist { Id = 1, MovieId = 1, WatchlistId = 1, WatchStatus = "Watching", DateStarted = new DateTime(2025, 7, 10) },
-                new BioskopinaWatchlist { Id = 2, MovieId = 2, WatchlistId = 1, WatchStatus = "Watching", DateStarted = new DateTime(2025, 7, 10) },
-                new BioskopinaWatchlist { Id = 3, MovieId = 3, WatchlistId = 1, WatchStatus = "Completed", DateStarted = new DateTime(2025, 5, 10), DateFinished = new DateTime(2025, 6, 10) },
+                new BioskopinaWatchlist { Id = 1, MovieId = 1, WatchlistId = 1 },
+                new BioskopinaWatchlist { Id = 2, MovieId = 2, WatchlistId = 1},
+                new BioskopinaWatchlist { Id = 3, MovieId = 3, WatchlistId = 1 },
 
                 // User 2 watchlist with 3 movies
-                new BioskopinaWatchlist { Id = 4, MovieId = 2, WatchlistId = 2, WatchStatus = "Completed", DateStarted = new DateTime(2025, 3, 15), DateFinished = new DateTime(2025, 4, 15) },
-                new BioskopinaWatchlist { Id = 5, MovieId = 4, WatchlistId = 2, WatchStatus = "On Hold", DateStarted = new DateTime(2025, 5, 1) },
-                new BioskopinaWatchlist { Id = 6, MovieId = 5, WatchlistId = 2, WatchStatus = "On Hold", DateStarted = new DateTime(2025, 5, 1) },
+                new BioskopinaWatchlist { Id = 4, MovieId = 2, WatchlistId = 2 },
+                new BioskopinaWatchlist { Id = 5, MovieId = 4, WatchlistId = 2 },
+                new BioskopinaWatchlist { Id = 6, MovieId = 5, WatchlistId = 2 },
 
                 // User 3 watchlist with 2 movies
-                new BioskopinaWatchlist { Id = 7, MovieId = 1, WatchlistId = 3, WatchStatus = "Dropped", DateStarted = new DateTime(2025, 6, 10) },
-                new BioskopinaWatchlist { Id = 8, MovieId = 6, WatchlistId = 3, WatchStatus = "Dropped", DateStarted = new DateTime(2025, 6, 10) },
+                new BioskopinaWatchlist { Id = 7, MovieId = 1, WatchlistId = 3 },
+                new BioskopinaWatchlist { Id = 8, MovieId = 6, WatchlistId = 3 },
 
                 // User 4 watchlist with 4 movies
-                new BioskopinaWatchlist { Id = 9, MovieId = 3, WatchlistId = 4, WatchStatus = "Watching", DateStarted = new DateTime(2025, 7, 5) },
-                new BioskopinaWatchlist { Id = 10, MovieId = 5, WatchlistId = 4, WatchStatus = "Watching", DateStarted = new DateTime(2025, 7, 5) },
-                new BioskopinaWatchlist { Id = 11, MovieId = 7, WatchlistId = 4, WatchStatus = "Watching", DateStarted = new DateTime(2025, 7, 5) },
-                new BioskopinaWatchlist { Id = 12, MovieId = 8, WatchlistId = 4, WatchStatus = "Watching", DateStarted = new DateTime(2025, 7, 5) },
+                new BioskopinaWatchlist { Id = 9, MovieId = 3, WatchlistId = 4 },
+                new BioskopinaWatchlist { Id = 10, MovieId = 5, WatchlistId = 4 },
+                new BioskopinaWatchlist { Id = 11, MovieId = 7, WatchlistId = 4 },
+                new BioskopinaWatchlist { Id = 12, MovieId = 8, WatchlistId = 4 },
 
                 // User 5 watchlist with completed movies (IDs 13-21)
-                new BioskopinaWatchlist { Id = 13, MovieId = 1, WatchlistId = 5, WatchStatus = "Completed", DateStarted = new DateTime(2025, 3, 12), DateFinished = new DateTime(2025, 4, 12) },
-                new BioskopinaWatchlist { Id = 14, MovieId = 2, WatchlistId = 5, WatchStatus = "Completed", DateStarted = new DateTime(2025, 3, 12), DateFinished = new DateTime(2025, 4, 12) },
-                new BioskopinaWatchlist { Id = 15, MovieId = 3, WatchlistId = 5, WatchStatus = "Completed", DateStarted = new DateTime(2025, 3, 12), DateFinished = new DateTime(2025, 4, 12) },
-                new BioskopinaWatchlist { Id = 16, MovieId = 4, WatchlistId = 5, WatchStatus = "Completed", DateStarted = new DateTime(2025, 3, 12), DateFinished = new DateTime(2025, 4, 12) },
-                new BioskopinaWatchlist { Id = 17, MovieId = 5, WatchlistId = 5, WatchStatus = "Completed", DateStarted = new DateTime(2025, 3, 12), DateFinished = new DateTime(2025, 4, 12) },
-                new BioskopinaWatchlist { Id = 18, MovieId = 6, WatchlistId = 5, WatchStatus = "Completed", DateStarted = new DateTime(2025, 3, 12), DateFinished = new DateTime(2025, 4, 12) },
-                new BioskopinaWatchlist { Id = 19, MovieId = 7, WatchlistId = 5, WatchStatus = "Completed", DateStarted = new DateTime(2025, 3, 12), DateFinished = new DateTime(2025, 4, 12) },
-                new BioskopinaWatchlist { Id = 20, MovieId = 8, WatchlistId = 5, WatchStatus = "Completed", DateStarted = new DateTime(2025, 3, 12), DateFinished = new DateTime(2025, 4, 12) },
-                new BioskopinaWatchlist { Id = 21, MovieId = 9, WatchlistId = 5, WatchStatus = "Completed", DateStarted = new DateTime(2025, 3, 12), DateFinished = new DateTime(2025, 4, 12) }
+                new BioskopinaWatchlist { Id = 13, MovieId = 1, WatchlistId = 5 },
+                new BioskopinaWatchlist { Id = 14, MovieId = 2, WatchlistId = 5 },
+                new BioskopinaWatchlist { Id = 15, MovieId = 3, WatchlistId = 5 },
+                new BioskopinaWatchlist { Id = 16, MovieId = 4, WatchlistId = 5 },
+                new BioskopinaWatchlist { Id = 17, MovieId = 5, WatchlistId = 5 },
+                new BioskopinaWatchlist { Id = 18, MovieId = 6, WatchlistId = 5 },
+                new BioskopinaWatchlist { Id = 19, MovieId = 7, WatchlistId = 5 },
+                new BioskopinaWatchlist { Id = 20, MovieId = 8, WatchlistId = 5 },
+                new BioskopinaWatchlist { Id = 21, MovieId = 9, WatchlistId = 5 }
 
 
                 
@@ -614,7 +614,7 @@ namespace Bioskopina.Services.Database
                 {
                     Id = 1,
                     UserId = 2,
-                    Name = "Favorites",
+                    Name = "Artistic",
                     DateCreated = new DateTime(2025, 7, 11)
                 }
          );

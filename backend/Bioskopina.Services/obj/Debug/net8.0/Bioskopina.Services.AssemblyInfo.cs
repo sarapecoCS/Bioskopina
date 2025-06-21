@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Bioskopina.Services")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+181562fc5d12950049aab39cc54c5def6823af55")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e11d317d04ba2aa2db68f91c9d67e7ee801c093e")]
 [assembly: System.Reflection.AssemblyProductAttribute("Bioskopina.Services")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Bioskopina.Services")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
