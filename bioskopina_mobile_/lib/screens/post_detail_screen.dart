@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 
 import '../models/comment.dart';
 import '../providers/comment_provider.dart';
-import '../widgets/comment_cards.dart';
 import '../widgets/content_form.dart';
 import '../widgets/master_screen.dart';
 import '../widgets/separator.dart';
@@ -11,8 +10,6 @@ import '../models/post.dart';
 import '../models/search_result.dart';
 import '../utils/colors.dart';
 import '../widgets/content_card.dart';
-
-
 
 class PostDetailScreen extends StatefulWidget {
   final Post post;
@@ -25,27 +22,38 @@ class PostDetailScreen extends StatefulWidget {
 class _PostDetailScreenState extends State<PostDetailScreen> {
   late final CommentProvider _commentProvider;
   Post? _postUpdated;
+  late Future<SearchResult<Comment>> _commentsFuture;
+  List<Comment> _comments = [];
 
   int page = 0;
   int pageSize = 20;
 
-  Map<String, dynamic> _filter = {};
-
   @override
   void initState() {
     _commentProvider = context.read<CommentProvider>();
-
-    _filter = {
-      "PostId": widget.post.id,
-      "MostLikedFirst": "true",
-    };
-
+    _loadComments();
     super.initState();
+  }
+
+  void _loadComments() {
+    setState(() {
+      _commentsFuture = _commentProvider.get(filter: {
+        "PostId": "${widget.post.id}",
+        "MostLikedFirst": "true",
+        "Page": "$page",
+        "PageSize": "$pageSize",
+      }).then((result) {
+        // Filter comments to ensure they belong to this post
+        _comments = result.result.where((comment) => comment.postId == widget.post.id).toList();
+        return result;
+      });
+    });
   }
 
   void updatePost(Post updatedPost) {
     setState(() {
       _postUpdated = updatedPost;
+      _loadComments();
     });
   }
 
@@ -54,11 +62,10 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     final Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
 
-    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
         Navigator.pop(context, _postUpdated ?? widget.post);
-        return false; // Prevents default pop behavior
+        return false;
       },
       child: MasterScreenWidget(
         showBackArrow: true,
@@ -71,10 +78,11 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
         },
         floatingButtonOnPressed: () {
           showDialog(
-              context: context,
-              builder: (_) {
-                return ContentForm(post: widget.post);
-              });
+            context: context,
+            builder: (_) => ContentForm(post: widget.post),
+          ).then((_) {
+            _loadComments();
+          });
         },
         floatingActionButtonIcon: const Icon(
           Icons.add_comment_rounded,
@@ -86,11 +94,11 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
             child: Column(children: [
               const SizedBox(height: 10),
               ContentCard(
-                post: widget.post,
+                post: _postUpdated ?? widget.post,
                 navigateToPostDetails: false,
                 contentMaxLines: 15,
                 largeProfilePhoto: true,
-                onPostUpdated: (updatedPost) => updatePost(updatedPost),
+                onPostUpdated: updatePost,
                 hidePopupMenuButton: true,
               ),
               MySeparator(
@@ -102,28 +110,36 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
               const SizedBox(height: 5),
               const Text("Comments"),
               const SizedBox(height: 10),
-              CommentCards(
-                  fetchComments: fetchComments,
-                  fetchPage: fetchPage,
-                  filter: _filter,
-                  page: page,
-                  pageSize: pageSize)
+              FutureBuilder<SearchResult<Comment>>(
+                future: _commentsFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (_comments.isEmpty) {
+                    return const Center(child: Text('No comments yet'));
+                  }
+
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: _comments.length,
+                    itemBuilder: (context, index) {
+                      return ContentCard(
+                        comment: _comments[index],
+                        onPostUpdated: (post) {
+                          // This won't be called for comments
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
             ]),
           ),
         ),
       ),
     );
-  }
-
-  Future<SearchResult<Comment>> fetchComments() {
-    return _commentProvider.get(filter: {
-      ..._filter,
-      "Page": "$page",
-      "PageSize": "$pageSize",
-    });
-  }
-
-  Future<SearchResult<Comment>> fetchPage(Map<String, dynamic> filter) {
-    return _commentProvider.get(filter: filter);
   }
 }

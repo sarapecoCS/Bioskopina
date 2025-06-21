@@ -112,7 +112,7 @@ class _WavesFormState extends State<WavesForm> {
             ),
           ),
           const TextSpan(
-            text: ' to selected Stars:',
+            text: ' to selected watchlist:',
             style: TextStyle(color: Palette.lightPurple),
           ),
         ],
@@ -155,13 +155,13 @@ class _WavesFormState extends State<WavesForm> {
                   : <BioskopinaList>[];
 
               return MyFormBuilderFilterChip(
-                labelText: "Your Stars",
+                labelText: "Your watchlists",
                 name: 'stars',
                 fontSize: 20,
                 options: stars.map((star) => FormBuilderChipOption(
                   value: star.id?.toString() ?? '',
                   child: Text(
-                    star.name ?? 'Unnamed Star',
+                    star.name ?? 'Unnamed watchlist',
                     style: const TextStyle(color: Palette.midnightPurple),
                   ),
                 )).toList(),
@@ -238,11 +238,12 @@ class _WavesFormState extends State<WavesForm> {
 
         if (mounted) {
           Navigator.of(context).pop(true);
+          showSuccessDialog(context, 'Saved successfully!');
         }
       } else {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Please select at least one star')),
+            const SnackBar(content: Text('Please select at least one watchlist')),
           );
         }
       }

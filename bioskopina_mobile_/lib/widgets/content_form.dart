@@ -13,11 +13,13 @@ import '../utils/util.dart';
 class ContentForm extends StatefulWidget {
   final Post? post; // Required for comments, null for posts
   final bool isPost; // New flag to indicate post creation
+  final VoidCallback? onSuccess; // Callback for successful submission
 
   const ContentForm({
     super.key,
     this.post,
     this.isPost = false,
+    this.onSuccess,
   }) : assert(post != null || isPost,
            "Either provide post for comment or set isPost for post creation");
 
@@ -30,6 +32,7 @@ class _ContentFormState extends State<ContentForm> {
       GlobalKey<FormBuilderState>();
   late final CommentProvider _commentProvider;
   late final PostProvider _postProvider;
+  bool _isSubmitting = false;
 
   @override
   void initState() {
@@ -61,20 +64,6 @@ class _ContentFormState extends State<ContentForm> {
   }
 
   Widget _buildChild(BuildContext context) {
-    if (LoggedUser.user!.userRoles!.any(
-          (element) =>
-      element.roleId == 2 && element.canParticipateInClubs == false,
-    )) {
-      return const Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(Icons.info, size: 36),
-          Text("You don't have permission to post or comment in clubs.",
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Palette.lightPurple)),
-        ],
-      );
-    }
     return FormBuilder(
       key: _contentFormKey,
       child: SingleChildScrollView(
@@ -100,8 +89,12 @@ class _ContentFormState extends State<ContentForm> {
             ),
             const SizedBox(height: 10),
             GradientButton(
-              onPressed: () async {
+              onPressed: _isSubmitting ? null : () async {
                 if (_contentFormKey.currentState?.saveAndValidate() == true) {
+                  setState(() {
+                    _isSubmitting = true;
+                  });
+
                   var content =
                       _contentFormKey.currentState?.fields["content"]?.value;
 
@@ -116,6 +109,10 @@ class _ContentFormState extends State<ContentForm> {
                         "datePosted": DateTime.now().toIso8601String(),
                       };
                       await _postProvider.insert(post);
+                      if (context.mounted) {
+                        Navigator.of(context).pop(); // Close form first
+                        showSuccessDialog(context, "Post created successfully!");
+                      }
                     } else {
                       // Handle comment insertion
                       var comment = {
@@ -127,15 +124,25 @@ class _ContentFormState extends State<ContentForm> {
                         "dateCommented": DateTime.now().toIso8601String(),
                       };
                       await _commentProvider.insert(comment);
+                      if (context.mounted) {
+                        Navigator.of(context).pop(); // Close form first
+                        showSuccessDialog(context, "Comment added successfully!");
+                      }
+                    }
+
+                    if (widget.onSuccess != null && context.mounted) {
+                      widget.onSuccess!();
                     }
                   } on Exception catch (e) {
                     if (context.mounted) {
                       showErrorDialog(context, e);
                     }
-                  }
-
-                  if (context.mounted) {
-                    Navigator.of(context).pop();
+                  } finally {
+                    if (context.mounted && _isSubmitting) {
+                      setState(() {
+                        _isSubmitting = false;
+                      });
+                    }
                   }
                 }
               },
@@ -143,9 +150,18 @@ class _ContentFormState extends State<ContentForm> {
               height: 28,
               borderRadius: 50,
               gradient: Palette.buttonGradient,
-              child: const Text("Submit",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w500, color: Palette.white)),
+              child: _isSubmitting
+                  ? const SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Palette.white,
+                      ),
+                    )
+                  : const Text("Submit",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500, color: Palette.white)),
             )
           ],
         ),

@@ -329,7 +329,7 @@ class _WaveCardsState extends State<WaveCards> {
         icon: const Icon(Icons.more_horiz_rounded),
         splashRadius: 1,
         padding: EdgeInsets.zero,
-        color: const Color.fromRGBO(50, 48, 90, 1),
+        color: Palette.darkPurple,
         itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
           PopupMenuItem<String>(
             child: ListTile(
@@ -378,6 +378,9 @@ class _WaveCardsState extends State<WaveCards> {
                     ), () async {
                   try {
                     await _listProvider.delete(list.id!);
+                    if (mounted) {
+                      showSuccessDialog(context, "Deleted successfully!");
+                    }
                   } on Exception catch (e) {
                     if (context.mounted) {
                       showErrorDialog(context, e);

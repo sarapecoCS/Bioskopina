@@ -4,19 +4,15 @@ import '../models/post.dart';
 import '../models/search_result.dart';
 
 class PostProvider extends BaseProvider<Post> {
-  // Make it private and non-final for ProxyProvider updates
   late UserPostActionProvider _userPostActionProvider;
-
   List<Post> _posts = [];
 
   PostProvider({required UserPostActionProvider userPostActionProvider})
       : _userPostActionProvider = userPostActionProvider,
         super("Post");
 
-  // Getter to access UserPostActionProvider
   UserPostActionProvider get userPostActionProvider => _userPostActionProvider;
 
-  // Setter for ProxyProvider to update dependency
   set userPostActionProvider(UserPostActionProvider value) {
     if (_userPostActionProvider != value) {
       _userPostActionProvider = value;
@@ -31,9 +27,15 @@ class PostProvider extends BaseProvider<Post> {
 
   List<Post> get posts => _posts;
 
+  // Sort posts by date (newest first)
+  void _sortPosts() {
+    _posts.sort((a, b) => b.datePosted!.compareTo(a.datePosted!));
+  }
+
   Future<void> fetchAll() async {
     SearchResult<Post> result = await get();
     _posts = result.result;
+    _sortPosts();
     notifyListeners();
   }
 
@@ -41,6 +43,7 @@ class PostProvider extends BaseProvider<Post> {
     final index = _posts.indexWhere((post) => post.id == updatedPost.id);
     if (index != -1) {
       _posts[index] = updatedPost;
+      _sortPosts();
       notifyListeners();
     }
   }
@@ -63,6 +66,7 @@ class PostProvider extends BaseProvider<Post> {
 
     try {
       await update(post.id!, request: post.toJson(), notifyAllListeners: false);
+      _sortPosts();
       notifyListeners();
     } catch (e) {
       post.likesCount = originalLikesCount;
@@ -90,6 +94,7 @@ class PostProvider extends BaseProvider<Post> {
 
     try {
       await update(post.id!, request: post.toJson(), notifyAllListeners: false);
+      _sortPosts();
       notifyListeners();
     } catch (e) {
       post.likesCount = originalLikesCount;
@@ -122,11 +127,9 @@ class PostProvider extends BaseProvider<Post> {
         'datePosted': DateTime.now().toIso8601String(),
       };
 
-      // Use the insert method instead of post
       var response = await insert(postData);
-
       Post newPost = fromJson(response);
-      _posts.insert(0, newPost);
+      _posts.insert(0, newPost); // Add at beginning (already newest)
       notifyListeners();
 
       return newPost;

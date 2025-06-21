@@ -65,7 +65,7 @@ class _WaveScreenState extends State<WaveScreen> {
               padding: EdgeInsets.all(8.0),
               child: Row(
                 children: [
-                  Text("Group movie in individual Stars",
+                  Text("Group movie in individual watchlists",
                       style: TextStyle(fontSize: 16)),
                   SizedBox(width: 5),
                   Icon(Icons.auto_awesome, size: 24),

@@ -354,9 +354,8 @@ class _QuestionCardsState extends State<QuestionCards>
               ),
               visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
               hoverColor: Palette.lightRed.withOpacity(0.1),
-              leading: Icon(Icons.delete, color:Colors.red, size: 24),
-              title: const Text('Delete',
-                  style: TextStyle(color: Palette.lightRed)),
+              leading: Icon(Icons.delete, color: Colors.red, size: 24),
+              title: const Text('Delete', style: TextStyle(color: Palette.lightRed)),
               onTap: () {
                 Navigator.pop(context);
                 showConfirmationDialog(
@@ -369,6 +368,11 @@ class _QuestionCardsState extends State<QuestionCards>
                     ), () async {
                   try {
                     await _qAProvider.delete(qa.id!);
+                    if (context.mounted) {
+
+                      showSuccessDialog(context, "Deleted successfully");
+                       _reloadData;
+                    }
                   } on Exception catch (e) {
                     if (context.mounted) {
                       showErrorDialog(context, e);
@@ -387,4 +391,6 @@ class _QuestionCardsState extends State<QuestionCards>
       tintColor: Palette.darkPurple,
     );
   }
+
+
 }

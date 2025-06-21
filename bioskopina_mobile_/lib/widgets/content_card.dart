@@ -91,7 +91,10 @@ class _ContentCardState extends State<ContentCard> {
         setState(() {
           widget.post!.likesCount = updatedPost.result.single.likesCount;
           widget.post!.dislikesCount = updatedPost.result.single.dislikesCount;
-          widget.post!.comments = updatedPost.result.single.comments;
+          // Only show comments that belong to this specific post
+          widget.post!.comments = updatedPost.result.single.comments
+              ?.where((comment) => comment.postId == widget.post!.id)
+              .toList();
         });
       }
     }
@@ -167,7 +170,7 @@ class _ContentCardState extends State<ContentCard> {
                                 child: isExpanded
                                     ? const Text("See less",
                                         style: TextStyle(
-                                            color: Palette.lightYellow))
+                                            color: Colors.white))
                                     : const Text(
                                         "See more",
                                         style: TextStyle(color: Palette.rose),
@@ -213,6 +216,11 @@ class _ContentCardState extends State<ContentCard> {
                                   if (widget.onPostUpdated != null) {
                                     setState(() {
                                       _post = updatedPost.result.single;
+                                      // Filter comments to only show those belonging to this post
+                                      _post.comments = _post.comments
+                                          ?.where((comment) =>
+                                              comment.postId == _post.id)
+                                          .toList();
                                     });
 
                                     widget.onPostUpdated!(_post);
@@ -504,8 +512,16 @@ class _ContentCardState extends State<ContentCard> {
                   try {
                     if (widget.post != null) {
                       await _postProvider.delete((object as Post).id!);
+                      if (mounted) {
+                        showSuccessDialog(
+                            context, "Post deleted successfully!");
+                      }
                     } else {
                       await _commentProvider.delete((object as Comment).id!);
+                      if (mounted) {
+                        showSuccessDialog(
+                            context, "Comment deleted successfully!");
+                      }
                     }
                   } on Exception catch (e) {
                     if (context.mounted) {

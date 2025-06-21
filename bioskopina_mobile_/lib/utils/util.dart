@@ -79,6 +79,42 @@ Future<void> showErrorDialog(BuildContext context, Exception e) async {
           ]));
 }
 
+void showSuccessDialog(BuildContext context, String message) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) => AlertDialog(
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color: Palette.lightPurple.withOpacity(0.3)),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      actionsAlignment: MainAxisAlignment.center,
+      backgroundColor: Palette.darkPurple,
+      title: const Icon(Icons.check_circle_outlined,
+          color: Palette.lightPurple, size: 55),
+      content: Text(message, textAlign: TextAlign.center),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 5, top: 5),
+          child: GradientButton(
+            onPressed: () => Navigator.pop(context),
+            width: 85,
+            height: 28,
+            borderRadius: 15,
+            gradient: Palette.buttonGradient,
+            child: const Text(
+              "OK",
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Palette.white,
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
 Future<void> showInfoDialog(
     BuildContext context, Widget? title, Widget? content,
     {void Function()? onPressed, barrierDismissible = true}) async {
@@ -113,7 +149,7 @@ Future<void> showConfirmationDialog(BuildContext context, Widget? dialogTitle,
     Widget? content, VoidCallback onPressedYes) async {
   return showDialog<void>(
     context: context,
-    barrierDismissible: false, // Dialog cannot be dismissed by tapping outside
+    barrierDismissible: false,
     builder: (BuildContext context) {
       return AlertDialog(
         shape: RoundedRectangleBorder(
@@ -222,17 +258,13 @@ Future<Uint8List> compressImage(File imageFile) async {
     throw Exception('Unable to decode image');
   }
 
-  // Resize the image only if its width is greater than 800 pixels
   if (image.width > 800) {
     image = img.copyResize(image, width: 800, maintainAspect: true);
   }
 
-  // Encode the image as JPEG with quality 85
   List<int> jpeg = img.encodeJpg(image, quality: 85);
 
-  // Check if the compressed image is larger than the original
   if (jpeg.length > imageFile.lengthSync()) {
-    // If it is, reduce the quality to make it smaller
     jpeg = img.encodeJpg(image, quality: 50);
   }
 
