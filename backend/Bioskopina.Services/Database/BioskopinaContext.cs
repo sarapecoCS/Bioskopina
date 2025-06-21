@@ -130,22 +130,7 @@ namespace Bioskopina.Services.Database
 
 
 
-            modelBuilder.Entity<BioskopinaList>(entity =>
-            {
-                entity.ToTable("BioskopinaList");
-
-                entity.Property(e => e.Id).HasColumnName("ID");
-                entity.Property(e => e.MovieId).HasColumnName("MovieID");
-                entity.Property(e => e.ListId).HasColumnName("ListID");
-
-                entity.HasOne(d => d.Movie).WithMany(p => p.BioskopinaLists)
-                    .HasForeignKey(d => d.MovieId)
-                    .HasConstraintName("FK_Bioskopina_List_;ovie");
-
-                entity.HasOne(d => d.List).WithMany(p => p.BioskopinaLists)
-                    .HasForeignKey(d => d.ListId)
-                    .HasConstraintName("FK_Bioskopina_List_List");
-            });
+       
             modelBuilder.Entity<Watchlist>(entity =>
             {
                 entity.ToTable("Watchlist");
@@ -264,6 +249,23 @@ namespace Bioskopina.Services.Database
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_List_User");
             });
+            modelBuilder.Entity<BioskopinaList>(entity =>
+            {
+                entity.ToTable("BioskopinaList");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+                entity.Property(e => e.MovieId).HasColumnName("MovieID");
+                entity.Property(e => e.ListId).HasColumnName("ListID");
+
+                entity.HasOne(d => d.Movie).WithMany(p => p.BioskopinaLists)
+                    .HasForeignKey(d => d.MovieId)
+                     .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_Bioskopina_List_Movie");
+
+                entity.HasOne(d => d.List).WithMany(p => p.BioskopinaLists)
+                    .HasForeignKey(d => d.ListId)
+                    .HasConstraintName("FK_Bioskopina_List_List");
+            });
 
             modelBuilder.Entity<Post>(entity =>
             {
@@ -371,6 +373,7 @@ namespace Bioskopina.Services.Database
 
                 entity.HasOne(d => d.Movie).WithMany(p => p.Recommenders)
                     .HasForeignKey(d => d.MovieId)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_Recommender_Movies");
             });
 

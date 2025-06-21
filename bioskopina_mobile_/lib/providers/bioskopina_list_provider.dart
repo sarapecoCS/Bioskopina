@@ -3,7 +3,7 @@ import 'package:bioskopina_mobile/providers/base_provider.dart';
 import 'package:flutter/foundation.dart';
 
 class BioskopinaListProvider extends BaseProvider<BioskopinaList> {
-  BioskopinaListProvider() : super("BioskopinaLists");
+  BioskopinaListProvider() : super("BioskopinaList");
 
   @override
   BioskopinaList fromJson(data) {

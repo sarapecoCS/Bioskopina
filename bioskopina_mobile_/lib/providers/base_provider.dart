@@ -19,7 +19,6 @@ abstract class BaseProvider<T> with ChangeNotifier {
   BaseProvider(String endpoint) {
     _endpoint = endpoint;
 
-    // Use Android emulator localhost alias for Android, otherwise default to LAN IP or environment variable
     if (Platform.isAndroid) {
       _baseUrl = "http://10.0.2.2:5262/";
     } else {
@@ -42,24 +41,26 @@ abstract class BaseProvider<T> with ChangeNotifier {
     var uri = Uri.parse(url);
     var headers = createHeaders();
 
+    print("🔍 GET Request URL: $uri");
+    print("🔍 Headers: $headers");
+
     var response = await http!.get(uri, headers: headers);
+
+    print("📩 Response Status Code: ${response.statusCode}");
+    print("📩 Response Body: ${response.body}");
 
     if (isValidResponse(response)) {
       var data = jsonDecode(response.body);
 
       var result = SearchResult<T>();
-
-      // Set count safely with fallback
       result.count = (data['totalCount'] ?? 0) as int;
 
-      // Safely parse list of items
       var items = data['items'] as List<dynamic>?;
       if (items != null) {
         for (var item in items) {
           result.result.add(fromJson(item));
         }
       } else {
-        // Maybe log warning or set empty list
         result.result = [];
       }
       return result;
@@ -68,14 +69,20 @@ abstract class BaseProvider<T> with ChangeNotifier {
     }
   }
 
-
   Future<T> insert(dynamic request, {bool notifyAllListeners = true}) async {
     var url = "$_baseUrl$_endpoint";
     var uri = Uri.parse(url);
     var headers = createHeaders();
 
     var jsonRequest = jsonEncode(request);
+    print("🔍 POST Request URL: $uri");
+    print("🔍 Headers: $headers");
+    print("🔍 Request Body: $jsonRequest");
+
     var response = await http!.post(uri, headers: headers, body: jsonRequest);
+
+    print("📩 Response Status Code: ${response.statusCode}");
+    print("📩 Response Body: ${response.body}");
 
     if (isValidResponse(response)) {
       var data = jsonDecode(response.body);
@@ -96,7 +103,14 @@ abstract class BaseProvider<T> with ChangeNotifier {
     var headers = createHeaders();
 
     var jsonRequest = jsonEncode(request);
+    print("🔍 PUT Request URL: $uri");
+    print("🔍 Headers: $headers");
+    print("🔍 Request Body: $jsonRequest");
+
     var response = await http!.put(uri, headers: headers, body: jsonRequest);
+
+    print("📩 Response Status Code: ${response.statusCode}");
+    print("📩 Response Body: ${response.body}");
 
     if (isValidResponse(response)) {
       var data = jsonDecode(response.body);
@@ -117,7 +131,14 @@ abstract class BaseProvider<T> with ChangeNotifier {
     var headers = createHeaders();
 
     var jsonRequest = jsonEncode(request);
+    print("🔍 DELETE Request URL: $uri");
+    print("🔍 Headers: $headers");
+    print("🔍 Request Body: $jsonRequest");
+
     var response = await http!.delete(uri, headers: headers, body: jsonRequest);
+
+    print("📩 Response Status Code: ${response.statusCode}");
+    print("📩 Response Body: ${response.body}");
 
     if (isValidResponse(response)) {
       var data = jsonDecode(response.body);
@@ -136,12 +157,19 @@ abstract class BaseProvider<T> with ChangeNotifier {
   }
 
   bool isValidResponse(Response response) {
+    print("✅ Checking Response Validity...");
+    print("✅ Status Code: ${response.statusCode}");
+    print("✅ Body: ${response.body}");
+
     if (response.statusCode < 299) {
       return true;
     } else if (response.statusCode == 401) {
+      print("🚨 Unauthorized Access Error (401)!");
       throw Exception("Unauthorized");
     } else {
-      print(response.body);
+      print("🚨 Error Response:");
+      print("🚨 Status Code: ${response.statusCode}");
+      print("🚨 Body: ${response.body}");
       throw Exception("Something bad happened, please try again.");
     }
   }
@@ -183,10 +211,9 @@ abstract class BaseProvider<T> with ChangeNotifier {
       } else if (value is DateTime) {
         query += '$prefix$key=${(value as DateTime).toIso8601String()}';
       } else if (value is List<int>) {
-        // Handle list of integers (anime IDs)
         for (int id in value) {
           query += '$prefix$key=$id';
-          query += '&'; // Add '&' to separate multiple IDs
+          query += '&';
         }
       } else if (value is List || value is Map) {
         if (value is List) value = value.asMap();

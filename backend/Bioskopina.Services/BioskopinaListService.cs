@@ -41,10 +41,14 @@ namespace Bioskopina.Services
         public override IQueryable<Database.BioskopinaList> AddInclude(IQueryable<Database.BioskopinaList> query, BioskopinaListSearchObject? search = null)
         {
             if (search?.IncludeMovie == true)
-                query = query.Include(animeList => animeList.Movie);
+            {
+                query = query.Include(bList => bList.Movie)
+                             .Include(bList => bList.List);
+            }
 
             return base.AddInclude(query, search);
         }
+        
 
         public async Task<bool> UpdateListsForMovies(int movieId, List<BioskopinaListInsertRequest> newLists)
         {

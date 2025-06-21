@@ -196,101 +196,130 @@ DateTime? parseDate(String? dateString) {
     );
   }
 
- Widget _buildRecommendations() {
-   return FutureBuilder<List<Bioskopina>>(
-     future: _movieProvider.getRecommendedMovies(widget.bioskopina.id!),
-     builder: (context, snapshot) {
-       if (snapshot.connectionState == ConnectionState.waiting) {
-         return const Center(child: CircularProgressIndicator());
-       } else if (snapshot.hasError) {
-         return Text('Error: ${snapshot.error}');
-       } else {
-         var recommendedMovies = snapshot.data ?? [];
-         print('Recommended movies fetched: ${recommendedMovies.length}');
+Widget _buildRecommendations() {
+  return FutureBuilder<List<Bioskopina>>(
+    future: _movieProvider.getRecommendedMovies(widget.bioskopina.id!),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(child: CircularProgressIndicator());
+      } else if (snapshot.hasError) {
+        return Text('Error: ${snapshot.error}');
+      } else {
+        var recommendedMovies = snapshot.data ?? [];
+        print('Recommended movies fetched: ${recommendedMovies.length}');
 
-         if (recommendedMovies.isEmpty) {
-           return const Padding(
-             padding: EdgeInsets.all(8.0),
-             child: Text('No recommendations found.'),
-           );
-         }
+        if (recommendedMovies.isEmpty) {
+          return const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text('No recommendations found.'),
+          );
+        }
 
-         return Column(
-           crossAxisAlignment: CrossAxisAlignment.start,
-           children: [
-             MySeparator(
-               width: MediaQuery.of(context).size.width * 0.8,
-               paddingTop: 20,
-               paddingBottom: 10,
-               borderRadius: 50,
-               opacity: 0.8,
-             ),
-             const Padding(
-               padding: EdgeInsets.only(bottom: 15, left: 12),
-               child: Text(
-                 "Recommendations",
-                 style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-               ),
-             ),
-             SingleChildScrollView(
-               scrollDirection: Axis.horizontal,
-               child: Row(
-                 children: _buildRecBioskopinaCards(recommendedMovies),
-               ),
-             ),
-           ],
-         );
-       }
-     },
-   );
- }
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            MySeparator(
+              width: MediaQuery.of(context).size.width * 0.8,
+              paddingTop: 20,
+              paddingBottom: 10,
+              borderRadius: 50,
+              opacity: 0.8,
+            ),
+            const Padding(
+              padding: EdgeInsets.only(bottom: 15, left: 12),
+              child: Text(
+                "Recommendations",
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+              ),
+            ),
+            SizedBox(
+              height: 230, // Fixed height for the entire row
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: _buildRecBioskopinaCards(recommendedMovies),
+                ),
+              ),
+            ),
+          ],
+        );
+      }
+    },
+  );
+}
 
- List<Widget> _buildRecBioskopinaCards(List<Bioskopina> movies) {
-   return movies.asMap().entries.map((entry) {
-     int index = entry.key;
-     Bioskopina movie = entry.value;
-     return GestureDetector(
-       onTap: () {
-         Navigator.push(
-           context,
-           MaterialPageRoute(
-             builder: (context) => BioskopinaDetailScreen(
-               bioskopina: movie,
-               selectedIndex: index,  // pass the index here
-             ),
-           ),
-         );
-       },
-       child: Container(
-         width: 150,
-         margin: const EdgeInsets.symmetric(horizontal: 8),
-         child: Column(
-           children: [
-             ClipRRect(
-               borderRadius: BorderRadius.circular(8),
-               child: Image.network(
-                 movie.imageUrl ?? '',
-                 width: 140,
-                 height: 200,
-                 fit: BoxFit.cover,
-                 errorBuilder: (context, error, stackTrace) => const Icon(Icons.broken_image),
-               ),
-             ),
-             const SizedBox(height: 6),
-             Text(
-               movie.titleEn ?? 'Unknown',
-               maxLines: 2,
-               overflow: TextOverflow.ellipsis,
-               textAlign: TextAlign.center,
-             ),
-           ],
-         ),
-       ),
-     );
-   }).toList();
- }
-
-
+List<Widget> _buildRecBioskopinaCards(List<Bioskopina> movies) {
+  return movies.asMap().entries.map((entry) {
+    int index = entry.key;
+    Bioskopina movie = entry.value;
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BioskopinaDetailScreen(
+              bioskopina: movie,
+              selectedIndex: index,
+            ),
+          ),
+        );
+      },
+      child: Container(
+        width: 140, // Slightly reduced from 150 for better spacing
+        margin: const EdgeInsets.symmetric(horizontal: 6),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // Poster Image
+            Container(
+              height: 180, // Fixed height for all posters
+              width: 140, // Fixed width for all posters
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  movie.imageUrl ?? '',
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    color: Colors.grey[300],
+                    child: const Center(
+                      child: Icon(Icons.broken_image, size: 40),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            // Movie Title
+            SizedBox(
+              width: 130, // Slightly less than container width
+              child: Text(
+                movie.titleEn ?? 'Unknown',
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  height: 1.2, // Better line spacing
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }).toList();
+}
   Widget _buildSeeMoreRatings() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15),

@@ -1,3 +1,4 @@
+// lib/screens/posts_screen.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/post_provider.dart';
@@ -9,6 +10,7 @@ import '../models/post.dart';
 import '../models/search_result.dart';
 import '../utils/colors.dart';
 import '../widgets/content_form.dart';
+import '../widgets/gradient_button.dart';
 
 class PostsScreen extends StatefulWidget {
   final int selectedIndex;
@@ -45,10 +47,13 @@ class _PostsScreenState extends State<PostsScreen> {
     showDialog(
       context: context,
       builder: (context) {
-        return ContentForm(isPost: true); // Using isPost: true for post creation
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          insetPadding: const EdgeInsets.all(20),
+          child: ContentForm(isPost: true),
+        );
       },
     ).then((_) {
-      // Refresh posts after dialog closes
       setState(() {});
     });
   }
@@ -65,51 +70,37 @@ class _PostsScreenState extends State<PostsScreen> {
       showNavBar: true,
       showHelpIcon: true,
       showFloatingActionButton: true,
-      floatingButtonOnPressed: _showAddPostDialog, // Connect to our dialog
-      floatingActionButtonIcon: Container(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.grey.shade900,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.7),
-              blurRadius: 12,
-              spreadRadius: 2,
-            )
-          ],
-        ),
-        padding: const EdgeInsets.all(14),
+      floatingButtonOnPressed: _showAddPostDialog,
+      gradientButton: GradientButton(
+        width: 60,
+        height: 60,
+        borderRadius: 100,
+        onPressed: _showAddPostDialog,
+        gradient: Palette.navGradient2,
         child: const Icon(
           Icons.edit_note_rounded,
           size: 26,
-          color: Colors.white70,
+          color: Palette.white,
         ),
       ),
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Center(
-                child: Text(
-                  "── ✦ User Community Posts ✦ ──",
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.grey.shade300,
-                    fontWeight: FontWeight.w400,
-                    letterSpacing: 1.2,
-                  ),
+            const SizedBox(height: 20),
+            Container(
+              width: coverWidth * 0.7,
+              height: 2,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.transparent,
+                    Palette.lightPurple.withOpacity(0.6),
+                    Colors.transparent,
+                  ],
                 ),
               ),
             ),
-            const SizedBox(height: 12),
-            Container(
-              width: coverWidth * 0.7,
-              height: 0.8,
-              color: Colors.grey.shade800,
-            ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               child: PostCards(

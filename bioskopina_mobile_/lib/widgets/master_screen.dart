@@ -12,6 +12,7 @@ import '../utils/colors.dart';
 import '../utils/util.dart';
 import 'gradient_button.dart';
 import '../screens/posts_screen.dart';
+
 // ignore: must_be_immutable
 class MasterScreenWidget extends StatefulWidget {
   Widget? child;
@@ -186,6 +187,8 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
   }
 
   ResponsiveNavigationBar? _buildNavigationBar() {
+    final int currentIndex = (widget.selectedIndex != null) ? widget.selectedIndex! : _selectedIndex;
+
     return (widget.showNavBar == true)
         ? ResponsiveNavigationBar(
             backgroundColor: Palette.darkPurple,
@@ -201,7 +204,7 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
             ),
             outerPadding: const EdgeInsets.all(0),
             borderRadius: 30,
-            selectedIndex: (widget.selectedIndex != null) ? widget.selectedIndex! : _selectedIndex,
+            selectedIndex: currentIndex,
             onTabChange: (index) {
               setState(() {
                 widget.selectedIndex = index;
@@ -231,26 +234,27 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
               NavigationBarButton(
                 text: 'Home',
                 icon: Icons.home,
-                backgroundGradient: Palette.navGradient1,
+                backgroundGradient: currentIndex == 0 ? Palette.navGradient1 : Palette.navGradient1,
+                padding: const EdgeInsets.all(10),
               ),
               NavigationBarButton(
                 text: 'Posts',
                 icon: Icons.article_rounded,
-                backgroundGradient: Palette.navGradient2,
+                backgroundGradient: currentIndex == 1 ? Palette.navGradient2 : Palette.navGradient2,
+                padding: const EdgeInsets.all(10),
               ),
               NavigationBarButton(
                 text: 'Explore',
                 icon: Icons.find_in_page_rounded,
-                backgroundGradient: Palette.navGradient3,
+                backgroundGradient: currentIndex == 2 ? Palette.navGradient3 : Palette.navGradient3,
                 padding: const EdgeInsets.all(10),
               ),
               NavigationBarButton(
                 text: 'Watchlists',
                 icon: Icons.playlist_add_rounded,
-                backgroundGradient: Palette.navGradient4,
-                padding: const EdgeInsets.only(right: 31, left: 10, top: 10, bottom: 10),
+                backgroundGradient: currentIndex == 3 ? Palette.navGradient3 : Palette.navGradient3,
+                padding: const EdgeInsets.all(10),
               ),
-
             ],
           )
         : null;
@@ -280,7 +284,6 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
         : null;
   }
 
-
   Widget _buildFloatingActionButton() {
     if (widget.showFloatingActionButton == false) {
       return Container();
@@ -305,9 +308,9 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
 
     if (widget.showSearch == true) {
       actions.add(AppBarSearchButton(
-        searchIcon: Icons.search_rounded, // <- Here: IconData, not Icon widget
+        searchIcon: Icons.search_rounded,
         searchActiveButtonColor: Palette.lightRed,
-        searchActiveIcon: Icons.search_rounded, // <- Here too
+        searchActiveIcon: Icons.search_rounded,
       ));
     }
     actions.add(const SizedBox(width: 10));

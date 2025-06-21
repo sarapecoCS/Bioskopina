@@ -4,6 +4,7 @@ using Bioskopina.Services.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bioskopina.Services.Migrations
 {
     [DbContext(typeof(BioskopinaContext))]
-    partial class BioskopinaContextModelSnapshot : ModelSnapshot
+    [Migration("20250621124332_recommenderfixdelete")]
+    partial class recommenderfixdelete
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1732,9 +1735,9 @@ namespace Bioskopina.Services.Migrations
                     b.HasOne("Bioskopina.Services.Database.Bioskopina", "Movie")
                         .WithMany("BioskopinaLists")
                         .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
-                        .HasConstraintName("FK_Bioskopina_List_Movie");
+                        .HasConstraintName("FK_Bioskopina_List_;ovie");
 
                     b.Navigation("List");
 
