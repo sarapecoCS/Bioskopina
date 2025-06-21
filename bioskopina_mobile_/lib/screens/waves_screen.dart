@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import '../widgets/wave_cards.dart';
 import '../widgets/master_screen.dart';
 import '../widgets/star_form.dart';
+import '../utils/util.dart';
+import '../widgets/gradient_button.dart';
+import '../utils/colors.dart';
 
 class WaveScreen extends StatefulWidget {
   final int selectedIndex;
@@ -45,7 +48,7 @@ class _WaveScreenState extends State<WaveScreen> {
         selectedIndex: widget.selectedIndex,
         showNavBar: true,
         showHelpIcon: true,
-        title: "Wave",
+        title: "BioskopWaves",
         showFloatingActionButton: true,
         floatingButtonOnPressed: _safeShowStarForm,
         child: _buildContent(),
@@ -110,6 +113,10 @@ class _WaveScreenState extends State<WaveScreen> {
                 _showErrorScreen = false;
                 _lastError = null;
               }),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Palette.darkPurple,
+                foregroundColor: Colors.white,
+              ),
               child: const Text('Try Again'),
             ),
           ],
@@ -126,6 +133,15 @@ class _WaveScreenState extends State<WaveScreen> {
           const Icon(Icons.warning_amber, color: Colors.orange, size: 48),
           const SizedBox(height: 16),
           Text(message),
+          const SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: () => setState(() {}),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Palette.darkPurple,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('Retry'),
+          ),
         ],
       ),
     );
@@ -133,7 +149,7 @@ class _WaveScreenState extends State<WaveScreen> {
 
   Future<void> _safeShowStarForm() async {
     try {
-      await showDialog(
+      final result = await showDialog<bool>(
         context: context,
         builder: (context) {
           try {
@@ -145,7 +161,7 @@ class _WaveScreenState extends State<WaveScreen> {
               content: Text('Failed to load form: ${e.toString()}'),
               actions: [
                 TextButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () => Navigator.pop(context, false),
                   child: const Text('OK'),
                 ),
               ],
@@ -153,6 +169,12 @@ class _WaveScreenState extends State<WaveScreen> {
           }
         },
       );
+
+      if (result == true) {
+        if (!mounted) return;
+        // Show your stylized success popup dialog here:
+        showSuccessDialog(context, "Added successfully!");
+      }
     } catch (e, stack) {
       debugPrint("DIALOG ERROR: $e\n$stack");
       if (!mounted) return;

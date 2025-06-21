@@ -99,11 +99,10 @@ class _WaveCardsState extends State<WaveCards> {
                     children:
                         List.generate(6, (index) => _waveIndicator())),
               ),
-            ); // Loading state
+            );
           } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}'); // Error state
+            return Text('Error: ${snapshot.error}');
           } else {
-            // Data loaded successfully
             var lists = snapshot.data!.result;
             if (lists.isEmpty) {
               return const Empty(
@@ -184,11 +183,10 @@ class _WaveCardsState extends State<WaveCards> {
         ),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return _waveIndicator(); // Loading state
+            return _waveIndicator();
           } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}'); // Error state
+            return Text('Error: ${snapshot.error}');
           } else {
-            // Data loaded successfully
             var bioskopinaListObject = snapshot.data!.result;
 
             return GestureDetector(
@@ -352,7 +350,11 @@ class _WaveCardsState extends State<WaveCards> {
                       listId: list.id,
                     );
                   },
-                );
+                ).then((value) {
+                  if (value == true) {
+                    showSuccessDialog(context, "Renamed successfully!");
+                  }
+                });
               },
             ),
           ),
@@ -373,7 +375,7 @@ class _WaveCardsState extends State<WaveCards> {
                     const Icon(Icons.warning_rounded,
                         color: Palette.lightRed, size: 55),
                     const Text(
-                      "Are you sure you want to delete this Star?",
+                      "Are you sure you want to delete this watchlist?",
                       textAlign: TextAlign.center,
                     ), () async {
                   try {

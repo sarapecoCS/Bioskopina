@@ -226,24 +226,33 @@ class _CinemaFormState extends State<CinemaForm> {
                           if (existingRating.count == 0) {
                             // Insert new rating
                             Rating rating = Rating(
-                              null,
-                              LoggedUser.user!.id,
-                              widget.bioskopina.id,
+                              null, // id will be auto-generated
+                              LoggedUser.user!.id, // UserId
+                              widget.bioskopina.id, // BioskopinaId
                               ratingValue,
                               _cinemaFormKey.currentState!.fields["reviewText"]?.value ?? "",
-                              DateTime.now(),
-                              null,
-                              null
+                              DateTime.now(), // CreatedTime
+                              null, // ModifiedTime
+                              null  // DeletedTime
                             );
-                            await _ratingProvider.insert(rating);
+                            var insertedRating = await _ratingProvider.insert(rating);
+
+                            // Update the rating with the generated ID if needed
+                            if (insertedRating.id != null) {
+                              rating.id = insertedRating.id;
+                              // You can perform additional operations with the rating ID here
+                            }
                           } else {
                             // Update existing rating
-                            existingRating.result[0].ratingValue = ratingValue;
-                            existingRating.result[0].reviewText =
+                            var ratingToUpdate = existingRating.result[0];
+                            ratingToUpdate.ratingValue = ratingValue;
+                            ratingToUpdate.reviewText =
                                 _cinemaFormKey.currentState!.fields["reviewText"]?.value ?? "";
+                            ratingToUpdate.modifiedTime = DateTime.now();
+
                             await _ratingProvider.update(
-                              existingRating.result[0].id!,
-                              request: existingRating.result[0]
+                              ratingToUpdate.id!,
+                              request: ratingToUpdate
                             );
                           }
 

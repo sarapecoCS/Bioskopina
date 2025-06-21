@@ -264,6 +264,7 @@ namespace Bioskopina.Services.Database
 
                 entity.HasOne(d => d.List).WithMany(p => p.BioskopinaLists)
                     .HasForeignKey(d => d.ListId)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_Bioskopina_List_List");
             });
 
