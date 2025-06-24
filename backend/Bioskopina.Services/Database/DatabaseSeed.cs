@@ -159,7 +159,7 @@ namespace Bioskopina.Services.Database
                 new UserProfilePicture()
                 {
                     Id = 1,
-                    ProfilePicture = ImageHelper.ConvertImageToByteArray("UserPicture\\picture.png")
+                    ProfilePicture = ImageHelper.ConvertImageToByteArray("UserPicture/picture.png")
 
 
     

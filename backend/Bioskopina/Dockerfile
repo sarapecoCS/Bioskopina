@@ -1,26 +1,26 @@
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
-WORKDIR /app
-EXPOSE 80
-EXPOSE 443
-
+# Build stage
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY ["Bioskopina/Bioskopina.csproj", "Bioskopina/"]
-RUN dotnet restore "Bioskopina/Bioskopina.csproj"
+
+# Copy project files
+COPY ["Bioskopina/BioskopinaAPI.csproj", "Bioskopina/"]
+COPY ["Bioskopina.Model/Bioskopina.Model.csproj", "Bioskopina.Model/"]
+COPY ["Bioskopina.Services/Bioskopina.Services.csproj", "Bioskopina.Services/"]
+
+# Restore dependencies
+RUN dotnet restore "Bioskopina/BioskopinaAPI.csproj"
+
+# Copy everything else
 COPY . .
+
+# Build and publish
 WORKDIR "/src/Bioskopina"
-RUN dotnet build "Bioskopina.csproj" -c Release -o /app/build
+RUN dotnet publish "BioskopinaAPI.csproj" -c Release -o /app/publish
 
-FROM build AS publish
-RUN dotnet publish "Bioskopina.csproj" -c Release -o /app/publish /p:UseAppHost=false
-
-FROM base AS final
+# Runtime stage
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
-
-# Copy the published app
-COPY --from=publish /app/publish .
-
-# Copy UserPicture folder explicitly so images are inside container
-COPY UserPicture /app/UserPicture
-
-ENTRYPOINT ["dotnet", "Bioskopina.dll"]
+COPY --from=build /app/publish .
+EXPOSE 80
+EXPOSE 443
+ENTRYPOINT ["dotnet", "BioskopinaAPI.dll"]
