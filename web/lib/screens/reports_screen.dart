@@ -1024,7 +1024,7 @@ Widget _buildPopularMoviesChart() {
         barTouchData: BarTouchData(
           enabled: true,
           touchTooltipData: BarTouchTooltipData(
-            tooltipBgColor: Colors.blueGrey[900]!,
+
             getTooltipItem: (group, groupIndex, rod, rodIndex) {
               final movie = popularBioskopinaData[groupIndex];
               return BarTooltipItem(

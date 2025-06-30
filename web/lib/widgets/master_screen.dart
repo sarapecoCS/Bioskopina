@@ -113,7 +113,7 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
                       child: Image.asset('assets/images/logo.png', width: 220),
                     ),
                     buildListTile(
-                        context, 'Biskopina',Icons.local_movies , const BioskopinaScreen()),
+                        context, 'Biskopina',Icons.theater_comedy , const BioskopinaScreen()),
                     buildListTile(
                         context, 'Users', Icons.people_rounded, const UsersScreen()),
                     buildListTile(

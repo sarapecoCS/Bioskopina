@@ -150,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: 518,
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 decoration: BoxDecoration(
-                  color: Palette.darkPurple.withOpacity(0.9),
+                  color: Palette.darkPurple,
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Column(
@@ -161,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 10),
                     MyTextField(
                       hintText: "Username",
-                      fillColor: Palette.textFieldPurple.withOpacity(0.5),
+                      fillColor: Palette.textFieldPurple.withOpacity(0.2),
                       obscureText: false,
                       width: 417,
                       borderRadius: 50,
@@ -170,7 +170,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 20),
                     MyTextField(
                       hintText: "Password",
-                      fillColor: Palette.textFieldPurple.withOpacity(0.5),
+
+                      fillColor: Palette.textFieldPurple.withOpacity(0.2),
                       obscureText: _obscureText,
                       width: 417,
                       borderRadius: 50,

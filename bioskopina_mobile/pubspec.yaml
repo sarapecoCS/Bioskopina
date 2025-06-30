@@ -1,0 +1,57 @@
+name: bioskopina_mobile
+description: A new Flutter project.
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.2 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.6
+  flutter_rating_bar: ^4.0.1
+  flutter_animate: ^4.2.0
+  shimmer: ^3.0.0
+  glass: ^2.0.0
+  responsive_navigation_bar: ^5.0.2
+  app_bar_with_search_switch: ^1.8.5
+
+  # State Management
+  provider: ^6.1.2
+
+  # Data & API
+  http: ^1.2.1
+  shared_preferences: ^2.2.2
+  json_annotation: ^4.9.0
+  build_runner: ^2.4.8
+  json_serializable: ^6.7.1
+
+  # Media / Utility
+  file_picker:
+    git:
+      url: https://github.com/miguelpruivo/flutter_file_picker.git
+      ref: master
+
+  win32: ^5.6.0
+  image: ^4.1.3
+  youtube_player_flutter: ^9.1.1
+  flutter_stripe: ^11.5.0
+
+  # Forms & Time
+  flutter_form_builder: ^9.1.1
+  timeago: ^3.3.0
+  flutter_inappwebview: ^6.1.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
