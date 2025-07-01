@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Korisnik\\Desktop\\Bioskop-main\\Bioskop-main\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj": {}
+    "D:\\Bioskopina\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Korisnik\\Desktop\\Bioskop-main\\Bioskop-main\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj": {
+    "D:\\Bioskopina\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Korisnik\\Desktop\\Bioskop-main\\Bioskop-main\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj",
+        "projectUniqueName": "D:\\Bioskopina\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj",
         "projectName": "Bioskopina.Model",
-        "projectPath": "C:\\Users\\Korisnik\\Desktop\\Bioskop-main\\Bioskop-main\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj",
+        "projectPath": "D:\\Bioskopina\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj",
         "packagesPath": "C:\\Users\\Korisnik\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Korisnik\\Desktop\\Bioskop-main\\Bioskop-main\\backend\\Bioskopina.Model\\obj\\",
+        "outputPath": "D:\\Bioskopina\\backend\\Bioskopina.Model\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

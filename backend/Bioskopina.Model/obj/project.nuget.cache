@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/rMRyG5y8Po=",
+  "dgSpecHash": "pDra8B5WPBs=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Korisnik\\Desktop\\Bioskop-main\\Bioskop-main\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj",
+  "projectFilePath": "D:\\Bioskopina\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Korisnik\\.nuget\\packages\\microsoft.ml\\4.0.2\\microsoft.ml.4.0.2.nupkg.sha512",
     "C:\\Users\\Korisnik\\.nuget\\packages\\microsoft.ml.cpumath\\4.0.2\\microsoft.ml.cpumath.4.0.2.nupkg.sha512",

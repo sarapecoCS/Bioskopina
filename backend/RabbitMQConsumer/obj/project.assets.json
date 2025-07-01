@@ -253,11 +253,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Korisnik\\Desktop\\Bioskop-main\\Bioskop-main\\backend\\RabbitMQConsumer\\RabbitMQConsumer.csproj",
+      "projectUniqueName": "D:\\Bioskopina\\backend\\RabbitMQConsumer\\RabbitMQConsumer.csproj",
       "projectName": "RabbitMQConsumer",
-      "projectPath": "C:\\Users\\Korisnik\\Desktop\\Bioskop-main\\Bioskop-main\\backend\\RabbitMQConsumer\\RabbitMQConsumer.csproj",
+      "projectPath": "D:\\Bioskopina\\backend\\RabbitMQConsumer\\RabbitMQConsumer.csproj",
       "packagesPath": "C:\\Users\\Korisnik\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Korisnik\\Desktop\\Bioskop-main\\Bioskop-main\\backend\\RabbitMQConsumer\\obj\\",
+      "outputPath": "D:\\Bioskopina\\backend\\RabbitMQConsumer\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

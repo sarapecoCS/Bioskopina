@@ -10987,11 +10987,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Korisnik\\Desktop\\Bioskop-main\\Bioskop-main\\backend\\Bioskopina.Services\\Bioskopina.Services.csproj",
+      "projectUniqueName": "D:\\Bioskopina\\backend\\Bioskopina.Services\\Bioskopina.Services.csproj",
       "projectName": "Bioskopina.Services",
-      "projectPath": "C:\\Users\\Korisnik\\Desktop\\Bioskop-main\\Bioskop-main\\backend\\Bioskopina.Services\\Bioskopina.Services.csproj",
+      "projectPath": "D:\\Bioskopina\\backend\\Bioskopina.Services\\Bioskopina.Services.csproj",
       "packagesPath": "C:\\Users\\Korisnik\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Korisnik\\Desktop\\Bioskop-main\\Bioskop-main\\backend\\Bioskopina.Services\\obj\\",
+      "outputPath": "D:\\Bioskopina\\backend\\Bioskopina.Services\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -11012,8 +11012,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\Korisnik\\Desktop\\Bioskop-main\\Bioskop-main\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj": {
-              "projectPath": "C:\\Users\\Korisnik\\Desktop\\Bioskop-main\\Bioskop-main\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj"
+            "D:\\Bioskopina\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj": {
+              "projectPath": "D:\\Bioskopina\\backend\\Bioskopina.Model\\Bioskopina.Model.csproj"
             }
           }
         }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "XBzkJ/G7NN4=",
+  "dgSpecHash": "KINrCo43V0s=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Korisnik\\Desktop\\Bioskop-main\\Bioskop-main\\backend\\Bioskopina.Services\\Bioskopina.Services.csproj",
+  "projectFilePath": "D:\\Bioskopina\\backend\\Bioskopina.Services\\Bioskopina.Services.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Korisnik\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\Korisnik\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
