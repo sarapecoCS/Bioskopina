@@ -1,0 +1,17 @@
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Services\bin\Debug\net6.0\MAG.Services.deps.json
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Services\bin\Debug\net6.0\MAG.Services.runtimeconfig.json
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Services\bin\Debug\net6.0\MAG.Services.dll
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Services\bin\Debug\net6.0\MAG.Services.pdb
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Services\bin\Debug\net6.0\MAG.Model.dll
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Services\bin\Debug\net6.0\MAG.Model.pdb
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Services\obj\Debug\net6.0\MAG.Services.csproj.AssemblyReference.cache
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Services\obj\Debug\net6.0\MAG.Services.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Services\obj\Debug\net6.0\MAG.Services.AssemblyInfoInputs.cache
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Services\obj\Debug\net6.0\MAG.Services.AssemblyInfo.cs
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Services\obj\Debug\net6.0\MAG.Services.csproj.CoreCompileInputs.cache
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Services\obj\Debug\net6.0\MAG.Serv.5CE9E080.Up2Date
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Services\obj\Debug\net6.0\MAG.Services.dll
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Services\obj\Debug\net6.0\refint\MAG.Services.dll
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Services\obj\Debug\net6.0\MAG.Services.pdb
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Services\obj\Debug\net6.0\MAG.Services.genruntimeconfig.cache
+C:\Users\WIN10\Desktop\Bioskopina\backend\MAG.Services\obj\Debug\net6.0\ref\MAG.Services.dll

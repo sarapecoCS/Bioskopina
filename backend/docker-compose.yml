@@ -1,0 +1,82 @@
+
+
+services:
+  sql-server:
+    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=${SQL_PASSWORD}
+      - MSSQL_PID=Developer
+    ports:
+      - 1401:1433
+    expose:
+      - 1433
+    networks:
+      - backend-network
+
+      
+  api:
+    container_name: backend-api
+    restart: unless-stopped 
+    build:
+      context: .
+      dockerfile: Bioskopina/Dockerfile
+    env_file: .env
+    environment:
+      - ConnectionStrings:DefaultConnection=Server=${SQL_HOST},1433;Database=${SQL_DATABASE};User=${SQL_USER};Password=${SQL_PASSWORD};ConnectRetryCount=0;TrustServerCertificate=True
+      - ASPNETCORE_ENVIRONMENT=Development
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - SMTP__Server=${SMTP_SERVER}
+      - SMTP__Port=${SMTP_PORT}
+      - SMTP__Username=${SMTP_USERNAME}
+      - SMTP__Password=${SMTP_PASSWORD}
+    ports:
+      - "5000:5000"
+    networks:
+      - backend-network
+    links:
+      - sql-server
+    depends_on:
+      sql-server:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitMQ
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    expose:
+      - 5672
+      - 15672
+    env_file: .env
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
+      - RABBITMQ_ERLANG_COOKIE=mysecretcookie
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+      - rabbitmq-logs:/var/log/rabbitmq
+    networks:
+      - backend-network
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+
+networks:
+  backend-network:
+    driver: bridge
+    
+
+volumes:
+  rabbitmq-data:
+  rabbitmq-logs:

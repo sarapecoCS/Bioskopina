@@ -1,0 +1,7 @@
+D:\Bioskopina\backend\RabbitMQConsumer\bin\Release\net8.0\publish\RabbitMQConsumer.exe
+D:\Bioskopina\backend\RabbitMQConsumer\bin\Release\net8.0\publish\RabbitMQConsumer.dll
+D:\Bioskopina\backend\RabbitMQConsumer\bin\Release\net8.0\publish\RabbitMQConsumer.deps.json
+D:\Bioskopina\backend\RabbitMQConsumer\bin\Release\net8.0\publish\RabbitMQConsumer.runtimeconfig.json
+D:\Bioskopina\backend\RabbitMQConsumer\bin\Release\net8.0\publish\RabbitMQConsumer.pdb
+D:\Bioskopina\backend\RabbitMQConsumer\bin\Release\net8.0\publish\Newtonsoft.Json.dll
+D:\Bioskopina\backend\RabbitMQConsumer\bin\Release\net8.0\publish\RabbitMQ.Client.dll
