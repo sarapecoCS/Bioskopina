@@ -1,4 +1,4 @@
-BIOSKOPINA
+##BIOSKOPINA
 Setup Instructions
 Backend
 Open a terminal inside the backend or project root folder.
