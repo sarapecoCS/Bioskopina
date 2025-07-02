@@ -1,0 +1,1 @@
+D:\Bioskopina\backend\obj\Debug\docker-compose.dcproj.CoreCompileInputs.cache

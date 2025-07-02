@@ -214,7 +214,6 @@ D:\Bioskopina\backend\Bioskopina\obj\Debug\net8.0\staticwebassets.build.json
 D:\Bioskopina\backend\Bioskopina\obj\Debug\net8.0\staticwebassets.build.json.cache
 D:\Bioskopina\backend\Bioskopina\obj\Debug\net8.0\staticwebassets.development.json
 D:\Bioskopina\backend\Bioskopina\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-D:\Bioskopina\backend\Bioskopina\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 D:\Bioskopina\backend\Bioskopina\obj\Debug\net8.0\Bioskopi.1CCC4C29.Up2Date
 D:\Bioskopina\backend\Bioskopina\obj\Debug\net8.0\BioskopinaAPI.dll
 D:\Bioskopina\backend\Bioskopina\obj\Debug\net8.0\refint\BioskopinaAPI.dll

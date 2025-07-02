@@ -161,13 +161,13 @@ class _DonationCardsState extends State<DonationCards> {
     double? cardWidth = screenSize.width * 0.6;
 
     return Padding(
-      padding: const EdgeInsets.all(5),
+      padding: const EdgeInsets.all(8),
       child: Container(
         width: cardWidth,
         padding: const EdgeInsets.all(7),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            gradient: Palette.navGradient2),
+            borderRadius: BorderRadius.circular(6),
+            gradient: Palette.navGradient4),
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Text(

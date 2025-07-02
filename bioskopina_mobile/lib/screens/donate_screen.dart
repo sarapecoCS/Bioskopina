@@ -132,7 +132,7 @@ class _DonateScreenState extends State<DonateScreen> {
                       paymentSheetParameters: SetupPaymentSheetParameters(
                     paymentIntentClientSecret: paymentIntent.clientSecret,
                     style: ThemeMode.dark,
-                    merchantDisplayName: 'My Anime Galaxy',
+                    merchantDisplayName: 'Bioskopina',
                     billingDetails: const BillingDetails(
                       address: Address(
                         country: 'BA',
