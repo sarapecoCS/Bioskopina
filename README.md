@@ -1,5 +1,5 @@
-## BIOSKOPINA
-Bioskopina is a movie app dedicated to showcasing films from the ex-Yugoslavian region, especially those connected to the influential  # Black Wave cinema movement. The app allows users to discover movie trailers, share posts with links to where certain movies can be found, and engage with a community passionate about this unique film heritage.
+## BIOSKOPINA - Black wave 
+Bioskopina is a movie app dedicated to showcasing films from the ex-Yugoslavian region, especially those connected to the influential   Black Wave cinema movement. The app allows users to discover movie trailers, share posts with links to where certain movies can be found, and engage with a community passionate about this unique film heritage.
 This platform brings together movie lovers to explore, discuss, and celebrate the rich legacy of ex-Yugoslavian cinema in a modern, interactive way.
 
 
