@@ -669,3 +669,4 @@ C:\Users\Korisnik\Desktop\Bioskop-main\Bioskop-main\backend\Bioskopina\obj\Debug
 C:\Users\Korisnik\Desktop\Bioskop-main\Bioskop-main\backend\Bioskopina\obj\Debug\net8.0\BioskopinaAPI.pdb
 C:\Users\Korisnik\Desktop\Bioskop-main\Bioskop-main\backend\Bioskopina\obj\Debug\net8.0\BioskopinaAPI.genruntimeconfig.cache
 C:\Users\Korisnik\Desktop\Bioskop-main\Bioskop-main\backend\Bioskopina\obj\Debug\net8.0\ref\BioskopinaAPI.dll
+D:\Bioskopina\backend\Bioskopina\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
