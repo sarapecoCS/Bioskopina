@@ -9,13 +9,11 @@ Open a terminal inside the backend or project root folder.
 
 Set your Stripe secret key:
 
-Edit
+
 set STRIPE_SECRET_KEY=YourSecretKey
 Run Docker Compose to build and start backend services:
 
-bash
-Copy
-Edit
+
 docker-compose up -d --build
 ## Flutter Desktop Application
 Credentials:
