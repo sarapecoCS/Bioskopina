@@ -17,13 +17,13 @@ bash
 Copy
 Edit
 docker-compose up -d --build
-Flutter Desktop Application
+# Flutter Desktop Application
 Credentials:
 Username: administrator ( in the document made by professor it was told if we have many users that we should name username admin for web and korisnik for mobile as far as I can recall)
 Password: test
 
 
-Flutter Mobile Application
+# Flutter Mobile Application
 Credentials:
 Username: korisnik
 Password: test
