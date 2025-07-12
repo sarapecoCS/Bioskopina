@@ -55,8 +55,7 @@
               "RelativeToolTip": "Bioskopina.Services\\RabbitMQProducer.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-02T11:11:20.913Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-02T11:11:20.913Z"
             },
             {
               "$type": "Document",
@@ -68,8 +67,7 @@
               "RelativeToolTip": "Bioskopina\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-02T11:10:34.163Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-02T11:10:34.163Z"
             },
             {
               "$type": "Document",
@@ -81,8 +79,7 @@
               "RelativeToolTip": "RabbitMQConsumer\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-02T11:10:24.033Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-02T11:10:24.033Z"
             },
             {
               "$type": "Document",
@@ -94,8 +91,7 @@
               "RelativeToolTip": "RabbitMQConsumer\\EmailService.cs",
               "ViewState": "AgIAAC0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-02T11:10:14.678Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-02T11:10:14.678Z"
             }
           ]
         }
