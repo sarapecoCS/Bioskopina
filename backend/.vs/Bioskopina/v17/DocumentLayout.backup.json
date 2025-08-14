@@ -3,8 +3,8 @@
   "WorkspaceRootPath": "D:\\Bioskopina\\backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{EAFDF74C-8FDC-49A3-BF34-D0D8A7A4B518}|Bioskopina.Services\\Bioskopina.Services.csproj|d:\\bioskopina\\backend\\bioskopina.services\\irabbitmqproducer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EAFDF74C-8FDC-49A3-BF34-D0D8A7A4B518}|Bioskopina.Services\\Bioskopina.Services.csproj|solutionrelative:bioskopina.services\\irabbitmqproducer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0A72776C-6061-4189-8DBC-07D00634F706}|Bioskopina\\BioskopinaAPI.csproj|d:\\bioskopina\\backend\\bioskopina\\dockerfile||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{0A72776C-6061-4189-8DBC-07D00634F706}|Bioskopina\\BioskopinaAPI.csproj|solutionrelative:bioskopina\\dockerfile||{3B902123-F8A7-4915-9F01-361F908088D0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{EAFDF74C-8FDC-49A3-BF34-D0D8A7A4B518}|Bioskopina.Services\\Bioskopina.Services.csproj|d:\\bioskopina\\backend\\bioskopina.services\\rabbitmqproducer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -13,14 +13,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{0A72776C-6061-4189-8DBC-07D00634F706}|Bioskopina\\BioskopinaAPI.csproj|d:\\bioskopina\\backend\\bioskopina\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0A72776C-6061-4189-8DBC-07D00634F706}|Bioskopina\\BioskopinaAPI.csproj|solutionrelative:bioskopina\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B7B29F16-EFFC-4B5F-A991-EAB62169CC69}|RabbitMQConsumer\\RabbitMQConsumer.csproj|d:\\bioskopina\\backend\\rabbitmqconsumer\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B7B29F16-EFFC-4B5F-A991-EAB62169CC69}|RabbitMQConsumer\\RabbitMQConsumer.csproj|solutionrelative:rabbitmqconsumer\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B7B29F16-EFFC-4B5F-A991-EAB62169CC69}|RabbitMQConsumer\\RabbitMQConsumer.csproj|d:\\bioskopina\\backend\\rabbitmqconsumer\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B7B29F16-EFFC-4B5F-A991-EAB62169CC69}|RabbitMQConsumer\\RabbitMQConsumer.csproj|solutionrelative:rabbitmqconsumer\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -35,14 +27,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "IRabbitMQProducer.cs",
-              "DocumentMoniker": "D:\\Bioskopina\\backend\\Bioskopina.Services\\IRabbitMQProducer.cs",
-              "RelativeDocumentMoniker": "Bioskopina.Services\\IRabbitMQProducer.cs",
-              "ToolTip": "D:\\Bioskopina\\backend\\Bioskopina.Services\\IRabbitMQProducer.cs",
-              "RelativeToolTip": "Bioskopina.Services\\IRabbitMQProducer.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAsAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-02T11:11:25.844Z",
+              "Title": "Dockerfile",
+              "DocumentMoniker": "D:\\Bioskopina\\backend\\Bioskopina\\Dockerfile",
+              "RelativeDocumentMoniker": "Bioskopina\\Dockerfile",
+              "ToolTip": "D:\\Bioskopina\\backend\\Bioskopina\\Dockerfile",
+              "RelativeToolTip": "Bioskopina\\Dockerfile",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-08-11T10:00:26.653Z",
               "EditorCaption": ""
             },
             {
@@ -68,30 +60,6 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-02T11:10:34.163Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\Bioskopina\\backend\\RabbitMQConsumer\\Program.cs",
-              "RelativeDocumentMoniker": "RabbitMQConsumer\\Program.cs",
-              "ToolTip": "D:\\Bioskopina\\backend\\RabbitMQConsumer\\Program.cs",
-              "RelativeToolTip": "RabbitMQConsumer\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-02T11:10:24.033Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "EmailService.cs",
-              "DocumentMoniker": "D:\\Bioskopina\\backend\\RabbitMQConsumer\\EmailService.cs",
-              "RelativeDocumentMoniker": "RabbitMQConsumer\\EmailService.cs",
-              "ToolTip": "D:\\Bioskopina\\backend\\RabbitMQConsumer\\EmailService.cs",
-              "RelativeToolTip": "RabbitMQConsumer\\EmailService.cs",
-              "ViewState": "AgIAAC0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-02T11:10:14.678Z"
             }
           ]
         }
