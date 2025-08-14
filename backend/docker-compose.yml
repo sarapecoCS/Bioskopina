@@ -34,7 +34,7 @@ services:
       - SMTP__Username=${SMTP_USERNAME}
       - SMTP__Password=${SMTP_PASSWORD}
     ports:
-      - "5000:5000"
+      - "5262:5000"
     networks:
       - backend-network
     links:
