@@ -69,7 +69,7 @@ class _WavesFormState extends State<WavesForm> {
       elevation: 0,
       backgroundColor: Colors.transparent,
       child: Container(
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
         decoration: BoxDecoration(
           color: Palette.darkPurple,
           borderRadius: BorderRadius.circular(15),
@@ -78,44 +78,63 @@ class _WavesFormState extends State<WavesForm> {
             width: 1,
           ),
         ),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildTitle(),
-              const SizedBox(height: 20),
-              _initializationError
-                  ? _buildErrorWidget('Initialization failed. Please try again.')
-                  : _buildFormContent(),
-              const SizedBox(height: 30),
-              _buildSaveButton(),
-            ],
-          ),
+        child: Stack(
+          children: [
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildTitle(),
+                const SizedBox(height: 20),
+                _initializationError
+                    ? _buildErrorWidget('Initialization failed. Please try again.')
+                    : _buildFormContent(),
+                const SizedBox(height: 30),
+                _buildSaveButton(),
+              ],
+            ),
+            Positioned(
+              right: 0,
+              top: 0,
+              child: IconButton(
+                icon: const Icon(
+                  Icons.close,
+                  color: Palette.lightPurple,
+                  size: 24,
+                ),
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
   Widget _buildTitle() {
-    return RichText(
-      text: TextSpan(
-        children: [
-          const TextSpan(
-            text: 'Toggle ',
-            style: TextStyle(color: Palette.lightPurple),
-          ),
-          TextSpan(
-            text: widget.bioskopina.titleEn ?? 'Movie',
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Palette.rose,
+    return Padding(
+      padding: const EdgeInsets.only(top: 5, right: 30),
+      child: RichText(
+        text: TextSpan(
+          children: [
+            const TextSpan(
+              text: 'Toggle ',
+              style: TextStyle(color: Palette.lightPurple),
             ),
-          ),
-          const TextSpan(
-            text: ' to selected watchlist:',
-            style: TextStyle(color: Palette.lightPurple),
-          ),
-        ],
+            TextSpan(
+              text: widget.bioskopina.titleEn ?? 'Movie',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Palette.rose,
+              ),
+            ),
+            const TextSpan(
+              text: ' to  watchlist:',
+              style: TextStyle(color: Palette.lightPurple),
+            ),
+          ],
+        ),
       ),
     );
   }

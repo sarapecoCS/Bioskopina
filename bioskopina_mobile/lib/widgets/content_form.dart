@@ -70,7 +70,28 @@ class _ContentFormState extends State<ContentForm> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(widget.isPost ? "Create your post:" : "Write your comment:"),
+            Stack(
+              children: [
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    widget.isPost ? "Create your post:" : "Write your comment:",
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ),
+                Positioned(
+                  right: 0,
+                  child: GestureDetector(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: const Icon(
+                      Icons.close,
+                      size: 20,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
             const SizedBox(height: 10),
             MyFormBuilderTextField(
               name: "content",
@@ -82,7 +103,7 @@ class _ContentFormState extends State<ContentForm> {
               borderRadius: 15,
               errorBorderRadius: 15,
               contentPadding:
-              const EdgeInsets.only(left: 10, right: 10, top: 25),
+                  const EdgeInsets.only(left: 10, right: 10, top: 25),
               validator: (val) {
                 return _buildValidator(val);
               },
