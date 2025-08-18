@@ -1,9 +1,10 @@
 import '../providers/base_provider.dart';
 import '../models/genre_bioskopina.dart';
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class GenreMovieProvider extends BaseProvider<GenreBioskopina> {
-  final String _endpoint = "GenreBioskopina"; // Consistent naming
+  final String _endpoint = "GenreBioskopina";
 
   GenreMovieProvider() : super("GenreBioskopina");
 
@@ -12,59 +13,69 @@ class GenreMovieProvider extends BaseProvider<GenreBioskopina> {
     return GenreBioskopina.fromJson(data);
   }
 
+  /// Fetch genres associated with a specific movie
   Future<List<GenreBioskopina>> fetchGenresForMovie(int movieId) async {
-    var url = "${BaseProvider.baseUrl}$_endpoint/ByMovie/$movieId";
-    var uri = Uri.parse(url);
-    var headers = createHeaders();
+    final url = "${BaseProvider.baseUrl}$_endpoint/ByMovie/$movieId";
+    final uri = Uri.parse(url);
+    final headers = createHeaders();
 
-    var response = await http!.get(uri, headers: headers);
+    final response = await http.get(uri, headers: headers);
 
-    if (isValidResponse(response)) {
-      var data = jsonDecode(response.body);
-
-      if (data is List) {
-        return data.map((e) => GenreBioskopina.fromJson(e)).toList();
-      } else if (data['items'] != null) {
-        return (data['items'] as List).map((e) => GenreBioskopina.fromJson(e)).toList();
-      }
-      throw Exception("Unexpected response format");
-    } else {
+    if (!isValidResponse(response)) {
       throw Exception("Failed to load genres for movie");
     }
+
+    final data = jsonDecode(response.body);
+
+    if (data is List) {
+      return data.map((e) => GenreBioskopina.fromJson(e)).toList();
+    } else if (data['items'] != null) {
+      return (data['items'] as List)
+          .map((e) => GenreBioskopina.fromJson(e))
+          .toList();
+    }
+
+    throw Exception("Unexpected response format");
   }
 
-  Future<bool> updateGenresForMovie(int movieId, List<GenreBioskopina> genres) async {
-    var url = "${BaseProvider.baseUrl}$_endpoint/UpdateForMovie/$movieId";
-    var uri = Uri.parse(url);
-    var headers = createHeaders();
-    var jsonRequest = jsonEncode(genres.map((e) => e.toJson()).toList());
+  /// Update genres for a specific movie
+  Future<bool> updateGenresForMovie(
+      int movieId, List<GenreBioskopina> genres) async {
+    final url = "${BaseProvider.baseUrl}$_endpoint/UpdateForMovie/$movieId";
+    final uri = Uri.parse(url);
+    final headers = createHeaders();
+    final jsonRequest = jsonEncode(genres.map((e) => e.toJson()).toList());
 
-    var response = await http!.put(uri, headers: headers, body: jsonRequest);
+    final response = await http.put(uri, headers: headers, body: jsonRequest);
 
-    if (isValidResponse(response)) {
-      notifyListeners();
-      return true;
-    } else {
+    if (!isValidResponse(response)) {
       throw Exception("Failed to update genres");
     }
+
+    notifyListeners();
+    return true;
   }
 
+  /// Fetch all genre-movie relationships
   Future<List<GenreBioskopina>> fetchAll() async {
-    var url = "${BaseProvider.baseUrl}$_endpoint";
-    var uri = Uri.parse(url);
-    var headers = createHeaders();
+    final url = "${BaseProvider.baseUrl}$_endpoint";
+    final uri = Uri.parse(url);
+    final headers = createHeaders();
 
-    var response = await http!.get(uri, headers: headers);
+    final response = await http.get(uri, headers: headers);
 
-    if (isValidResponse(response)) {
-      var data = jsonDecode(response.body);
-
-      if (data['items'] != null) {
-        return (data['items'] as List).map((e) => GenreBioskopina.fromJson(e)).toList();
-      }
-      throw Exception("Response missing 'items' field");
-    } else {
+    if (!isValidResponse(response)) {
       throw Exception("Failed to load genre-movie relationships");
     }
+
+    final data = jsonDecode(response.body);
+
+    if (data['items'] != null) {
+      return (data['items'] as List)
+          .map((e) => GenreBioskopina.fromJson(e))
+          .toList();
+    }
+
+    throw Exception("Response missing 'items' field");
   }
 }

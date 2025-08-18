@@ -5,7 +5,7 @@ using Stripe;
 
 namespace Bioskopina.Controllers
 {
-   
+
     [ApiController]
     public class PaymentIntentController : ControllerBase
     {

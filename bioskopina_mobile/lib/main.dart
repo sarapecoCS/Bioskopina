@@ -31,7 +31,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   Stripe.publishableKey =
-      const String.fromEnvironment('STRIPE_PUBLISHABLE_KEY', defaultValue: "");
+      const String.fromEnvironment('STRIPE_PUBLISHABLE_KEY', defaultValue: "pk_test_51QloDrRsF08WafBStg1gV5dUXPlGmdek1ndW0qyKVYXAiuh7i4yxHtoArKEL0xGJ3PCvV9Ih5OA6ob6C863ks5vK00WjiJTnBV");
 
   runApp(
     MultiProvider(

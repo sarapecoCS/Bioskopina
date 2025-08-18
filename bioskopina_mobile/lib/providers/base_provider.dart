@@ -20,7 +20,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
     _endpoint = endpoint;
 
     if (Platform.isAndroid) {
-      _baseUrl = "http://10.0.2.2:5262/";
+      _baseUrl = "http://10.0.2.2:5000/";
     } else {
       _baseUrl = const String.fromEnvironment("baseUrl",
           defaultValue: "http://192.168.1.9:5262/");

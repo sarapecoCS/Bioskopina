@@ -2,6 +2,7 @@ import 'dart:convert';
 import '../models/genre.dart';
 import '../models/popular_genres_data.dart';
 import '../providers/base_provider.dart';
+import 'package:http/http.dart' as http;
 
 class GenreProvider extends BaseProvider<Genre> {
   final String _endpoint = "Genre";
@@ -13,56 +14,43 @@ class GenreProvider extends BaseProvider<Genre> {
     return Genre.fromJson(data);
   }
 
+  /// Fetch all genres
   Future<List<Genre>> fetchAll() async {
-    var url = "${BaseProvider.baseUrl}$_endpoint";
-    var uri = Uri.parse(url);
-    var headers = createHeaders();
+    final url = "${BaseProvider.baseUrl}$_endpoint";
+    final uri = Uri.parse(url);
+    final headers = createHeaders();
 
-    var response = await http!.get(uri, headers: headers);
+    final response = await http.get(uri, headers: headers);
 
-    if (isValidResponse(response)) {
-      var data = jsonDecode(response.body);
-
-      List<dynamic> genresList = data['items'] ?? [];
-
-      List<Genre> result = [];
-
-      for (var item in genresList) {
-        result.add(Genre.fromJson(item));
-      }
-
-      return result;
-    } else {
+    if (!isValidResponse(response)) {
       throw Exception("Failed to load genres");
     }
+
+    final data = jsonDecode(response.body);
+    final genresList = data['items'] as List? ?? [];
+
+    return genresList.map((item) => Genre.fromJson(item)).toList();
   }
 
+  /// Get the most popular genres
   Future<List<PopularGenresData>> getMostPopularGenres() async {
-    var url = "${BaseProvider.baseUrl}$_endpoint/Popular";
-    var uri = Uri.parse(url);
-    var headers = createHeaders();
+    final url = "${BaseProvider.baseUrl}$_endpoint/Popular";
+    final uri = Uri.parse(url);
+    final headers = createHeaders();
 
-    var response = await http!.get(uri, headers: headers);
+    final response = await http.get(uri, headers: headers);
 
-    if (isValidResponse(response)) {
-      var data = jsonDecode(response.body);
-
-      // Expecting the response to be an object with an 'items' list:
-      List<dynamic> popularList = data['items'] ?? [];
-
-      List<PopularGenresData> result = [];
-
-      for (var item in popularList) {
-        // Defensive: Check if keys exist
-        var genreName = item["genreName"] ?? '';
-        var usersCount = item["usersWhoLikeIt"] ?? 0;
-
-        result.add(PopularGenresData(genreName, usersCount));
-      }
-
-      return result;
-    } else {
+    if (!isValidResponse(response)) {
       throw Exception("Failed to load popular genres");
     }
+
+    final data = jsonDecode(response.body);
+    final popularList = data['items'] as List? ?? [];
+
+    return popularList.map((item) {
+      final genreName = item["genreName"] ?? '';
+      final usersCount = item["usersWhoLikeIt"] ?? 0;
+      return PopularGenresData(genreName, usersCount);
+    }).toList();
   }
 }
