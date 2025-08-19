@@ -38,7 +38,7 @@ The backend works correctly. Any failures for small amounts during testing are d
 
 ## Flutter Desktop Application
 Credentials:
-Username: administrator ( in the document made by professor it was told if we have many users that we should name username admin for web and korisnik for mobile as far as I can recall)
+Username: administrator ( in the document made by professor it was told if we have many users that we should name username admin for web and korisnik for mobile)
 Password: test
 
 
