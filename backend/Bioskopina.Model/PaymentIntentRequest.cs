@@ -8,6 +8,6 @@ namespace Bioskopina.Model
 {
     public class PaymentIntentRequest
     {
-        public long Amount { get; set; }
+        public decimal Amount { get; set; }
     }
 }
