@@ -16,6 +16,11 @@ Run Docker Compose to build and start backend services:
 
 docker-compose up -d --build
 
+> **Note:**  
+> If you don’t want to set your own key manually, a zipped `.env` file is also provided in the repository.  
+> The password for the zip file is the same as for other secured folders, and its location is the same as those zipped folders
+
+
 ## Payment Integration Notes
 
 The backend correctly sends integer values for payment amounts. ✅  
@@ -33,7 +38,7 @@ The backend works correctly. Any failures for small amounts during testing are d
 
 ## Flutter Desktop Application
 Credentials:
-Username: administrator ( in the document made by professor it was told if we have many users that we should name username admin for web and korisnik for mobile as far as I can recall)
+Username: administrator ( in the document made by professor it was told if we have many users that we should name username admin for web and korisnik for mobile)
 Password: test
 
 
